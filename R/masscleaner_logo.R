@@ -28,25 +28,36 @@
 #' @importFrom pcaMethods pca completeObs
 #' @importFrom patchwork plot_layout
 #' @import patchwork
-#' @importFrom stats coefficients lm loess median predict 
+#' @importFrom stats coefficients lm loess median predict
 #' @importFrom stats rgamma rt sd cor p.adjust prcomp t.test wilcox.test
 #' @export
 
-masscleaner_logo <- function(){
+masscleaner_logo <- function() {
   cat(crayon::green("Thank you for using masscleaner!\n"))
-  cat(crayon::green("Version 0.9.2 (20210312)\n"))
+  cat(crayon::green("Version 0.0.1 (2021-12-3)\n"))
   cat(crayon::green("Bug fixing\n"))
-  cat(crayon::green("More information can be found at https://tidymass.github.io/masscleaner/\n"))
+  cat(
+    crayon::green(
+      "More information can be found at https://tidymass.github.io/masscleaner/\n"
+    )
+  )
   cat(crayon::green(
-    c("                 _    __ _              ___  ", "                | |  / _| |            |__ \\ ",
-      "  _ __ ___   ___| |_| |_| | _____      __ ) |", " | '_ ` _ \\ / _ \\ __|  _| |/ _ \\ \\ /\\ / // / ",
-      " | | | | | |  __/ |_| | | | (_) \\ V  V // /_ ", " |_| |_| |_|\\___|\\__|_| |_|\\___/ \\_/\\_/|____|",
-      "                                             ", "                                             "
+    c(
+      "                           _____ _                            ",
+      "                          / ____| |                           ",
+      "  _ __ ___   __ _ ___ ___| |    | | ___  __ _ _ __   ___ _ __ ",
+      " | '_ ` _ \\ / _` / __/ __| |    | |/ _ \\/ _` | '_ \\ / _ \\ '__|",
+      " | | | | | | (_| \\__ \\__ \\ |____| |  __/ (_| | | | |  __/ |   ",
+      " |_| |_| |_|\\__,_|___/___/\\_____|_|\\___|\\__,_|_| |_|\\___|_|   ",
+      "                                                              ",
+      "                                                              "
     )
     
   ), sep = "\n")
 }
 
 
-
-
+# library(cowsay)
+# ##https://onlineasciitools.com/convert-text-to-ascii-art
+# art <- readLines("logo.txt")
+# dput(art)

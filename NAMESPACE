@@ -2,12 +2,6 @@
 
 export(alignBatch)
 export(align_batch)
-export(filterPeak)
-export(filterRSD)
-export(filterSample)
-export(filter_peaks)
-export(filter_rsd)
-export(filter_samples)
 export(get_peak_int_distribution)
 export(impute_mv)
 export(integrateData)
