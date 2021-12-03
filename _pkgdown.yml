@@ -5,11 +5,11 @@ home:
   title: masscleaner
   links:
   - text: Find me
-    href: https://shenxt.info/
+    href: https://www.shenxt.info/
 
 authors:
   Xiaotao Shen:
-    href: http://shenxt.info/
+    href: hhttps://www.shenxt.info/
 
 development:
   mode: auto
@@ -28,12 +28,9 @@ navbar:
   title: "sparklyr"
   # type: inverse
   structure:
-    left: [home, start, references, articles, news, contact]
+    left: [home, references, articles, news, contact]
     right: [github, twitter]
   components:
-    start:
-      text: Get started
-      href: articles/masscleaner_instruction.html
     articles:
       text: Help documenta
       menu:

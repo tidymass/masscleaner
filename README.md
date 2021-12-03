@@ -1,46 +1,46 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# metflow2 <img src="man/figures/masscleaner_logo.png" align="right" alt="" width="120" />
+# masscleaner <img src="man/figures/masscleaner_logo.png" align="right" alt="" width="120" />
 
-[![](https://www.r-pkg.org/badges/version/metflow2?color=green)](https://cran.r-project.org/package=metflow2)
-[![](https://img.shields.io/github/languages/code-size/jaspershen/metflow2.svg)](https://github.com/jaspershen/metflow2)
-[![Dependencies](https://tinyverse.netlify.com/badge/metflow2)](https://cran.r-project.org/package=metflow2)
+[![](https://www.r-pkg.org/badges/version/masscleaner?color=green)](https://cran.r-project.org/package=masscleaner)
+[![](https://img.shields.io/github/languages/code-size/tidymass/masscleaner.svg)](https://github.com/tidymass/masscleaner)
+[![Dependencies](https://tinyverse.netlify.com/badge/masscleaner)](https://cran.r-project.org/package=masscleaner)
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
 -----
 ## **News**
 
-* **Version0.9.2**: Output EICs of some features in some sample. [Click here.](https://jaspershen.github.io/metflow2/articles/version_0_9_2.html)
+* **Version0.9.2**: Output EICs of some features in some sample. [Click here.](https://tidymass.github.io/masscleaner/articles/version_0_9_2.html)
 
-* **More news**: [Click here](https://jaspershen.github.io/metflow2/news/index.html)
+* **More news**: [Click here](https://tidymass.github.io/masscleaner/news/index.html)
 
 ------
 
 ## **About**
 
-`metflow2` is a R package which is used for untargeted metabolomics data
+`masscleaner` is a R package which is used for untargeted metabolomics data
 processing and analysis.
 
 -----
 
 ## **Installation**
 
-You can install `metflow2` from
-[Github](https://github.com/jaspershen/metflow2).
+You can install `masscleaner` from
+[Github](https://github.com/tidymass/masscleaner).
 
 ``` r
-# Install `metflow2` from GitHub
+# Install `masscleaner` from GitHub
 if(!require(devtools)){
 install.packages("devtools")
 }
-devtools::install_github("jaspershen/metflow2")
+devtools::install_github("tidymass/masscleaner")
 ```
 
 We use the demo data in `demoData` package to show how to use
-`metflow2`. Please install it first.
+`masscleaner`. Please install it first.
 
 ``` r
-devtools::install_github("jaspershen/demoData")
+devtools::install_github("tidymass/demoData")
 ```
 
 -----
@@ -48,14 +48,14 @@ devtools::install_github("jaspershen/demoData")
 ## **Usage**
 
 Please see the [Get
-started](https://jaspershen.github.io/metflow2/articles/metflow2_instruction.html)
-page to get the instrduction of `metflow2`.
+started](https://tidymass.github.io/masscleaner/articles/masscleaner_instruction.html)
+page to get the instrduction of `masscleaner`.
 
 -----
 
 ## **Need help?**
 
-If you have any quesitions about `metflow2`, please don’t hesitate to
+If you have any quesitions about `masscleaner`, please don’t hesitate to
 email me (<shenxt@stanford.edu>).
 
 <i class="fa fa-weixin"></i>
@@ -74,7 +74,7 @@ CA 94304](https://www.google.com/maps/place/Alway+Building/@37.4322345,-122.1770
 
 ## **Citation**
 
-If you use `metflow2` in you publication, please cite this publication:
+If you use `masscleaner` in you publication, please cite this publication:
 
 X Shen, ZJ Zhu - Bioinformatics (Oxford, England), 2019, MetFlow: An
 interactive and integrated workflow for metabolomics data cleaning and
