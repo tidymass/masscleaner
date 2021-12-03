@@ -1,0 +1,200 @@
+---
+title: "Data normalization and integration"
+author:
+- name: Xiaotao Shen PhD (https://www.shenxt.info/)
+- affiliation: School of Medicine, Stanford University
+  url: http://shenxt.info/
+date: "Created on 2020-04-01 and updated on `r Sys.Date()`"
+output:
+  html_document:
+    df_print: paged
+    toc: no
+  pdf_document:
+    toc: no
+vignette: >
+  %\VignetteIndexEntry{data_normalization_integration}
+  %\VignettePackage{masscleaner}
+  % \VignetteEngine{knitr::rmarkdown}
+  % \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = TRUE,
+  out.width = "100%"
+)
+```
+
+We can use `masscleaner` for data normalization and data integration.
+
+First, we need to prepare samples for `masscleaner`.
+
+## **Data preparation**
+
+### **Peak table**
+
+The peak table (csv format) can be from any software. We recomment that you use the `Peak_table_for_cleaning.csv` from `processData()` function from `masscleaner`.
+
+If you use other software, please make sure that the top 3 columns are `name` (peak name), `mz` and `rt` (rentention time, second). And the left column are sample intensity.
+
+![](../man/figures/Screen Shot 2020-04-01 at 1.07.37 PM.png)
+
+### **Sample information**
+
+We need the sample information (csv format) to define the detailed information of samples. Column 1 is `sample.name`, column 2 is `injection.order`, column 3 is `class` (such as Subject, QC, Blank), column 4 is `batch` and column 5 is `group` (such as control and case).
+
+
+![](../man/figures/Screen Shot 2020-04-02 at 8.40.02 AM.png)
+
+
+## **Read data**
+
+Then place the peak table and sample information in a folder. We use the demo data from `demoData` package.
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=FALSE}
+library(masscleaner)
+library(demoData)
+library(tidyverse)
+```
+
+### **Load demo data**
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE,cache = TRUE}
+##create a folder named as example
+path <- file.path(".", "example")
+dir.create(path = path, showWarnings = FALSE)
+```
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+##get demo data
+demo_data <- system.file("masscleaner", package = "demoData")
+
+file.copy(from = file.path(demo_data, dir(demo_data)), 
+          to = path, overwrite = TRUE, recursive = TRUE)
+```
+
+Here, we have two peak tables, `batch1.data.csv` and `batch2.data.csv`, and `sample_info.csv` are in your `./example` folder.
+
+### **Create `metflowClass` object**
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+object <-
+  create_metflow_object(
+    ms1.data = c("batch1.data.csv", "batch2.data.csv"),
+    sample.information = "sample_info.csv",
+    path = path
+  )
+```
+
+`object` is a `metflowClass` object, so you can print it in the console.
+
+
+## **Align different batches**
+
+Because there are two batch peak tables, so first we must align them.
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+object <- align_batch(
+  object = object,
+  combine.mz.tol = 15,
+  combine.rt.tol = 30,
+  use.int.tol = FALSE
+)
+```
+
+## **Missing value processing**
+
+### **Remove noisy peaks and outlier samples**
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+object2 <- filter_peaks(
+  object = object,
+  min.fraction = 0.5,
+  type = "any",
+  min.subject.blank.ratio = 2,
+  according.to = "class",
+  which.group = "QC"
+)
+```
+
+### **Remove outlier samples**
+
+Nest, we should remove some samples which have a lot of missing values.
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+object2 <- filter_samples(object = object2,
+                          min.fraction.peak = 0.9)
+```
+
+### **Missing value imputation**
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+object2 <- impute_mv(object = object2,
+                    method = "knn")
+object2
+```
+
+## **Data normalization**
+
+Now we can normalize data using different methods.
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+object3 <- normalize_data(object = object2, method = "mean")
+```
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+object3 <- normalize_data(object = object2, method = "svr", threads = 1)
+```
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+# object3 <- normalize_data(object = object2, method = "pqn")
+```
+
+
+After data normaliztion, you can use the `get_peak_int_distribution()` function to see each peak intensity distributation plot.
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+get_peak_int_distribution(object = object3, peak_name = "M114T670", interactive = TRUE)
+```
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+get_peak_int_distribution(object = object2, peak_name = "M114T670", interactive = TRUE)
+```
+
+
+## **Data integration**
+
+Then we can use the `integrate_data()` function to do data integration.
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+object4 <- integrate_data(object = object3, method = "qc.mean")
+```
+
+
+We can also get the RSDs of all the peaks before and after data normalization and data integration.
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+rsd2 <- calculate_rsd(object = object2, slot = "QC")
+rsd4 <- calculate_rsd(object = object4, slot = "QC")
+```
+
+
+Then we can draw the comprison plot:
+
+```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+library(ggplot2)
+dplyr::left_join(rsd2, rsd4, by = c("index", "name")) %>% 
+  dplyr::mutate(class = dplyr::case_when(rsd.y < rsd.x ~ "Decrease",
+                                         rsd.y > rsd.x ~ "Increase",
+                                         rsd.y == rsd.y ~ "Equal")) %>% 
+  ggplot(aes(rsd.x, rsd.y, colour = class)) +
+  ggsci::scale_color_jama() +
+  geom_abline(slope = 1, intercept = 0) +
+  geom_point() +
+  labs(x = "RSD after normalization", y = "RSD before normalization") +
+  theme_bw()
+```
