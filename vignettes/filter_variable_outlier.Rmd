@@ -1,0 +1,121 @@
+---
+title: "Filter noisy variables and outlier samples"
+author:
+- name: Xiaotao Shen (https://www.shenxt.info/)
+- affiliation: School of Medicine, Stanford University
+  url: http://shenxt.info/
+date: "Created on 2020-04-01 and updated on `r Sys.Date()`"
+output:
+  html_document:
+    df_print: paged
+    toc: no
+  pdf_document:
+    toc: no
+vignette: >
+  %\VignetteIndexEntry{filter_variable_outlier}
+  %\VignettePackage{masscleaner}
+  % \VignetteEngine{knitr::rmarkdown}
+  % \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = TRUE,
+  out.width = "100%"
+)
+```
+
+## **Introduction**
+
+We can use `masscleaner` for missing value (MV) imputation.
+
+First, we need to prepare samples for `masscleaner`.
+
+Then place the peak table and sample information in a folder. We use the demo data from `massdataset` package.
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+library(masscleaner)
+library(massdataset)
+library(tidyverse)
+```
+
+## **Missing value processing**
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+data("expression_data")
+data("sample_info")
+data("variable_info")
+object =
+  create_mass_dataset(
+    expression_data = expression_data,
+    sample_info = sample_info,
+    variable_info = variable_info
+  )
+object
+
+get_mv_number(object)
+massdataset::get_mv_number(object, by = "sample")
+
+###remove variables who have mv in more than 20% QC samples
+qc_id =
+  object %>%
+  activate_mass_dataset(what = "sample_info") %>%
+  filter(class == "QC") %>%
+  pull(sample_id)
+
+subject_id =
+  object %>%
+  activate_mass_dataset(what = "sample_info") %>%
+  filter(class == "Subject") %>%
+  pull(sample_id)
+
+object =
+  object %>%
+  mutate_variable_na_freq(according_to_samples = qc_id) %>%
+  mutate_variable_na_freq(according_to_samples = subject_id) %>%
+  activate_mass_dataset(what = "variable_info") %>%
+  filter(na_freq < 0.2 & na_freq.1 < 0.5)
+
+###remove samples with MV > 50% except Blank samples
+object =
+  filter_samples(
+    object = object,
+    flist = function(x) {
+      sum(is.na(x)) / nrow(object) < 0.5
+    },
+    apply_to = c(qc_id, subject_id),
+    prune = TRUE
+  )
+
+blank_id =
+  object %>%
+  activate_mass_dataset(what = "sample_info") %>%
+  filter(class == "Blank") %>%
+  pull(sample_id)
+
+object1 =
+  impute_mv(object = object,
+            sample_id = blank_id,
+            method = "zero")
+
+object1 %>%
+  activate_mass_dataset(what = "expression_data") %>%
+  select(dplyr::contains("Blank")) %>%
+  extract_expression_data() %>% 
+  head()
+
+object2 =
+  impute_mv(object = object,
+            sample_id = subject_id,
+            method = "knn")
+
+object2 %>%
+  activate_mass_dataset(what = "sample_info") %>%
+  filter(class == "Subject") %>%
+  extract_expression_data() %>% 
+  head()
+```

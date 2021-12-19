@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • masscleaner</title>
+<title>Detect outlier samples — detect_outlier • masscleaner</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,7 +52,8 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Detect outlier samples — detect_outlier" />
+<meta property="og:description" content="Detect outlier samples" />
 <meta property="og:image" content="https://tidymass.github.io/masscleaner/logo.png" />
 
 
@@ -82,7 +83,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -187,106 +188,103 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/tidymass/masscleaner/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>Detect outlier samples</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidymass/masscleaner/blob/master/R/detect_outlier_samples.R'><code>R/detect_outlier_samples.R</code></a></small>
+    <div class="hidden name"><code>detect_outlier.Rd</code></div>
     </div>
 
-    <div id="version-001-20190708" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.1">
-<a href="#version-001-20190708" class="anchor"></a>Version 0.0.1 (20190708)</h1>
-<ul>
-<li>Creatation.</li>
-</ul>
-</div>
-    <div id="version-002-20190708" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.2">
-<a href="#version-002-20190708" class="anchor"></a>Version 0.0.2 (20190708)</h1>
-<ul>
-<li>Creatation.</li>
-</ul>
-</div>
-    <div id="version-003-20190805" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.3">
-<a href="#version-003-20190805" class="anchor"></a>Version 0.0.3 (20190805)</h1>
-<ul>
-<li>Fix bug.</li>
-</ul>
-</div>
-    <div id="version-005-20190915" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.5">
-<a href="#version-005-20190915" class="anchor"></a>Version 0.0.5 (20190915)</h1>
-<ul>
-<li>Fix bug.</li>
-<li>Data normalization (loess).</li>
-<li>Data integration.</li>
-</ul>
-</div>
-    <div id="version-006-20191212" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.6">
-<a href="#version-006-20191212" class="anchor"></a>Version 0.0.6 (20191212)</h1>
-<ul>
-<li>New functions can be used to translate ID of metabolite using oliver Fiech website.</li>
-<li>New functions can be used to get class of metabolites using calssyfire.</li>
-</ul>
-</div>
-    <div id="version-007-20191216" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.7">
-<a href="#version-007-20191216" class="anchor"></a>Version 0.0.7 (20191216)</h1>
-<ul>
-<li>Functions to extract peaks from mzXML data.</li>
-<li>Fix a small bug in dataProcesssing.</li>
-</ul>
-</div>
-    <div id="version-008-20200108" class="section level1">
-<h1 class="page-header" data-toc-text="0.0.8">
-<a href="#version-008-20200108" class="anchor"></a>Version 0.0.8 (20200108)</h1>
-<ul>
-<li>Add a lot of new parameters to dataProcessing.</li>
-</ul>
-<div id="-version-009-20200122" class="section level2">
-<h2 class="hasAnchor">
-<a href="#-version-009-20200122" class="anchor"></a># Version 0.0.9 (20200122)</h2>
-<ul>
-<li>New functions for extractPeaks.</li>
-</ul>
-</div>
-<div id="-version-010-20200321" class="section level2">
-<h2 class="hasAnchor">
-<a href="#-version-010-20200321" class="anchor"></a># Version 0.1.0 (20200321)</h2>
-<ul>
-<li>All the documents for functions and a vignetter for metflow2.</li>
-</ul>
-</div>
-<div id="-version-011-20200617" class="section level2">
-<h2 class="hasAnchor">
-<a href="#-version-011-20200617" class="anchor"></a># Version 0.1.1 (20200617)</h2>
-<ul>
-<li>Small bug fix.</li>
-</ul>
-</div>
-<div id="-version-012-20201230" class="section level2">
-<h2 class="hasAnchor">
-<a href="#-version-012-20201230" class="anchor"></a># Version 0.1.2 (20201230)</h2>
-<ul>
-<li>Small bug fix.</li>
-</ul>
-</div>
-<div id="-version-092-20210312" class="section level2">
-<h2 class="hasAnchor">
-<a href="#-version-092-20210312" class="anchor"></a># Version 0.9.2 (20210312)</h2>
-<ul>
-<li>Add output_eic function.</li>
-</ul>
-</div>
-</div>
-  </div>
+    <div class="ref-description">
+    <p>Detect outlier samples</p>
+    </div>
 
+    <pre class="usage"><span class='fu'>detect_outlier</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  na_percentage_cutoff <span class='op'>=</span> <span class='fl'>0.5</span>,
+  sd_fold_change <span class='op'>=</span> <span class='fl'>6</span>,
+  mad_fold_change <span class='op'>=</span> <span class='fl'>6</span>,
+  dist_p_cutoff <span class='op'>=</span> <span class='fl'>0.05</span>
+<span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>A mass_dataset object.</p></td>
+    </tr>
+    <tr>
+      <th>na_percentage_cutoff</th>
+      <td><p>na_percentage_cutoff</p></td>
+    </tr>
+    <tr>
+      <th>sd_fold_change</th>
+      <td><p>sd_fold_change</p></td>
+    </tr>
+    <tr>
+      <th>mad_fold_change</th>
+      <td><p>mad_fold_change</p></td>
+    </tr>
+    <tr>
+      <th>dist_p_cutoff</th>
+      <td><p>dist_p_cutoff</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A new mass_dataset object.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>https://privefl.github.io/blog/detecting-outlier-samples-in-pca/</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Xiaotao Shen
+<a href='mailto:shenxt@sioc.ac.cn'>shenxt@sioc.ac.cn</a></p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/tidymass/massdataset'>massdataset</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"expression_data"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"sample_info"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"variable_info"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>object</span> <span class='op'>=</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/pkg/massdataset/man/create_mass_dataset.html'>create_mass_dataset</a></span><span class='op'>(</span></span>
+<span class='r-in'>    expression_data <span class='op'>=</span> <span class='va'>expression_data</span>,</span>
+<span class='r-in'>    sample_info <span class='op'>=</span> <span class='va'>sample_info</span>,</span>
+<span class='r-in'>    variable_info <span class='op'>=</span> <span class='va'>variable_info</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>object</span> <span class='op'>=</span></span>
+<span class='r-in'>  <span class='va'>object</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/scale.html'>scale</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>outlier_samples</span> <span class='op'>=</span></span>
+<span class='r-in'>  <span class='va'>object</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>detect_outlier</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='extract_outlier_table.html'>extract_outlier_table</a></span><span class='op'>(</span><span class='va'>outlier_samples</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         according_to_na pc_sd pc_mad accordint_to_distance</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Blank_3            TRUE FALSE  FALSE                 FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Blank_4            TRUE FALSE  FALSE                 FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QC_1              FALSE FALSE  FALSE                 FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> QC_2              FALSE FALSE  FALSE                 FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> PS4P1             FALSE FALSE  FALSE                 FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> PS4P2             FALSE FALSE  FALSE                 FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> PS4P3             FALSE FALSE  FALSE                 FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> PS4P4             FALSE FALSE  FALSE                 FALSE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>###MV plot</span></span>
+<span class='r-in'><span class='fu'>massdataset</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/massdataset/man/show_sample_missing_values.html'>show_sample_missing_values</a></span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>object</span>,</span>
+<span class='r-in'>                                        color_by <span class='op'>=</span> <span class='st'>"class"</span>,</span>
+<span class='r-in'>                                        percentage <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='detect_outlier-1.png' alt='' width='700' height='433' /></span>
+</pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
-
 </div>
 
 

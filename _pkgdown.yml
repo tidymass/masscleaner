@@ -34,13 +34,14 @@ navbar:
     articles:
       text: Help document
       menu:
-      - text: "Data cleaning"
       - text: Correct retention time
         href: articles/correct_rt.html
       - text: Align different batch peak tables
         href: articles/align_batch.html
       - text: Impute missing values
         href: articles/missing_value_imputation.html
+      - text: Filter noisy variables and outlier samples
+        href: articles/filter_variable_outlier.html
       - text: Data normalization and integration
         href: articles/data_normalization_integration.html
     twitter:

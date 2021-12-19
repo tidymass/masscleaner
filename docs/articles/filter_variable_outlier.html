@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Missing value imputation • masscleaner</title>
+<title>Filter noisy variables and outlier samples • masscleaner</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Missing value imputation">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Filter noisy variables and outlier samples">
 <meta property="og:description" content="masscleaner">
 <meta property="og:image" content="https://tidymass.github.io/masscleaner/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -135,17 +135,17 @@
 
       
 
-      </header><script src="missing_value_imputation_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="filter_variable_outlier_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Missing value imputation</h1>
+      <h1 data-toc-skip>Filter noisy variables and outlier samples</h1>
                         <h4 class="author">Xiaotao Shen (<a href="https://www.shenxt.info/" class="uri">https://www.shenxt.info/</a>)</h4>
                                     <h4 class="author">true</h4>
             
             <h4 class="date">Created on 2020-04-01 and updated on 2021-12-19</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/tidymass/masscleaner/blob/master/vignettes/missing_value_imputation.Rmd"><code>vignettes/missing_value_imputation.Rmd</code></a></small>
-      <div class="hidden name"><code>missing_value_imputation.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/tidymass/masscleaner/blob/master/vignettes/filter_variable_outlier.Rmd"><code>vignettes/filter_variable_outlier.Rmd</code></a></small>
+      <div class="hidden name"><code>filter_variable_outlier.Rmd</code></div>
 
     </div>
 
@@ -191,7 +191,7 @@
 <span class="co">#&gt; Processing information (extract_process_info())</span>
 <span class="co">#&gt; Creation ---------- </span>
 <span class="co">#&gt;       Package         Function.used                Time</span>
-<span class="co">#&gt; 1 massdataset create_mass_dataset() 2021-12-18 22:14:03</span>
+<span class="co">#&gt; 1 massdataset create_mass_dataset() 2021-12-19 01:34:59</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/get_mv_number.html">get_mv_number</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
 <span class="co">#&gt; [1] 3829</span>
