@@ -5,26 +5,54 @@
 \title{align_batch}
 \usage{
 align_batch(
-  object,
+  x,
+  y,
   combine.mz.tol = 25,
   combine.rt.tol = 30,
-  use.int.tol = FALSE
+  use.int.tol = FALSE,
+  return_index = FALSE
 )
 }
 \arguments{
-\item{object}{A metflowClass object.}
+\item{x}{A mass_dataset object}
+
+\item{y}{A mass_dataset object}
 
 \item{combine.mz.tol}{m/z tolerance for batch alignment, default is 25 ppm.}
 
 \item{combine.rt.tol}{RT tolerance for batch alignment, default is 30 seconds.}
 
-\item{use.int.tol}{Whether use intensity match for batch aglignment.}
+\item{use.int.tol}{Whether use intensity match for batch alignment.}
+
+\item{return_index}{return index or new object.}
 }
 \value{
-A new metflowClass object.
+A index table or a new mass_dataset object.
 }
 \description{
 Align different batch peaks tables.
+}
+\examples{
+\dontrun{
+data(object1, package = "demodata")
+data(object2, package = "demodata")
+
+object1
+object2
+
+x = object1
+y = object2
+
+match_result =
+  align_batch(x = object1, y = object2, return_index = TRUE)
+
+head(match_result)
+
+new_object =
+  align_batch(x = object1, y = object2, return_index = FALSE)
+
+new_object
+}
 }
 \author{
 Xiaotao Shen

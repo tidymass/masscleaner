@@ -36,5 +36,8 @@ globalVariables(names = c(
   "Degree.Span.MSE",
   "Poly.MSE",
   "extenstion",
-  "rt_correction"
+  "rt_correction",
+  "variable_id1",
+  "variable_id2",
+  "get_data"
 ))

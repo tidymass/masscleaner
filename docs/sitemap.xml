@@ -10,13 +10,10 @@
     <loc>https://tidymass.github.io/masscleaner//reference/SXTMTmatch2.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/accurateAlign.html</loc>
+    <loc>https://tidymass.github.io/masscleaner//reference/accurate_align.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/align2Batch.html</loc>
-  </url>
-  <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/alignBatch.html</loc>
+    <loc>https://tidymass.github.io/masscleaner//reference/align_2batch.html</loc>
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//reference/align_batch.html</loc>
@@ -76,10 +73,10 @@
     <loc>https://tidymass.github.io/masscleaner//reference/reName.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/roughAlign.html</loc>
+    <loc>https://tidymass.github.io/masscleaner//reference/rough_align.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/simplyData.html</loc>
+    <loc>https://tidymass.github.io/masscleaner//reference/simply_data.html</loc>
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//reference/svrNor.html</loc>
@@ -98,9 +95,6 @@
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//articles/data_normalization_integration.html</loc>
-  </url>
-  <url>
-    <loc>https://tidymass.github.io/masscleaner//articles/massdataset_instruction.html</loc>
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//articles/missing_value_imputation.html</loc>

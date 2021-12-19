@@ -60,23 +60,12 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Help documenta
+    Help document
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-<li class="dropdown-header">Raw MS data processing</li>
-    <li>
-      <a href="../articles/masscleaner_instruction.html">Instruction of masscleaner</a>
-    </li>
-    <li>
-      <a href="../articles/raw_data_processing.html">Peak detection and alignment</a>
-    </li>
-    <li>
-      <a href="../articles/other_tools_for_raw_data_processing.html">Other tools for raw MS data processing</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Data cleaning</li>
+<li class="dropdown-header">Data cleaning</li>
     <li>
       <a href="../articles/correct_rt.html">Correct retention time</a>
     </li>
@@ -88,16 +77,6 @@
     </li>
     <li>
       <a href="../articles/data_normalization_integration.html">Data normalization and integration</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Other tools</li>
-    <li>
-      <a href="../articles/other_tools.html">Other tools in masscleaner</a>
-    </li>
-    <li class="divider">
-    <li class="dropdown-header">Category B</li>
-    <li>
-      <a href="https://www.tidyverse.org/blog/2018/12/readxl-1-2-0/">Test</a>
     </li>
   </ul>
 </li>
@@ -159,9 +138,8 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Align different batch peak tables</h1>
                         <h4 class="author">Xiaotao Shen (<a href="https://www.shenxt.info/" class="uri">https://www.shenxt.info/</a>)</h4>
-                                    <h4 class="author">true</h4>
-            
-            <h4 class="date">Created on 2020-04-01 and updated on 2021-12-03</h4>
+                        
+            <h4 class="date">Created on 2020-04-01 and updated on 2021-12-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tidymass/masscleaner/blob/master/vignettes/align_batch.Rmd"><code>vignettes/align_batch.Rmd</code></a></small>
       <div class="hidden name"><code>align_batch.Rmd</code></div>
@@ -175,74 +153,110 @@
 <h2 class="hasAnchor">
 <a href="#data-preparation" class="anchor"></a><strong>Data preparation</strong>
 </h2>
-<div id="peak-table" class="section level3">
-<h3 class="hasAnchor">
-<a href="#peak-table" class="anchor"></a><strong>Peak table</strong>
-</h3>
-<p>The peak table (csv format) can be from any software. We recomment that you use the <code>Peak_table_for_cleaning.csv</code> from <code>processData()</code> function from <code>masscleaner</code>.</p>
-<p>If you use other software, please make sure that the top 3 columns are <code>name</code> (peak name), <code>mz</code> and <code>rt</code> (retention time, second). And the left column are sample intensity.</p>
-<p><img src="../man/figures/Screen%20Shot%202020-04-01%20at%201.07.37%20PM.png"></p>
-</div>
-<div id="sample-information" class="section level3">
-<h3 class="hasAnchor">
-<a href="#sample-information" class="anchor"></a><strong>Sample information</strong>
-</h3>
-<p>We need the sample information (csv format) to define the detailed information of samples. Column 1 is <code>sample.name</code>, column 2 is <code>injection.order</code>, column 3 is <code>class</code> (such as Subject, QC, Blank), column 4 is <code>batch</code> and column 5 is <code>group</code> (such as control and case).</p>
-<p><img src="../man/figures/Screen%20Shot%202020-04-02%20at%208.40.02%20AM.png"></p>
-</div>
-</div>
-<div id="read-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#read-data" class="anchor"></a><strong>Read data</strong>
-</h2>
-<p>Then place the peak table and sample information in a folder. We use the demo data from <code>demoData</code> package.</p>
+<p>See the <a href="https://tidymass.github.io/massdataset/">massdataset</a> package, and create you metabolomics dataset into 2 mass_dataset objects.</p>
+<p>Here we use the demo data from <code>demodata</code> package, so please install it first.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymass/masscleaner">masscleaner</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">demoData</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code></pre></div>
-<div id="load-demo-data" class="section level3">
-<h3 class="hasAnchor">
-<a href="#load-demo-data" class="anchor"></a><strong>Load demo data</strong>
-</h3>
+<code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"tidymass/demodata"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">##create a folder named as example</span>
-<span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"."</span>, <span class="st">"example"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">path</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">##get demo data</span>
-<span class="va">demo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"masscleaner"</span>, package <span class="op">=</span> <span class="st">"demoData"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.copy</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">demo_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span><span class="va">demo_data</span><span class="op">)</span><span class="op">)</span>, 
-          to <span class="op">=</span> <span class="va">path</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>Here, we have two peak tables, <code>batch1.data.csv</code> and <code>batch2.data.csv</code>, and <code>sample_info.csv</code> are in your <code>./example</code> folder.</p>
-</div>
-<div id="creat-metflowclass-object" class="section level3">
-<h3 class="hasAnchor">
-<a href="#creat-metflowclass-object" class="anchor"></a><strong>Creat <code>metflowClass</code> object</strong>
-</h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object</span> <span class="op">&lt;-</span>
-  <span class="fu">create_metflow_object</span><span class="op">(</span>
-    ms1.data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"batch1.data.csv"</span>, <span class="st">"batch2.data.csv"</span><span class="op">)</span>,
-    sample.information <span class="op">=</span> <span class="st">"sample_info.csv"</span>,
-    path <span class="op">=</span> <span class="va">path</span>
-  <span class="op">)</span></code></pre></div>
-<p><code>object</code> is a <code>metflowClass</code> object, so you can print it in the console.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object</span></code></pre></div>
-</div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymass/masscleaner">masscleaner</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">demodata</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="run-align_batch-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#run-align_batch-function" class="anchor"></a><strong>Run <code>align_batch()</code> function</strong>
 </h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/align_batch.html">align_batch</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span>, 
-            combine.mz.tol <span class="op">=</span> <span class="fl">15</span>, 
-            combine.rt.tol <span class="op">=</span> <span class="fl">30</span>, 
-            use.int.tol <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object2</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">object1</span>, package <span class="op">=</span> <span class="st">"demodata"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">object2</span>, package <span class="op">=</span> <span class="st">"demodata"</span><span class="op">)</span>
+
+<span class="va">object1</span>
+<span class="co">#&gt; -------------------- </span>
+<span class="co">#&gt; massdataset version: 0.0.1 </span>
+<span class="co">#&gt; -------------------- </span>
+<span class="co">#&gt; 1.expression_data:[ 500 x 217 data.frame]</span>
+<span class="co">#&gt; 2.sample_info:[ 217 x 5 data.frame]</span>
+<span class="co">#&gt; 3.variable_info:[ 500 x 3 data.frame]</span>
+<span class="co">#&gt; 4.sample_info_note:[ 5 x 2 data.frame]</span>
+<span class="co">#&gt; 5.variable_info_note:[ 3 x 2 data.frame]</span>
+<span class="co">#&gt; 6.ms2_data:[ 0 variables x 0 MS2 spectra]</span>
+<span class="co">#&gt; -------------------- </span>
+<span class="co">#&gt; Processing information (extract_process_info())</span>
+<span class="co">#&gt; Creation ---------- </span>
+<span class="co">#&gt;       Package         Function.used                Time</span>
+<span class="co">#&gt; 1 massdataset create_mass_dataset() 2021-12-18 14:53:47</span>
+<span class="va">object2</span>
+<span class="co">#&gt; -------------------- </span>
+<span class="co">#&gt; massdataset version: 0.0.1 </span>
+<span class="co">#&gt; -------------------- </span>
+<span class="co">#&gt; 1.expression_data:[ 500 x 217 data.frame]</span>
+<span class="co">#&gt; 2.sample_info:[ 217 x 5 data.frame]</span>
+<span class="co">#&gt; 3.variable_info:[ 500 x 3 data.frame]</span>
+<span class="co">#&gt; 4.sample_info_note:[ 5 x 2 data.frame]</span>
+<span class="co">#&gt; 5.variable_info_note:[ 3 x 2 data.frame]</span>
+<span class="co">#&gt; 6.ms2_data:[ 0 variables x 0 MS2 spectra]</span>
+<span class="co">#&gt; -------------------- </span>
+<span class="co">#&gt; Processing information (extract_process_info())</span>
+<span class="co">#&gt; Creation ---------- </span>
+<span class="co">#&gt;       Package         Function.used                Time</span>
+<span class="co">#&gt; 1 massdataset create_mass_dataset() 2021-12-18 14:53:47</span>
+
+<span class="va">x</span> <span class="op">=</span> <span class="va">object1</span>
+<span class="va">y</span> <span class="op">=</span> <span class="va">object2</span>
+
+<span class="va">match_result</span> <span class="op">=</span>
+  <span class="fu"><a href="../reference/align_batch.html">align_batch</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">object1</span>, y <span class="op">=</span> <span class="va">object2</span>, return_index <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; Rough aligning...</span>
+<span class="co">#&gt; Accurate aligning...</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">match_result</span><span class="op">)</span>
+<span class="co">#&gt;   variable_id1 variable_id2 Index1 Index2       mz1       mz2  mz.error</span>
+<span class="co">#&gt; 1       M72T38       M72T57      3      2  72.08070  72.08080 1.2828676</span>
+<span class="co">#&gt; 2       M86T95       M86T93      6      4  86.09642  86.09640 0.2352014</span>
+<span class="co">#&gt; 3       M86T75       M86T75      7      5  86.09649  86.09654 0.5543780</span>
+<span class="co">#&gt; 4    M90T649_1      M90T660      8      7  89.50705  89.50695 1.0972320</span>
+<span class="co">#&gt; 5     M100T151     M100T152     10      8 100.07569 100.07576 0.6575023</span>
+<span class="co">#&gt; 6      M104T31      M104T31     12      9 104.10723 104.10739 1.4754018</span>
+<span class="co">#&gt;        rt1      rt2 rt.error     int1     int2   int.error</span>
+<span class="co">#&gt; 1  37.7015  56.5210  18.8195 6.458591 6.411066 0.047524752</span>
+<span class="co">#&gt; 2  94.9910  92.5885   2.4025 6.881627 6.873169 0.008457544</span>
+<span class="co">#&gt; 3  74.5230  74.6850   0.1620 6.461618 6.417154 0.044464658</span>
+<span class="co">#&gt; 4 648.8800 659.5660  10.6860 6.191982 6.216757 0.024775041</span>
+<span class="co">#&gt; 5 151.0180 151.6195   0.6015 6.890064 6.744205 0.145858938</span>
+<span class="co">#&gt; 6  30.8090  30.9210   0.1120 7.105963 6.977168 0.128795191</span>
+
+<span class="va">new_object</span> <span class="op">=</span>
+  <span class="fu"><a href="../reference/align_batch.html">align_batch</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">object1</span>, y <span class="op">=</span> <span class="va">object2</span>, return_index <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; Rough aligning...</span>
+<span class="co">#&gt; Accurate aligning...</span>
+
+<span class="va">new_object</span>
+<span class="co">#&gt; -------------------- </span>
+<span class="co">#&gt; massdataset version: 0.01 </span>
+<span class="co">#&gt; -------------------- </span>
+<span class="co">#&gt; 1.expression_data:[ 354 x 434 data.frame]</span>
+<span class="co">#&gt; 2.sample_info:[ 434 x 5 data.frame]</span>
+<span class="co">#&gt; 3.variable_info:[ 354 x 3 data.frame]</span>
+<span class="co">#&gt; 4.sample_info_note:[ 5 x 2 data.frame]</span>
+<span class="co">#&gt; 5.variable_info_note:[ 3 x 2 data.frame]</span>
+<span class="co">#&gt; 6.ms2_data:[ 0 variables x 0 MS2 spectra]</span>
+<span class="co">#&gt; -------------------- </span>
+<span class="co">#&gt; Processing information (extract_process_info())</span>
+<span class="co">#&gt; Creation ---------- </span>
+<span class="co">#&gt;       Package         Function.used                Time</span>
+<span class="co">#&gt; 1 massdataset create_mass_dataset() 2021-12-18 14:53:47</span>
+<span class="co">#&gt; Subset ---------- </span>
+<span class="co">#&gt;       Package Function.used                Time</span>
+<span class="co">#&gt; 1 massdataset             [ 2021-12-18 16:55:57</span>
+<span class="co">#&gt; Creation ---------- </span>
+<span class="co">#&gt;       Package         Function.used                Time</span>
+<span class="co">#&gt; 1 massdataset create_mass_dataset() 2021-12-18 14:53:47</span>
+<span class="co">#&gt; Subset ---------- </span>
+<span class="co">#&gt;       Package Function.used                Time</span>
+<span class="co">#&gt; 1 massdataset             [ 2021-12-18 16:55:57</span></code></pre></div>
 </div>
   </div>
 

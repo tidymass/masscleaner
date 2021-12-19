@@ -110,22 +110,11 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Help documenta
+    Help document
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Raw MS data processing</li>
-    <li>
-      <a href="../articles/masscleaner_instruction.html">Instruction of masscleaner</a>
-    </li>
-    <li>
-      <a href="../articles/raw_data_processing.html">Peak detection and alignment</a>
-    </li>
-    <li>
-      <a href="../articles/other_tools_for_raw_data_processing.html">Other tools for raw MS data processing</a>
-    </li>
-    <li class="divider"></li>
     <li class="dropdown-header">Data cleaning</li>
     <li>
       <a href="../articles/correct_rt.html">Correct retention time</a>
@@ -138,16 +127,6 @@
     </li>
     <li>
       <a href="../articles/data_normalization_integration.html">Data normalization and integration</a>
-    </li>
-    <li class="divider"></li>
-    <li class="dropdown-header">Other tools</li>
-    <li>
-      <a href="../articles/other_tools.html">Other tools in masscleaner</a>
-    </li>
-    <li class="divider"></li>
-    <li class="dropdown-header">Category B</li>
-    <li>
-      <a href="https://www.tidyverse.org/blog/2018/12/readxl-1-2-0/">Test</a>
     </li>
   </ul>
 </li>
@@ -217,18 +196,24 @@
     </div>
 
     <pre class="usage"><span class='fu'>align_batch</span><span class='op'>(</span>
-  <span class='va'>object</span>,
+  <span class='va'>x</span>,
+  <span class='va'>y</span>,
   combine.mz.tol <span class='op'>=</span> <span class='fl'>25</span>,
   combine.rt.tol <span class='op'>=</span> <span class='fl'>30</span>,
-  use.int.tol <span class='op'>=</span> <span class='cn'>FALSE</span>
+  use.int.tol <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  return_index <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>A metflowClass object.</p></td>
+      <th>x</th>
+      <td><p>A mass_dataset object</p></td>
+    </tr>
+    <tr>
+      <th>y</th>
+      <td><p>A mass_dataset object</p></td>
     </tr>
     <tr>
       <th>combine.mz.tol</th>
@@ -240,18 +225,44 @@
     </tr>
     <tr>
       <th>use.int.tol</th>
-      <td><p>Whether use intensity match for batch aglignment.</p></td>
+      <td><p>Whether use intensity match for batch alignment.</p></td>
+    </tr>
+    <tr>
+      <th>return_index</th>
+      <td><p>return index or new object.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A new metflowClass object.</p>
+    <p>A index table or a new mass_dataset object.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Xiaotao Shen
 <a href='mailto:shenxt1990@163.com'>shenxt1990@163.com</a></p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>object1</span>, package <span class='op'>=</span> <span class='st'>"demodata"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>object2</span>, package <span class='op'>=</span> <span class='st'>"demodata"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>object1</span></span>
+<span class='r-in'><span class='va'>object2</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>=</span> <span class='va'>object1</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>=</span> <span class='va'>object2</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>match_result</span> <span class='op'>=</span></span>
+<span class='r-in'>  <span class='fu'>align_batch</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>object1</span>, y <span class='op'>=</span> <span class='va'>object2</span>, return_index <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>match_result</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>new_object</span> <span class='op'>=</span></span>
+<span class='r-in'>  <span class='fu'>align_batch</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>object1</span>, y <span class='op'>=</span> <span class='va'>object2</span>, return_index <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>new_object</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

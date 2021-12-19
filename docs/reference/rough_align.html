@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>cvMSE — cvMSE • masscleaner</title>
+<title>rough_align — rough_align • masscleaner</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="cvMSE — cvMSE" />
-<meta property="og:description" content="cvMSE" />
+<meta property="og:title" content="rough_align — rough_align" />
+<meta property="og:description" content="rough_align" />
 <meta property="og:image" content="https://tidymass.github.io/masscleaner/logo.png" />
 
 
@@ -186,39 +186,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>cvMSE</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidymass/masscleaner/blob/master/R/normalize_data.R'><code>R/normalize_data.R</code></a></small>
-    <div class="hidden name"><code>cvMSE.Rd</code></div>
+    <h1>rough_align</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidymass/masscleaner/blob/master/R/align_batch.R'><code>R/align_batch.R</code></a></small>
+    <div class="hidden name"><code>rough_align.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>cvMSE</p>
+    <p>rough_align</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cvMSE</span><span class='op'>(</span><span class='va'>qc</span>, <span class='va'>qc.order</span>, <span class='va'>begin1</span>, <span class='va'>end1</span>, <span class='va'>step1</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>rough_align</span><span class='op'>(</span><span class='va'>peak.table</span>, combine.mz.tol <span class='op'>=</span> <span class='fl'>25</span>, combine.rt.tol <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>qc</th>
-      <td><p>qc</p></td>
+      <th>peak.table</th>
+      <td><p>peak.table</p></td>
     </tr>
     <tr>
-      <th>qc.order</th>
-      <td><p>qc.order</p></td>
+      <th>combine.mz.tol</th>
+      <td><p>combine.mz.tol</p></td>
     </tr>
     <tr>
-      <th>begin1</th>
-      <td><p>begin1</p></td>
-    </tr>
-    <tr>
-      <th>end1</th>
-      <td><p>end1</p></td>
-    </tr>
-    <tr>
-      <th>step1</th>
-      <td><p>step1</p></td>
+      <th>combine.rt.tol</th>
+      <td><p>combine.rt.tol</p></td>
     </tr>
     </table>
 
@@ -228,7 +220,7 @@
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Xiaotao Shen
-<a href='mailto:shenxt@sioc.ac.cn'>shenxt@sioc.ac.cn</a></p>
+<a href='mailto:shenxt1990@163.com'>shenxt1990@163.com</a></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

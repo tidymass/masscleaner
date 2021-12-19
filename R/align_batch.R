@@ -2,116 +2,85 @@
 #' @description Align different batch peaks tables.
 #' @author Xiaotao Shen
 #' \email{shenxt1990@@163.com}
-#' @param object A metflowClass object.
+#' @param x A mass_dataset object
+#' @param y A mass_dataset object
 #' @param combine.mz.tol m/z tolerance for batch alignment, default is 25 ppm.
 #' @param combine.rt.tol RT tolerance for batch alignment, default is 30 seconds.
-#' @param use.int.tol Whether use intensity match for batch aglignment.
-#' @return A new metflowClass object.
+#' @param use.int.tol Whether use intensity match for batch alignment.
+#' @param return_index return index or new object.
+#' @return A index table or a new mass_dataset object.
 #' @export
+#' @examples
+#'\dontrun{
+#' data(object1, package = "demodata")
+#' data(object2, package = "demodata")
+#' 
+#' object1
+#' object2
+#' 
+#' x = object1
+#' y = object2
+#' 
+#' match_result =
+#'   align_batch(x = object1, y = object2, return_index = TRUE)
+#' 
+#' head(match_result)
+#' 
+#' new_object =
+#'   align_batch(x = object1, y = object2, return_index = FALSE)
+#' 
+#' new_object
+#' }
 
-align_batch = function(
-  object,
-  combine.mz.tol = 25,
-  combine.rt.tol = 30,
-  use.int.tol = FALSE
-){
-  if (class(object) != "metflowClass") {
-    stop("Only for metflowClass object\n")
-  }
-  
-  ms1_data <- object@ms1.data
-  if (length(ms1_data) == 1) {
-    return(object)
-  }
+align_batch = function(x,
+                       y,
+                       combine.mz.tol = 25,
+                       combine.rt.tol = 30,
+                       use.int.tol = FALSE,
+                       return_index = FALSE) {
+  massdataset::check_object_class(object = x, class = "mass_dataset")
+  massdataset::check_object_class(object = y, class = "mass_dataset")
   
   cat("Rough aligning...\n")
-  roughMatchResult <- roughAlign(
-    peak.table = ms1_data,
+  
+  rough_match_result <- rough_align(
+    peak.table = list(
+      cbind(x@variable_info[, c("variable_id", "mz", "rt")], x@expression_data),
+      cbind(y@variable_info[, c("variable_id", "mz", "rt")], y@expression_data)
+    ),
     combine.mz.tol = combine.mz.tol,
     combine.rt.tol = combine.rt.tol
   )
   
   cat("Accurate aligning...\n")
-  accurateMatchResult <-
-    accurateAlign(
-      peak.table = ms1_data,
-      simple.data = roughMatchResult,
+  
+  accurate_match_result <-
+    accurate_align(
+      peak.table = list(
+        cbind(x@variable_info[, c("variable_id", "mz", "rt")], x@expression_data),
+        cbind(y@variable_info[, c("variable_id", "mz", "rt")], y@expression_data)
+      ),
+      simple.data = rough_match_result,
       use.int.tol = use.int.tol
     )
-  object@ms1.data <- list(accurateMatchResult)
-  
-  object@process.info$alignBatch <- list()
-  object@process.info$alignBatch$combine.mz.tol <-
-    combine.mz.tol
-  object@process.info$alignBatch$combine.rt.tol <-
-    combine.rt.tol
-  
-  invisible(object)
+  if(return_index){
+    return(accurate_match_result) 
+  }else{
+    x = x[accurate_match_result$Index1,]
+    y = y[accurate_match_result$Index2,]
+    
+    y@variable_info$variable_id = x@variable_info$variable_id
+    rownames(y@expression_data) = x@variable_info$variable_id
+    if(length(intersect(colnames(x), colnames(y))) > 0){
+      warning("Overlap sample IDs in x and y.\n")
+    }
+    return(cbind(x,y))
+  }
 }
 
 
-#' @title alignBatch
-#' @description Align different batch peaks tables.
-#' @author Xiaotao Shen
-#' \email{shenxt1990@@163.com}
-#' @param object A metflowClass object.
-#' @param combine.mz.tol m/z tolerance for batch alignment, default is 25 ppm.
-#' @param combine.rt.tol RT tolerance for batch alignment, default is 30 seconds.
-#' @param use.int.tol Whether use intensity match for batch aglignment.
-#' @return A new metflowClass object.
-#' @export
-
-alignBatch = function(
-  object,
-  combine.mz.tol = 25,
-  combine.rt.tol = 30,
-  use.int.tol = FALSE
-){
-  
-  if(!silence.deprecated){
-    cat(crayon::yellow("`alignBatch()` is deprecated, please use `align_batch()`"))
-  }
-  
-  if (class(object) != "metflowClass") {
-    stop("Only for metflowClass object\n")
-  }
-  
-  ms1_data <- object@ms1.data
-  
-  if (length(ms1_data) == 1) {
-    return(object)
-  }
-  
-  cat("Rough aligning...\n")
-  roughMatchResult <- roughAlign(
-    peak.table = ms1_data,
-    combine.mz.tol = combine.mz.tol,
-    combine.rt.tol = combine.rt.tol
-  )
-  
-  cat("Accurate aligning...\n")
-  accurateMatchResult <-
-    accurateAlign(
-      peak.table = ms1_data,
-      simple.data = roughMatchResult,
-      use.int.tol = use.int.tol
-    )
-  object@ms1.data <- list(accurateMatchResult)
-  
-  object@process.info$alignBatch <- list()
-  object@process.info$alignBatch$combine.mz.tol <-
-    combine.mz.tol
-  object@process.info$alignBatch$combine.rt.tol <-
-    combine.rt.tol
-  
-  invisible(object)
-}
-
-
-
-
-#' @title roughAlign
-#' @description roughAlign
+#' @title rough_align
+#' @description rough_align
 #' @author Xiaotao Shen
 #' \email{shenxt1990@@163.com}
 #' @param peak.table peak.table
@@ -119,23 +88,24 @@ alignBatch = function(
 #' @param combine.rt.tol combine.rt.tol
 #' @return result
 
-roughAlign <- function(peak.table,
-                       combine.mz.tol = 25,
-                       combine.rt.tol = 30) {
-  if (length(peak.table) == 1)
+rough_align <- function(peak.table,
+                        combine.mz.tol = 25,
+                        combine.rt.tol = 30) {
+  if (length(peak.table) == 1) {
     return(peak.table[[1]])
+  }
   
   batch1 <- peak.table[[1]]
   batch2 <- peak.table[[2]]
   
   ###generate sinplifued datasets
-  simple.batch1 <- simplyData(
+  simple.batch1 <- simply_data(
     data = batch1,
     combine.mz.tol = combine.mz.tol,
     combine.rt.tol = combine.rt.tol
   )
   
-  simple.batch2 <- simplyData(
+  simple.batch2 <- simply_data(
     data = batch2,
     combine.mz.tol = combine.mz.tol,
     combine.rt.tol = combine.rt.tol
@@ -168,8 +138,8 @@ roughAlign <- function(peak.table,
 }
 
 
-#' @title simplyData
-#' @description simplyData
+#' @title simply_data
+#' @description simply_data
 #' @author Xiaotao Shen
 #' \email{shenxt1990@@163.com}
 #' @param data data
@@ -177,22 +147,22 @@ roughAlign <- function(peak.table,
 #' @param combine.rt.tol combine.rt.tol
 #' @return result
 
-simplyData <- function(data,
-                       combine.mz.tol = 5,
-                       combine.rt.tol = 30) {
+simply_data <- function(data,
+                        combine.mz.tol = 5,
+                        combine.rt.tol = 30) {
   data <- data[order(data$mz),]
-  name <- data$name
+  variable_id <- data$variable_id
   mz <- data$mz
   rt <- data$rt
   int <- apply(data[, -c(1:3)], 1, function(x)
     mean(x, na.rm = TRUE))
-  names(mz) <- names(rt) <- names(int) <- name
+  names(mz) <- names(rt) <- names(int) <- variable_id
   
   #group peaks according to mz and RT
   
-  all.index <- 1:length(name)
-  remain.idx <- vector(mode = "list", length = length(name))
-  for (idx in 1:length(name)) {
+  all.index <- 1:length(variable_id)
+  remain.idx <- vector(mode = "list", length = length(variable_id))
+  for (idx in 1:length(variable_id)) {
     if (all(idx != all.index))
       next()
     temp.mz <- mz[idx]
@@ -218,7 +188,7 @@ simplyData <- function(data,
   remain.idx <- unique(unlist(remain.idx))
   
   simple.data <- data[remain.idx,]
-  rm(list = c("data", "mz", "rt", "name", "int"))
+  rm(list = c("data", "mz", "rt", "variable_id", "int"))
   return(simple.data)
 }
 
@@ -377,14 +347,17 @@ baINTplot <- function(simple.data) {
 #' @param use.int.tol use.int.tol
 #' @return result
 
-accurateAlign <- function(peak.table,
-                          simple.data,
-                          use.int.tol) {
+accurate_align <- function(peak.table,
+                           simple.data,
+                           use.int.tol) {
   ##retrieve mz ,RT and int sd
-  if (length(peak.table) == 1)
+  if (length(peak.table) == 1) {
     return(peak.table[[1]])
+  }
+  
   mz.error <-
     (simple.data[[2]]$mz - simple.data[[1]]$mz) * 10 ^ 6 / simple.data[[2]]$mz
+  
   mz.error.sd <- sd(abs(mz.error))
   
   rt.error <- simple.data[[2]]$rt - simple.data[[1]]$rt
@@ -404,33 +377,25 @@ accurateAlign <- function(peak.table,
     int.error.sd <- int.error.sd * 1000000
   }
   
-  
   ###begin alignment
   ref.batch <- peak.table[[1]]
-  for (i in 2:length(peak.table)) {
-    cor.batch <- peak.table[[i]]
-    new.batch <- align2Batch(
-      batch1 = ref.batch,
-      batch2 = cor.batch,
-      mz.error.sd = mz.error.sd,
-      rt.error.sd = rt.error.sd,
-      int.error.sd = int.error.sd,
-      fold = 4,
-      mz.weight = 0.4,
-      rt.weight = 0.4,
-      int.weight = 0.2
-    )
-    ref.batch <- new.batch
-    rm("new.batch")
-  }
   
-  rm(list = c("peak.table"))
-  colnames(ref.batch)[1:3] <- c("name", "mz", "rt")
-  return(ref.batch)
+  new.batch <- align_2batch(
+    batch1 = peak.table[[1]],
+    batch2 = peak.table[[2]],
+    mz.error.sd = mz.error.sd,
+    rt.error.sd = rt.error.sd,
+    int.error.sd = int.error.sd,
+    fold = 4,
+    mz.weight = 0.4,
+    rt.weight = 0.4,
+    int.weight = 0.2
+  )
+  return(new.batch)
 }
 
 
-#' @title align2Batch
+#' @title align_2batch
 #' @description peak.table
 #' @author Xiaotao Shen
 #' \email{shenxt1990@@163.com}
@@ -445,15 +410,15 @@ accurateAlign <- function(peak.table,
 #' @param int.weight int.weight
 #' @return result
 
-align2Batch <- function(batch1,
-                        batch2,
-                        mz.error.sd,
-                        rt.error.sd,
-                        int.error.sd,
-                        fold = 4,
-                        mz.weight = 0.4,
-                        rt.weight = 0.4,
-                        int.weight = 0.2) {
+align_2batch <- function(batch1,
+                         batch2,
+                         mz.error.sd,
+                         rt.error.sd,
+                         int.error.sd,
+                         fold = 4,
+                         mz.weight = 0.4,
+                         rt.weight = 0.4,
+                         int.weight = 0.2) {
   data1 <- batch1[, c("mz", "rt")]
   int1 <-
     log(apply(batch1[, -c(1:3)], 1, function(x)
@@ -468,7 +433,7 @@ align2Batch <- function(batch1,
       mean(x, na.rm = TRUE)) + 1, 10)
   data2 <- data.frame(data2, int2, stringsAsFactors = FALSE)
   colnames(data2)[3] <- "int"
-  rownames(data2) <- batch2$name
+  rownames(data2) <- batch2$variable_id
   
   ##batch1 match batch2
   match.result1 <- MRImatch(
@@ -479,6 +444,7 @@ align2Batch <- function(batch1,
     rt.error.type = "abs",
     int.tol = int.error.sd * fold
   )
+  
   unique.index1 <- unique(match.result1[, 1])
   
   remain.idx <- unlist(lapply(unique.index1, function(x) {
@@ -558,42 +524,50 @@ align2Batch <- function(batch1,
   
   temp.index <- which(name1 %in% intersect.name)
   
-  match.result <- match.result1[temp.index,]
+  match.result <- match.result1[temp.index,] %>%
+    as.data.frame()
   
-  ##combine two batch data
-  batch1 <- batch1[match.result[, 1],]
-  batch2 <- batch2[match.result[, 2],]
+  match.result$variable_id1 = batch1$variable_id[match.result$Index1]
+  match.result$variable_id2 = batch2$variable_id[match.result$Index2]
   
-  ##new name, mz and RT
-  new.mz <-
-    data.frame(batch1[, 2], batch2[, 2], stringsAsFactors = FALSE)
-  new.mz <- apply(new.mz, 1, mean)
+  match.result =
+    match.result %>%
+    dplyr::select(variable_id1, variable_id2, dplyr::everything())
   
-  new.rt <-
-    data.frame(batch1[, 3], batch2[, 3], stringsAsFactors = FALSE)
-  new.rt <- apply(new.rt, 1, mean)
-  
-  new.name <-
-    paste("M", round(new.mz), "T", round(new.rt), sep = "")
-  new.name <- reName(new.name)
-  
-  
-  return.data <- data.frame(new.name, new.mz, new.rt,
-                            batch1[, -c(1:3)], batch2[, -c(1:3)], stringsAsFactors = FALSE)
-  rownames(return.data) <- new.name
-  rm(
-    list = c(
-      "batch1",
-      "batch2",
-      "new.mz",
-      "new.rt",
-      "new.name",
-      "match.result",
-      "match.result1",
-      "match.result2"
-    )
-  )
-  return(return.data)
+  # ##combine two batch data
+  # batch1 <- batch1[match.result[, 1], ]
+  # batch2 <- batch2[match.result[, 2], ]
+  #
+  # ##new name, mz and RT
+  # new.mz <-
+  #   data.frame(batch1[, 2], batch2[, 2], stringsAsFactors = FALSE)
+  # new.mz <- apply(new.mz, 1, mean)
+  #
+  # new.rt <-
+  #   data.frame(batch1[, 3], batch2[, 3], stringsAsFactors = FALSE)
+  # new.rt <- apply(new.rt, 1, mean)
+  #
+  # new.name <-
+  #   paste("M", round(new.mz), "T", round(new.rt), sep = "")
+  #
+  # new.name <- tinytools::name_duplicated(new.name)
+  #
+  # return.data <- data.frame(new.name, new.mz, new.rt,
+  #                           batch1[, -c(1:3)], batch2[, -c(1:3)], stringsAsFactors = FALSE)
+  # rownames(return.data) <- new.name
+  # rm(
+  #   list = c(
+  #     "batch1",
+  #     "batch2",
+  #     "new.mz",
+  #     "new.rt",
+  #     "new.name",
+  #     "match.result",
+  #     "match.result1",
+  #     "match.result2"
+  #   )
+  # )
+  return(match.result)
 }
 
 
@@ -626,19 +600,6 @@ reName <- function(name) {
     }
   })
 }
-
-
-# reName <- function(name) {
-#   temp.name <- unique(name)
-#   for (i in 1:length(temp.name)) {
-#     temp.idx <- which(temp.name[i] == name)
-#     if (length(temp.idx) > 1) {
-#       name[temp.idx] <-
-#         paste(name[temp.idx], 1:length(temp.idx), sep = "_")
-#     }
-#   }
-#   name
-# }
 
 
 #' @title getBatchAlignmentInfo
@@ -727,7 +688,7 @@ MRImatch = function(data1,
                     #rt.tol is relative
                     rt.tol = 30,
                     rt.error.type = c("relative", "abs"),
-                    int.tol = 1){
+                    int.tol = 1) {
   rt.error.type <- match.arg(rt.error.type)
   #
   if (nrow(data1) == 0 | nrow(data2) == 0) {
@@ -807,7 +768,7 @@ MRImatch = function(data1,
       "int2",
       "int.error"
     )
-  result <- result 
+  result <- result
 }
 
 
@@ -828,7 +789,7 @@ SXTMTmatch2 = function(data1,
                        mz.tol,
                        #rt.tol is relative
                        rt.tol = 30,
-                       rt.error.type = c("relative", "abs")){
+                       rt.error.type = c("relative", "abs")) {
   rt.error.type <- match.arg(rt.error.type)
   #
   if (nrow(data1) == 0 | nrow(data2) == 0) {
@@ -888,4 +849,3 @@ SXTMTmatch2 = function(data1,
       "rt error")
   result <- result
 }
-

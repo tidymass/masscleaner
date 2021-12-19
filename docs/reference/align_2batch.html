@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>cvMSE — cvMSE • masscleaner</title>
+<title>align_2batch — align_2batch • masscleaner</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="cvMSE — cvMSE" />
-<meta property="og:description" content="cvMSE" />
+<meta property="og:title" content="align_2batch — align_2batch" />
+<meta property="og:description" content="peak.table" />
 <meta property="og:image" content="https://tidymass.github.io/masscleaner/logo.png" />
 
 
@@ -186,39 +186,65 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>cvMSE</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidymass/masscleaner/blob/master/R/normalize_data.R'><code>R/normalize_data.R</code></a></small>
-    <div class="hidden name"><code>cvMSE.Rd</code></div>
+    <h1>align_2batch</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidymass/masscleaner/blob/master/R/align_batch.R'><code>R/align_batch.R</code></a></small>
+    <div class="hidden name"><code>align_2batch.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>cvMSE</p>
+    <p>peak.table</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cvMSE</span><span class='op'>(</span><span class='va'>qc</span>, <span class='va'>qc.order</span>, <span class='va'>begin1</span>, <span class='va'>end1</span>, <span class='va'>step1</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>align_2batch</span><span class='op'>(</span>
+  <span class='va'>batch1</span>,
+  <span class='va'>batch2</span>,
+  <span class='va'>mz.error.sd</span>,
+  <span class='va'>rt.error.sd</span>,
+  <span class='va'>int.error.sd</span>,
+  fold <span class='op'>=</span> <span class='fl'>4</span>,
+  mz.weight <span class='op'>=</span> <span class='fl'>0.4</span>,
+  rt.weight <span class='op'>=</span> <span class='fl'>0.4</span>,
+  int.weight <span class='op'>=</span> <span class='fl'>0.2</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>qc</th>
-      <td><p>qc</p></td>
+      <th>batch1</th>
+      <td><p>batch1</p></td>
     </tr>
     <tr>
-      <th>qc.order</th>
-      <td><p>qc.order</p></td>
+      <th>batch2</th>
+      <td><p>batch2</p></td>
     </tr>
     <tr>
-      <th>begin1</th>
-      <td><p>begin1</p></td>
+      <th>mz.error.sd</th>
+      <td><p>mz.error.sd</p></td>
     </tr>
     <tr>
-      <th>end1</th>
-      <td><p>end1</p></td>
+      <th>rt.error.sd</th>
+      <td><p>rt.error.sd</p></td>
     </tr>
     <tr>
-      <th>step1</th>
-      <td><p>step1</p></td>
+      <th>int.error.sd</th>
+      <td><p>int.error.sd</p></td>
+    </tr>
+    <tr>
+      <th>fold</th>
+      <td><p>fold</p></td>
+    </tr>
+    <tr>
+      <th>mz.weight</th>
+      <td><p>mz.weight</p></td>
+    </tr>
+    <tr>
+      <th>rt.weight</th>
+      <td><p>rt.weight</p></td>
+    </tr>
+    <tr>
+      <th>int.weight</th>
+      <td><p>int.weight</p></td>
     </tr>
     </table>
 
@@ -228,7 +254,7 @@
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Xiaotao Shen
-<a href='mailto:shenxt@sioc.ac.cn'>shenxt@sioc.ac.cn</a></p>
+<a href='mailto:shenxt1990@163.com'>shenxt1990@163.com</a></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -8,13 +8,6 @@
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
 -----
-## **News**
-
-* **Version0.9.2**: Output EICs of some features in some sample. [Click here.](https://tidymass.github.io/masscleaner/articles/version_0_9_2.html)
-
-* **More news**: [Click here](https://tidymass.github.io/masscleaner/news/index.html)
-
-------
 
 ## **About**
 
@@ -36,19 +29,18 @@ install.packages("devtools")
 devtools::install_github("tidymass/masscleaner")
 ```
 
-We use the demo data in `demoData` package to show how to use
+We use the demo data in `demodata` package to show how to use
 `masscleaner`. Please install it first.
 
 ``` r
-devtools::install_github("tidymass/demoData")
+devtools::install_github("tidymass/demodata")
 ```
 
 -----
 
 ## **Usage**
 
-Please see the [Get
-started](https://tidymass.github.io/masscleaner/articles/masscleaner_instruction.html)
+Please see the [Help document](https://tidymass.github.io/masscleaner/articles/masscleaner_instruction.html)
 page to get the instrduction of `masscleaner`.
 
 -----
