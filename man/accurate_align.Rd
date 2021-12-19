@@ -19,6 +19,102 @@ result
 \description{
 peak.table
 }
+\details{
+#' @title baRTplot
+#' @description baRTplot
+#' @author Xiaotao Shen
+#' \email{shenxt1990@163.com}
+#' @param simple.data simple.data
+#' @return result
+baRTplot <- function(simple.data) {
+  my.theme <- ggplot2::theme_bw() +
+    ggplot2::theme(
+      axis.title.x = ggplot2::element_text(size = 18),
+      axis.title.y = ggplot2::element_text(size = 18)
+    ) +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(size = 15),
+      axis.text.y = ggplot2::element_text(size = 15)
+    ) +
+    ggplot2::theme(legend.title = ggplot2::element_text(size = 12)) +
+    ggplot2::theme(legend.text = ggplot2::element_text(size = 10))
+  
+  rt.error <- simple.data[[2]]$rt - simple.data[[1]]$rt
+  rt1 <- simple.data[[1]]$rt
+  temp.data <- data.frame(rt1, rt.error, stringsAsFactors = FALSE)
+  rt.error.sd <- sd(abs(rt.error))
+  rt.error.sd <-
+    paste("RT error standard:", round(rt.error.sd, 2), "second")
+  rt.plot <- ggplot2::ggplot(data = temp.data,
+                             ggplot2::aes(x = rt1, y = rt.error)) +
+    ggplot2::geom_point() +
+    my.theme +
+    ggplot2::labs(x = "Retention time (s, Batch 1)",
+                  y = "RT deviation (second)") +
+    ggplot2::ggtitle(paste("RT vs. RT deviation;", rt.error.sd)) +
+    ggplot2::geom_hline(aes(yintercept = 0)) +
+    ggplot2::annotate(
+      geom = "text",
+      x = -Inf,
+      y = Inf,
+      hjust = -0.2,
+      vjust = 2,
+      label = rt.error.sd
+    )
+  
+  return(rt.plot)
+}
+#' @title baINTplot
+#' @description baINTplot
+#' @author Xiaotao Shen
+#' \email{shenxt1990@163.com}
+#' @param simple.data simple.data
+#' @return result
+
+baINTplot <- function(simple.data) {
+  my.theme <- ggplot2::theme_bw() +
+    ggplot2::theme(
+      axis.title.x = ggplot2::element_text(size = 18),
+      axis.title.y = ggplot2::element_text(size = 18)
+    ) +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(size = 15),
+      axis.text.y = ggplot2::element_text(size = 15)
+    ) +
+    ggplot2::theme(legend.title = ggplot2::element_text(size = 12)) +
+    ggplot2::theme(legend.text = ggplot2::element_text(size = 10))
+  
+  int1 <-
+    log(apply(simple.data[[1]][, -c(1:3)], 1, function(x)
+      mean(x, na.rm = TRUE)) + 1, 10)
+  int2 <-
+    log(apply(simple.data[[2]][, -c(1:3)], 1, function(x)
+      mean(x, na.rm = TRUE)) + 1, 10)
+  int.error <- int2 - int1
+  
+  int.error.sd <- sd(abs(int.error))
+  int.error.sd <-
+    paste("Log10int error standard:", round(int.error.sd, 2))
+  temp.data <- data.frame(int1, int.error, stringsAsFactors = FALSE)
+  int.plot <- ggplot2::ggplot(data = temp.data,
+                              ggplot2::aes(x = int1, y = int.error)) +
+    ggplot2::geom_point() +
+    my.theme +
+    ggplot2::labs(x = "Log10intensity (mean, Batch 1)",
+                  y = "Log10intensity deviation (second)") +
+    ggplot2::ggtitle(paste("Log10int vs. Log10int deviation;", int.error.sd)) +
+    ggplot2::geom_hline(aes(yintercept = 0)) +
+    ggplot2::annotate(
+      geom = "text",
+      x = -Inf,
+      y = Inf,
+      hjust = -0.2,
+      vjust = 2,
+      label = int.error.sd
+    )
+  return(int.plot)
+}
+}
 \author{
 Xiaotao Shen
 \email{shenxt1990@163.com}

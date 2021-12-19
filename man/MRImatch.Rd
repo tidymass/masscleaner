@@ -32,6 +32,89 @@ result
 \description{
 MRImatch
 }
+\details{
+#' @title reName
+#' @description reName
+#' @author Xiaotao Shen
+#' \email{shenxt1990@163.com}
+#' @param name name
+#' @return result
+
+reName <- function(name) {
+  temp.name <- unique(name)
+  lapply(temp.name, function(x) {
+    temp.idx <- which(x == name)
+    if (length(temp.idx) > 1) {
+      paste(name[temp.idx], 1:length(temp.idx), sep = "_")
+    }
+  })
+}
+#' @title getBatchAlignmentInfo
+#' @description getBatchAlignmentInfo
+#' @author Xiaotao Shen
+#' \email{shenxt1990@163.com}
+#' @param raw.data raw.data
+#' @param rough.align.data rough.align.data
+#' @param accurate.align.data accurate.align.data
+#' @return result
+
+
+getBatchAlignmentInfo <- function(raw.data,
+                                  rough.align.data,
+                                  accurate.align.data) {
+  if (length(raw.data) == 1)
+    return("Only one batch data.")
+  mz.error <-
+    (rough.align.data[[2]]$mz - rough.align.data[[1]]$mz) * 10 ^ 6 / rough.align.data[[2]]$mz
+  mz.error.sd <- sd(abs(mz.error))
+
+  rt.error <- rough.align.data[[2]]$rt - rough.align.data[[1]]$rt
+  rt.error.sd <- sd(abs(rt.error))
+
+  int1 <-
+    log(apply(rough.align.data[[1]][, -c(1:3)], 1, function(x)
+      mean(x, na.rm = TRUE)) + 1, 10)
+  int2 <-
+    log(apply(rough.align.data[[2]][, -c(1:3)], 1, function(x)
+      mean(x, na.rm = TRUE)) + 1, 10)
+  int.error <- int2 - int1
+  int.error.sd <- sd(abs(int.error))
+
+  parameter.info <-
+    paste(
+      "The standard for m/z, RT and log10intensity errors are",
+      round(mz.error.sd, 2),
+      ",",
+      round(rt.error.sd, 2),
+      ",",
+      'and',
+      round(int.error.sd, 2),
+      ",respectively. So the tolerances for m/z, RT and log10intensity are",
+      4 * round(mz.error.sd, 2),
+      ",",
+      4 * round(rt.error.sd, 2),
+      ",",
+      'and',
+      4 * round(int.error.sd, 2),
+      ",respectively."
+    )
+
+  peak.info <-
+    paste(
+      "There are ",
+      length(raw.data),
+      " batches. And the peak number are ",
+      paste(unlist(lapply(raw.data, nrow)), collapse = ","),
+      " respectively. ",
+      "After batch alignment, the peak number is ",
+      nrow(accurate.align.data),
+      ".",
+      sep = ""
+    )
+
+  return(paste(parameter.info, peak.info))
+}
+}
 \author{
 Xiaotao Shen
 \email{shenxt1990@163.com}

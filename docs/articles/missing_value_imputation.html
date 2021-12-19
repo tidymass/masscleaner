@@ -149,193 +149,126 @@
 
     
     
+<div id="introduction" class="section level2">
+<h2 class="hasAnchor">
+<a href="#introduction" class="anchor"></a><strong>Introduction</strong>
+</h2>
 <p>We can use <code>masscleaner</code> for missing value (MV) imputation.</p>
 <p>First, we need to prepare samples for <code>masscleaner</code>.</p>
-<div id="data-preparation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-preparation" class="anchor"></a><strong>Data preparation</strong>
-</h2>
-<div id="peak-table" class="section level3">
-<h3 class="hasAnchor">
-<a href="#peak-table" class="anchor"></a><strong>Peak table</strong>
-</h3>
-<p>The peak table (csv format) can be from any software. We recommend that you use the <code>Peak_table_for_cleaning.csv</code> from <code>processData()</code> function from <code>masscleaner</code>.</p>
-<p>If you use other software, please make sure that the top 3 columns are <code>name</code> (peak name), <code>mz</code> and <code>rt</code> (retention time, second). And the left column are sample intensity.</p>
-<p><img src="../man/figures/Screen%20Shot%202020-04-01%20at%201.07.37%20PM.png"></p>
-</div>
-<div id="sample-information" class="section level3">
-<h3 class="hasAnchor">
-<a href="#sample-information" class="anchor"></a><strong>Sample information</strong>
-</h3>
-<p>We need the sample information (csv format) to define the detailed information of samples. Column 1 is <code>sample.name</code>, column 2 is <code>injection.order</code>, column 3 is <code>class</code> (such as Subject, QC, Blank), column 4 is <code>batch</code> and column 5 is <code>group</code> (such as control and case).</p>
-<p><img src="../man/figures/Screen%20Shot%202020-04-02%20at%208.40.02%20AM.png"></p>
-</div>
-</div>
-<div id="read-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#read-data" class="anchor"></a><strong>Read data</strong>
-</h2>
-<p>Then place the peak table and sample information in a folder. We use the demo data from <code>demoData</code> package.</p>
+<p>Then place the peak table and sample information in a folder. We use the demo data from <code>massdataset</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymass/masscleaner">masscleaner</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">demoData</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymass/massdataset">massdataset</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code></pre></div>
-<div id="load-demo-data" class="section level3">
-<h3 class="hasAnchor">
-<a href="#load-demo-data" class="anchor"></a><strong>Load demo data</strong>
-</h3>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">##creat a folder nameed as example</span>
-<span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"."</span>, <span class="st">"example"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">path</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">##get demo data</span>
-<span class="va">demo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"masscleaner"</span>, package <span class="op">=</span> <span class="st">"demoData"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.copy</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">demo_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span><span class="va">demo_data</span><span class="op">)</span><span class="op">)</span>, 
-          to <span class="op">=</span> <span class="va">path</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>Here, we have two peak tables, <code>batch1.data.csv</code> and <code>batch2.data.csv</code>, and <code>sample_info.csv</code> are in your <code>./example</code> folder.</p>
-</div>
-<div id="creat-metflowclass-object" class="section level3">
-<h3 class="hasAnchor">
-<a href="#creat-metflowclass-object" class="anchor"></a><strong>Creat <code>metflowClass</code> object</strong>
-</h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object</span> <span class="op">&lt;-</span>
-  <span class="fu">create_metflow_object</span><span class="op">(</span>
-    ms1.data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"batch1.data.csv"</span>, <span class="st">"batch2.data.csv"</span><span class="op">)</span>,
-    sample.information <span class="op">=</span> <span class="st">"sample_info.csv"</span>,
-    path <span class="op">=</span> <span class="va">path</span>
-  <span class="op">)</span></code></pre></div>
-<p><code>object</code> is a <code>metflowClass</code> object, so you can print it in the console.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object</span></code></pre></div>
-</div>
-</div>
-<div id="align-different-batches" class="section level2">
-<h2 class="hasAnchor">
-<a href="#align-different-batches" class="anchor"></a><strong>Align different batches</strong>
-</h2>
-<p>Because there are two batch peak tables, so first we must align them.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/align_batch.html">align_batch</a></span><span class="op">(</span>
-  object <span class="op">=</span> <span class="va">object</span>,
-  combine.mz.tol <span class="op">=</span> <span class="fl">15</span>,
-  combine.rt.tol <span class="op">=</span> <span class="fl">30</span>,
-  use.int.tol <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object</span></code></pre></div>
 </div>
 <div id="missing-value-processing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#missing-value-processing" class="anchor"></a><strong>Missing value processing</strong>
 </h2>
-<p>First, we should remove some peaks and samples which have a lot of missing values.</p>
-<div id="remove-noisy-peaks-and-outlier-samples" class="section level3">
-<h3 class="hasAnchor">
-<a href="#remove-noisy-peaks-and-outlier-samples" class="anchor"></a><strong>Remove noisy peaks and outlier samples</strong>
-</h3>
-<p>We use <code>filter_peaks()</code> function to filter noisy peaks.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu">filter_peaks</span><span class="op">(</span>
-  object <span class="op">=</span> <span class="va">object</span>,
-  min.fraction <span class="op">=</span> <span class="fl">0.5</span>,
-  type <span class="op">=</span> <span class="st">"any"</span>,
-  min.subject.blank.ratio <span class="op">=</span> <span class="fl">2</span>,
-  according.to <span class="op">=</span> <span class="st">"class"</span>,
-  which.group <span class="op">=</span> <span class="st">"QC"</span>
-<span class="op">)</span></code></pre></div>
-<p>There are three creteria in <code>filter_peaks()</code> to remove peaks:</p>
-<ul>
-<li>Missing value</li>
-</ul>
-<p>If you want to remove peaks according to peaks NA in samples. You should what groups you want to use. For example, if you want to remove peaks which have more than 50% NA in QC samples, you can set <code>according.to</code> as <code>class</code>, because <code>QC</code> group is defined in <code>class</code> column in <code>sample.info</code>, then the which.group should be set as <code>QC</code>, and <code>min.fraction</code> as <code>0.5</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu">filter_peaks</span><span class="op">(</span>
-  object <span class="op">=</span> <span class="va">object</span>,
-  min.fraction <span class="op">=</span> <span class="fl">0.5</span>,
-  according.to <span class="op">=</span> <span class="st">"class"</span>,
-  which.group <span class="op">=</span> <span class="st">"QC"</span>
-<span class="op">)</span></code></pre></div>
-<p>If you want to remove peaks which have more than 50% NAs in <code>QC</code> and/or <code>Subject</code> samples.You can set which.group as <code>c("QC", "Subject")</code>, a vector. And the type is <code>all</code> means the peaks should meet the <code>min.fraction</code> in <code>QC</code> <strong>and</strong> <code>Subject</code>, and <code>any</code> means that the peaks meet the <code>min.fraction</code> in <code>QC</code> <strong>or</strong> <code>Subject</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu">filter_peaks</span><span class="op">(</span>
-  object <span class="op">=</span> <span class="va">object</span>,
-  min.fraction <span class="op">=</span> <span class="fl">0.5</span>,
-  according.to <span class="op">=</span> <span class="st">"class"</span>,
-  which.group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"QC"</span>, <span class="st">"Subject"</span><span class="op">)</span>,
-  type <span class="op">=</span> <span class="st">"all"</span>
-<span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu">filter_peaks</span><span class="op">(</span>
-  object <span class="op">=</span> <span class="va">object</span>,
-  min.fraction <span class="op">=</span> <span class="fl">0.5</span>,
-  according.to <span class="op">=</span> <span class="st">"class"</span>,
-  which.group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"QC"</span>, <span class="st">"Subject"</span><span class="op">)</span>,
-  type <span class="op">=</span> <span class="st">"any"</span>
-<span class="op">)</span></code></pre></div>
-<ul>
-<li>Blank samples</li>
-</ul>
-<p>If you have <code>Blank</code> samples in your data, you can also remove some peaks according to <code>Blank</code> samples. If <code>min.subject.blank.ratio</code> is set as 2, it means thay only the peak whoes intensitys in <code>which.group</code> samples is higher than 2 times of intensitys in <code>Blank</code> samples will be left. If <code>min.subject.blank.ratio</code> is set &lt; 1, no peaks will be removed.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu">filter_peaks</span><span class="op">(</span>
-  object <span class="op">=</span> <span class="va">object</span>,
-  min.fraction <span class="op">=</span> <span class="fl">0.5</span>,
-  according.to <span class="op">=</span> <span class="st">"class"</span>,
-  which.group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"QC"</span>, <span class="st">"Subject"</span><span class="op">)</span>,
-  type <span class="op">=</span> <span class="st">"any"</span>,
-  min.subject.blank.ratio <span class="op">=</span> <span class="fl">0</span>
-<span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu">filter_peaks</span><span class="op">(</span>
-  object <span class="op">=</span> <span class="va">object</span>,
-  min.fraction <span class="op">=</span> <span class="fl">0.5</span>,
-  according.to <span class="op">=</span> <span class="st">"class"</span>,
-  which.group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"QC"</span>, <span class="st">"Subject"</span><span class="op">)</span>,
-  type <span class="op">=</span> <span class="st">"all"</span>,
-  min.subject.blank.ratio <span class="op">=</span> <span class="fl">2</span>
-<span class="op">)</span>
-<span class="va">object2</span></code></pre></div>
-<p>After remove the noisy peaks, there are only 5864 peaks.</p>
-</div>
-<div id="remove-outlier-samples" class="section level3">
-<h3 class="hasAnchor">
-<a href="#remove-outlier-samples" class="anchor"></a><strong>Remove outlier samples</strong>
-</h3>
-<p>Nest, we should remove some samples which have a lot of missing values.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu">filter_samples</span><span class="op">(</span>object <span class="op">=</span> <span class="va">object2</span>,
-                          min.fraction.peak <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
-<p><code>min.fraction.peak</code> is set as 0.8 means that only the <code>Subject</code> or <code>QC</code> samples with more than 80% peaks are no missing values will be left.</p>
-<p>We can get the missing values distribution in samples:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">get_mv_plot_samples</span><span class="op">(</span>object <span class="op">=</span> <span class="va">object2</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-</div>
-<div id="missing-value-imputation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#missing-value-imputation" class="anchor"></a><strong>Missing value imputation</strong>
-</h3>
-<p>The function <code><a href="../reference/impute_mv.html">impute_mv()</a></code> is used to do missing value imputation.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/impute_mv.html">impute_mv</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object2</span>,
-                     method <span class="op">=</span> <span class="st">"knn"</span><span class="op">)</span>
-<span class="va">object2</span></code></pre></div>
-<blockquote>
-<p>Note: Only the <code>Subject</code> and <code>QC</code> samples are imputed.</p>
-</blockquote>
-<p>So now, the object2 have been imputed using KNN method.</p>
-<p>If you want to output the <code>peak_table</code> and <code>sample_info</code>, you can use <code>get_data()</code> function.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">##get the peak table</span>
-<span class="va">peak_table2</span> <span class="op">&lt;-</span> <span class="fu">get_data</span><span class="op">(</span>object <span class="op">=</span> <span class="va">object2</span>, slot <span class="op">=</span> <span class="st">"peak.table"</span><span class="op">)</span>
-<span class="va">peak_table2</span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">##get the sample inforamtion</span>
-<span class="va">sample_info2</span> <span class="op">&lt;-</span> <span class="fu">get_data</span><span class="op">(</span>object <span class="op">=</span> <span class="va">object2</span>, slot <span class="op">=</span> <span class="st">"sample.info"</span><span class="op">)</span>
-<span class="va">sample_info2</span></code></pre></div>
-</div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"expression_data"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"sample_info"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"variable_info"</span><span class="op">)</span>
+<span class="va">object</span> <span class="op">=</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/create_mass_dataset.html">create_mass_dataset</a></span><span class="op">(</span>
+    expression_data <span class="op">=</span> <span class="va">expression_data</span>,
+    sample_info <span class="op">=</span> <span class="va">sample_info</span>,
+    variable_info <span class="op">=</span> <span class="va">variable_info</span>
+  <span class="op">)</span>
+<span class="va">object</span>
+<span class="co">#&gt; -------------------- </span>
+<span class="co">#&gt; massdataset version: 0.01 </span>
+<span class="co">#&gt; -------------------- </span>
+<span class="co">#&gt; 1.expression_data:[ 1000 x 8 data.frame]</span>
+<span class="co">#&gt; 2.sample_info:[ 8 x 4 data.frame]</span>
+<span class="co">#&gt; 3.variable_info:[ 1000 x 3 data.frame]</span>
+<span class="co">#&gt; 4.sample_info_note:[ 4 x 2 data.frame]</span>
+<span class="co">#&gt; 5.variable_info_note:[ 3 x 2 data.frame]</span>
+<span class="co">#&gt; 6.ms2_data:[ 0 variables x 0 MS2 spectra]</span>
+<span class="co">#&gt; -------------------- </span>
+<span class="co">#&gt; Processing information (extract_process_info())</span>
+<span class="co">#&gt; Creation ---------- </span>
+<span class="co">#&gt;       Package         Function.used                Time</span>
+<span class="co">#&gt; 1 massdataset create_mass_dataset() 2021-12-18 22:14:03</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/get_mv_number.html">get_mv_number</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
+<span class="co">#&gt; [1] 3829</span>
+<span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/get_mv_number.html">get_mv_number</a></span><span class="op">(</span><span class="va">object</span>, by <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span>
+<span class="co">#&gt; Blank_3 Blank_4    QC_1    QC_2   PS4P1   PS4P2   PS4P3   PS4P4 </span>
+<span class="co">#&gt;     682     702     397     381     424     427     405     411</span>
+
+<span class="co">###remove variables who have mv in more than 20% QC samples</span>
+<span class="va">qc_id</span> <span class="op">=</span>
+  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span>
+
+<span class="va">subject_id</span> <span class="op">=</span>
+  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"Subject"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span>
+
+<span class="va">object</span> <span class="op">=</span>
+  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/mutate_variable_na_freq.html">mutate_variable_na_freq</a></span><span class="op">(</span>according_to_samples <span class="op">=</span> <span class="va">qc_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/mutate_variable_na_freq.html">mutate_variable_na_freq</a></span><span class="op">(</span>according_to_samples <span class="op">=</span> <span class="va">subject_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"variable_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">na_freq</span> <span class="op">&lt;</span> <span class="fl">0.2</span> <span class="op">&amp;</span> <span class="va">na_freq.1</span> <span class="op">&lt;</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="co">###remove samples with MV &gt; 50% except Blank samples</span>
+<span class="va">object</span> <span class="op">=</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/filter_samples.html">filter_samples</a></span><span class="op">(</span>
+    object <span class="op">=</span> <span class="va">object</span>,
+    flist <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+      <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0.5</span>
+    <span class="op">}</span>,
+    apply_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">qc_id</span>, <span class="va">subject_id</span><span class="op">)</span>,
+    prune <span class="op">=</span> <span class="cn">TRUE</span>
+  <span class="op">)</span>
+
+<span class="va">blank_id</span> <span class="op">=</span>
+  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"Blank"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span>
+
+<span class="va">object1</span> <span class="op">=</span>
+  <span class="fu"><a href="../reference/impute_mv.html">impute_mv</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span>,
+            sample_id <span class="op">=</span> <span class="va">blank_id</span>,
+            method <span class="op">=</span> <span class="st">"zero"</span><span class="op">)</span>
+
+<span class="va">object1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"expression_data"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">contains</a></span><span class="op">(</span><span class="st">"Blank"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/extract_expression_data.html">extract_expression_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt;               Blank_3 Blank_4</span>
+<span class="co">#&gt; M136T55_2_POS       0       0</span>
+<span class="co">#&gt; M79T35_POS          0       0</span>
+<span class="co">#&gt; M307T548_POS        0       0</span>
+<span class="co">#&gt; M349T47_POS         0       0</span>
+<span class="co">#&gt; M299T359_POS        0       0</span>
+<span class="co">#&gt; M344T471_POS        0       0</span>
+
+<span class="va">object2</span> <span class="op">=</span>
+  <span class="fu"><a href="../reference/impute_mv.html">impute_mv</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span>,
+            sample_id <span class="op">=</span> <span class="va">subject_id</span>,
+            method <span class="op">=</span> <span class="st">"knn"</span><span class="op">)</span>
+
+<span class="va">object2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"Subject"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/extract_expression_data.html">extract_expression_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt;                   PS4P1     PS4P2     PS4P3     PS4P4</span>
+<span class="co">#&gt; M136T55_2_POS 1494436.1 3496912.1 1959178.8 1005418.8</span>
+<span class="co">#&gt; M79T35_POS    2471336.1 3333582.7 2734243.8 3361452.3</span>
+<span class="co">#&gt; M307T548_POS   288590.2  137297.5  231279.2  271318.3</span>
+<span class="co">#&gt; M349T47_POS   5141073.2 8424315.6 7896633.3 6441449.0</span>
+<span class="co">#&gt; M299T359_POS  1401632.7 4055989.5 1577496.3 3668817.5</span>
+<span class="co">#&gt; M344T471_POS   334718.8  276913.4  304611.5  450460.3</span></code></pre></div>
 </div>
   </div>
 

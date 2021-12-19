@@ -7,9 +7,6 @@
     <loc>https://tidymass.github.io/masscleaner//reference/MRImatch.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/SXTMTmatch2.html</loc>
-  </url>
-  <url>
     <loc>https://tidymass.github.io/masscleaner//reference/accurate_align.html</loc>
   </url>
   <url>
@@ -19,19 +16,10 @@
     <loc>https://tidymass.github.io/masscleaner//reference/align_batch.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/baINTplot.html</loc>
-  </url>
-  <url>
     <loc>https://tidymass.github.io/masscleaner//reference/baMZplot.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/baRTplot.html</loc>
-  </url>
-  <url>
     <loc>https://tidymass.github.io/masscleaner//reference/cvMSE.html</loc>
-  </url>
-  <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/getBatchAlignmentInfo.html</loc>
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//reference/get_peak_int_distribution.html</loc>
@@ -70,9 +58,6 @@
     <loc>https://tidymass.github.io/masscleaner//reference/normalize_data.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/reName.html</loc>
-  </url>
-  <url>
     <loc>https://tidymass.github.io/masscleaner//reference/rough_align.html</loc>
   </url>
   <url>
@@ -83,9 +68,6 @@
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//reference/svr_function.html</loc>
-  </url>
-  <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/sxtMVimputation.html</loc>
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//articles/align_batch.html</loc>

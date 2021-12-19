@@ -12,7 +12,7 @@
 ## **About**
 
 `masscleaner` is a R package which is used for untargeted metabolomics data
-processing and analysis.
+cleaning.
 
 -----
 

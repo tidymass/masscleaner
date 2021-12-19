@@ -236,6 +236,74 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>result</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>#' @title reName
+#' @description reName
+#' @author Xiaotao Shen
+#' <a href='mailto:shenxt1990@163.com'>shenxt1990@163.com</a>
+#' @param name name
+#' @return result</p>
+<p>reName &lt;- function(name) 
+  temp.name &lt;- unique(name)
+  lapply(temp.name, function(x) 
+    temp.idx &lt;- which(x == name)
+    if (length(temp.idx) &gt; 1) 
+      paste(name[temp.idx], 1:length(temp.idx), sep = "_")  )
+
+#' @title getBatchAlignmentInfo
+#' @description getBatchAlignmentInfo
+#' @author Xiaotao Shen
+#' <a href='mailto:shenxt1990@163.com'>shenxt1990@163.com</a>
+#' @param raw.data raw.data
+#' @param rough.align.data rough.align.data
+#' @param accurate.align.data accurate.align.data
+#' @return result</p>
+
+<p>getBatchAlignmentInfo &lt;- function(raw.data,
+                                  rough.align.data,
+                                  accurate.align.data) 
+  if (length(raw.data) == 1)
+    return("Only one batch data.")
+  mz.error &lt;-
+    (rough.align.data[[2]]$mz - rough.align.data[[1]]$mz) * 10 ^ 6 / rough.align.data[[2]]$mz
+  mz.error.sd &lt;- sd(abs(mz.error))  rt.error &lt;- rough.align.data[[2]]$rt - rough.align.data[[1]]$rt
+  rt.error.sd &lt;- sd(abs(rt.error))  int1 &lt;-
+    log(apply(rough.align.data[[1]][, -c(1:3)], 1, function(x)
+      mean(x, na.rm = TRUE)) + 1, 10)
+  int2 &lt;-
+    log(apply(rough.align.data[[2]][, -c(1:3)], 1, function(x)
+      mean(x, na.rm = TRUE)) + 1, 10)
+  int.error &lt;- int2 - int1
+  int.error.sd &lt;- sd(abs(int.error))  parameter.info &lt;-
+    paste(
+      "The standard for m/z, RT and log10intensity errors are",
+      round(mz.error.sd, 2),
+      ",",
+      round(rt.error.sd, 2),
+      ",",
+      'and',
+      round(int.error.sd, 2),
+      ",respectively. So the tolerances for m/z, RT and log10intensity are",
+      4 * round(mz.error.sd, 2),
+      ",",
+      4 * round(rt.error.sd, 2),
+      ",",
+      'and',
+      4 * round(int.error.sd, 2),
+      ",respectively."
+    )  peak.info &lt;-
+    paste(
+      "There are ",
+      length(raw.data),
+      " batches. And the peak number are ",
+      paste(unlist(lapply(raw.data, nrow)), collapse = ","),
+      " respectively. ",
+      "After batch alignment, the peak number is ",
+      nrow(accurate.align.data),
+      ".",
+      sep = ""
+    )  return(paste(parameter.info, peak.info))</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Xiaotao Shen

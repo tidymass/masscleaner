@@ -6,6 +6,7 @@
 \usage{
 impute_mv(
   object,
+  sample_id,
   method = c("knn", "rf", "mean", "median", "zero", "minimum", "bpca", "svdImpute",
     "ppca"),
   k = 10,
@@ -23,7 +24,10 @@ impute_mv(
 )
 }
 \arguments{
-\item{object}{A metflowClass object.}
+\item{object}{A mass_dataset object.}
+
+\item{sample_id}{which samples you want to impute missing value? 
+It is a index or character vector (sample_id)}
 
 \item{method}{Imputation method. It
 contains "knn", "rf" (missForest), "mean", "median", "zero", "minium",
@@ -56,10 +60,85 @@ this method can be find in detail and reference paperes.}
 \item{...}{Other arguments.}
 }
 \value{
-A new metflowClass object.
+A new mass_dataset object.
 }
 \description{
 Impute MV in data.
+}
+\examples{
+library(massdataset)
+data("expression_data")
+data("sample_info")
+data("variable_info")
+object =
+  create_mass_dataset(
+    expression_data = expression_data,
+    sample_info = sample_info,
+    variable_info = variable_info
+  )
+object
+
+get_mv_number(object)
+massdataset::get_mv_number(object, by = "sample")
+
+###remove variables who have mv in more than 20\% QC samples
+qc_id =
+  object \%>\%
+  activate_mass_dataset(what = "sample_info") \%>\%
+  filter(class == "QC") \%>\%
+  pull(sample_id)
+
+subject_id =
+  object \%>\%
+  activate_mass_dataset(what = "sample_info") \%>\%
+  filter(class == "Subject") \%>\%
+  pull(sample_id)
+
+object =
+  object \%>\%
+  mutate_variable_na_freq(according_to_samples = qc_id) \%>\%
+  mutate_variable_na_freq(according_to_samples = subject_id) \%>\%
+  activate_mass_dataset(what = "variable_info") \%>\%
+  filter(na_freq < 0.2 & na_freq.1 < 0.5)
+
+###remove samples with MV > 50\% except Blank samples
+object =
+  filter_samples(
+    object = object,
+    flist = function(x) {
+      sum(is.na(x)) / nrow(object) < 0.5
+    },
+    apply_to = c(qc_id, subject_id),
+    prune = TRUE
+  )
+
+blank_id =
+  object \%>\%
+  activate_mass_dataset(what = "sample_info") \%>\%
+  filter(class == "Blank") \%>\%
+  pull(sample_id)
+
+object1 =
+  impute_mv(object = object,
+            sample_id = blank_id,
+            method = "zero")
+
+object1 \%>\% 
+  activate_mass_dataset(what = "expression_data") \%>\% 
+  select(dplyr::contains("Blank")) \%>\% 
+  extract_expression_data() \%>\% 
+  head()
+
+object2 =
+  impute_mv(object = object,
+            sample_id = subject_id,
+            method = "knn")
+
+object2 \%>\%
+  activate_mass_dataset(what = "sample_info") \%>\%
+  filter(class == "Subject") \%>\%
+  extract_expression_data() \%>\% 
+  head()
 }
 \author{
 Xiaotao Shen

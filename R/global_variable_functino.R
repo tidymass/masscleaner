@@ -39,5 +39,11 @@ globalVariables(names = c(
   "rt_correction",
   "variable_id1",
   "variable_id2",
-  "get_data"
+  "get_data",
+  "PC1",
+  "PC2",
+  "na_freq",
+  "pc_mad",
+  "pc_sd" ,
+  "sample_id"
 ))

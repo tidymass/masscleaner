@@ -10,7 +10,7 @@
 #' @importFrom tibble as_tibble enframe tibble rownames_to_column
 #' @importFrom clisymbols symbol
 #' @importFrom cli rule col_cyan tree
-#' @importFrom utils packageVersion object.size write.csv tail
+#' @importFrom utils packageVersion object.size write.csv tail head
 #' @importFrom purrr map map2
 #' @importFrom plyr dlply .
 #' @importFrom RColorBrewer brewer.pal
@@ -28,8 +28,11 @@
 #' @importFrom pcaMethods pca completeObs
 #' @importFrom patchwork plot_layout
 #' @import patchwork
-#' @importFrom stats coefficients lm loess median predict
+#' @importFrom robust covRob
+#' @importFrom stats coefficients lm loess median predict mad pchisq
 #' @importFrom stats rgamma rt sd cor p.adjust prcomp t.test wilcox.test
+#' @importFrom methods new
+#' @importClassesFrom massdataset mass_dataset tidymass_parameter
 #' @export
 
 masscleaner_logo <- function() {

@@ -1,4 +1,4 @@
-core <- c("xcms", "mzR", "MSnbase", "massdataset", "tinytools")
+core <- c("massdataset", "tinytools")
 
 core_unloaded <- function() {
   search <- paste0("package:", core)
