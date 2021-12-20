@@ -1,7 +1,7 @@
 #' @title integrate_data
 #' @description Integrate different batch datasets together.
 #' @author Xiaotao Shen
-#' \email{shenxt@@sioc.ac.cn}
+#' \email{shenxt1990@@outlook.com}
 #' @param object object.
 #' @param method Which method do you want to use?
 #' subject.mean or qc.mean, default is qc.mean.
@@ -182,7 +182,7 @@ integrate_data = function(
 #' @title integrateData
 #' @description Integrate different batch datasets together.
 #' @author Xiaotao Shen
-#' \email{shenxt@@sioc.ac.cn}
+#' \email{shenxt1990@@outlook.com}
 #' @param object object.
 #' @param method Which method do you want to use?
 #' subject.mean or qc.mean, default is qc.mean.

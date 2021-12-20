@@ -1,7 +1,7 @@
 #' @title Detect outlier samples
 #' @description Detect outlier samples
 #' @author Xiaotao Shen
-#' \email{shenxt@@sioc.ac.cn}
+#' \email{shenxt1990@@outlook.com}
 #' @param object A mass_dataset object.
 #' @param na_percentage_cutoff na_percentage_cutoff
 #' @param sd_fold_change sd_fold_change

@@ -142,5 +142,5 @@ object2 \%>\%
 }
 \author{
 Xiaotao Shen
-\email{shenxt@sioc.ac.cn}
+\email{shenxt1990@outlook.com}
 }

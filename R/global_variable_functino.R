@@ -45,5 +45,8 @@ globalVariables(names = c(
   "na_freq",
   "pc_mad",
   "pc_sd" ,
-  "sample_id"
+  "sample_id",
+  "optimization",
+  "multiple",
+  "rmse"
 ))

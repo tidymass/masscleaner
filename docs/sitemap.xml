@@ -19,7 +19,7 @@
     <loc>https://tidymass.github.io/masscleaner//reference/baMZplot.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/cvMSE.html</loc>
+    <loc>https://tidymass.github.io/masscleaner//reference/check_for_qc_normalization.html</loc>
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//reference/detect_outlier.html</loc>
@@ -40,9 +40,6 @@
     <loc>https://tidymass.github.io/masscleaner//reference/integrate_data.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/loessNor.html</loc>
-  </url>
-  <url>
     <loc>https://tidymass.github.io/masscleaner//reference/masscleaner_logo.html</loc>
   </url>
   <url>
@@ -58,10 +55,28 @@
     <loc>https://tidymass.github.io/masscleaner//reference/new_scale_color.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/normalizeData.html</loc>
+    <loc>https://tidymass.github.io/masscleaner//reference/normalize_data.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/normalize_data.html</loc>
+    <loc>https://tidymass.github.io/masscleaner//reference/normalize_data_loess.html</loc>
+  </url>
+  <url>
+    <loc>https://tidymass.github.io/masscleaner//reference/normalize_data_mean.html</loc>
+  </url>
+  <url>
+    <loc>https://tidymass.github.io/masscleaner//reference/normalize_data_median.html</loc>
+  </url>
+  <url>
+    <loc>https://tidymass.github.io/masscleaner//reference/normalize_data_pqn.html</loc>
+  </url>
+  <url>
+    <loc>https://tidymass.github.io/masscleaner//reference/normalize_data_svr.html</loc>
+  </url>
+  <url>
+    <loc>https://tidymass.github.io/masscleaner//reference/normalize_data_total.html</loc>
+  </url>
+  <url>
+    <loc>https://tidymass.github.io/masscleaner//reference/optimize_loess_span.html</loc>
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//reference/outlier_samples.html</loc>
@@ -71,12 +86,6 @@
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//reference/simply_data.html</loc>
-  </url>
-  <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/svrNor.html</loc>
-  </url>
-  <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/svr_function.html</loc>
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//articles/align_batch.html</loc>

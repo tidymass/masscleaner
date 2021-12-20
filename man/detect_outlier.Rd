@@ -62,5 +62,5 @@ https://privefl.github.io/blog/detecting-outlier-samples-in-pca/
 }
 \author{
 Xiaotao Shen
-\email{shenxt@sioc.ac.cn}
+\email{shenxt1990@outlook.com}
 }

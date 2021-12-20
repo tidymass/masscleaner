@@ -36,7 +36,7 @@ MRImatch
 #' @title reName
 #' @description reName
 #' @author Xiaotao Shen
-#' \email{shenxt1990@163.com}
+#' \email{shenxt1990@outlook.com}
 #' @param name name
 #' @return result
 
@@ -52,7 +52,7 @@ reName <- function(name) {
 #' @title getBatchAlignmentInfo
 #' @description getBatchAlignmentInfo
 #' @author Xiaotao Shen
-#' \email{shenxt1990@163.com}
+#' \email{shenxt1990@outlook.com}
 #' @param raw.data raw.data
 #' @param rough.align.data rough.align.data
 #' @param accurate.align.data accurate.align.data
@@ -117,5 +117,5 @@ getBatchAlignmentInfo <- function(raw.data,
 }
 \author{
 Xiaotao Shen
-\email{shenxt1990@163.com}
+\email{shenxt1990@outlook.com}
 }

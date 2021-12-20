@@ -1,7 +1,7 @@
 #' @title Get peak intensity distributation plot
 #' @description Get peak intensity distributation plot.
 #' @author Xiaotao Shen
-#' \email{shenxt@@sioc.ac.cn}
+#' \email{shenxt1990@@outlook.com}
 #' @param object A metflowClass object.
 #' @param peak_name Peak name.
 #' @param interactive Interactive plot or not.

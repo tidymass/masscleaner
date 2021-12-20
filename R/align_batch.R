@@ -1,7 +1,7 @@
 #' @title align_batch
 #' @description Align different batch peaks tables.
 #' @author Xiaotao Shen
-#' \email{shenxt1990@@163.com}
+#' \email{shenxt1990@@outlook.com}
 #' @param x A mass_dataset object
 #' @param y A mass_dataset object
 #' @param combine.mz.tol m/z tolerance for batch alignment, default is 25 ppm.
@@ -82,7 +82,7 @@ align_batch = function(x,
 #' @title rough_align
 #' @description rough_align
 #' @author Xiaotao Shen
-#' \email{shenxt1990@@163.com}
+#' \email{shenxt1990@@outlook.com}
 #' @param peak.table peak.table
 #' @param combine.mz.tol combine.mz.tol
 #' @param combine.rt.tol combine.rt.tol
@@ -141,7 +141,7 @@ rough_align <- function(peak.table,
 #' @title simply_data
 #' @description simply_data
 #' @author Xiaotao Shen
-#' \email{shenxt1990@@163.com}
+#' \email{shenxt1990@@outlook.com}
 #' @param data data
 #' @param combine.mz.tol combine.mz.tol
 #' @param combine.rt.tol combine.rt.tol
@@ -196,7 +196,7 @@ simply_data <- function(data,
 #' @title baMZplot
 #' @description baMZplot
 #' @author Xiaotao Shen
-#' \email{shenxt1990@@163.com}
+#' \email{shenxt1990@@outlook.com}
 #' @param simple.data data
 #' @return result
 
@@ -243,7 +243,7 @@ baMZplot <- function(simple.data) {
 #' #' @title baRTplot
 #' #' @description baRTplot
 #' #' @author Xiaotao Shen
-#' #' \email{shenxt1990@@163.com}
+#' #' \email{shenxt1990@@outlook.com}
 #' #' @param simple.data simple.data
 #' #' @return result
 #' baRTplot <- function(simple.data) {
@@ -289,7 +289,7 @@ baMZplot <- function(simple.data) {
 #' #' @title baINTplot
 #' #' @description baINTplot
 #' #' @author Xiaotao Shen
-#' #' \email{shenxt1990@@163.com}
+#' #' \email{shenxt1990@@outlook.com}
 #' #' @param simple.data simple.data
 #' #' @return result
 #' 
@@ -341,7 +341,7 @@ baMZplot <- function(simple.data) {
 #' @title peak.table
 #' @description peak.table
 #' @author Xiaotao Shen
-#' \email{shenxt1990@@163.com}
+#' \email{shenxt1990@@outlook.com}
 #' @param peak.table peak.table
 #' @param simple.data simple.data
 #' @param use.int.tol use.int.tol
@@ -398,7 +398,7 @@ accurate_align <- function(peak.table,
 #' @title align_2batch
 #' @description peak.table
 #' @author Xiaotao Shen
-#' \email{shenxt1990@@163.com}
+#' \email{shenxt1990@@outlook.com}
 #' @param batch1 batch1
 #' @param batch2 batch2
 #' @param mz.error.sd mz.error.sd
@@ -575,7 +575,7 @@ align_2batch <- function(batch1,
 #' @title matchScore
 #' @description matchScore
 #' @author Xiaotao Shen
-#' \email{shenxt1990@@163.com}
+#' \email{shenxt1990@@outlook.com}
 #' @param error error
 #' @param sd sd
 #' @return result
@@ -587,7 +587,7 @@ matchScore <- function(error, sd) {
 #' #' @title reName
 #' #' @description reName
 #' #' @author Xiaotao Shen
-#' #' \email{shenxt1990@@163.com}
+#' #' \email{shenxt1990@@outlook.com}
 #' #' @param name name
 #' #' @return result
 #' 
@@ -605,7 +605,7 @@ matchScore <- function(error, sd) {
 #' #' @title getBatchAlignmentInfo
 #' #' @description getBatchAlignmentInfo
 #' #' @author Xiaotao Shen
-#' #' \email{shenxt1990@@163.com}
+#' #' \email{shenxt1990@@outlook.com}
 #' #' @param raw.data raw.data
 #' #' @param rough.align.data rough.align.data
 #' #' @param accurate.align.data accurate.align.data
@@ -673,7 +673,7 @@ matchScore <- function(error, sd) {
 #' @title MRImatch
 #' @description MRImatch
 #' @author Xiaotao Shen
-#' \email{shenxt1990@@163.com}
+#' \email{shenxt1990@@outlook.com}
 #' @param data1 data1
 #' @param data2 data2
 #' @param mz.tol mz.tol

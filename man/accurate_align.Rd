@@ -23,7 +23,7 @@ peak.table
 #' @title baRTplot
 #' @description baRTplot
 #' @author Xiaotao Shen
-#' \email{shenxt1990@163.com}
+#' \email{shenxt1990@outlook.com}
 #' @param simple.data simple.data
 #' @return result
 baRTplot <- function(simple.data) {
@@ -67,7 +67,7 @@ baRTplot <- function(simple.data) {
 #' @title baINTplot
 #' @description baINTplot
 #' @author Xiaotao Shen
-#' \email{shenxt1990@163.com}
+#' \email{shenxt1990@outlook.com}
 #' @param simple.data simple.data
 #' @return result
 
@@ -117,5 +117,5 @@ baINTplot <- function(simple.data) {
 }
 \author{
 Xiaotao Shen
-\email{shenxt1990@163.com}
+\email{shenxt1990@outlook.com}
 }

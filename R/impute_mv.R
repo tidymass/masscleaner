@@ -1,7 +1,7 @@
 #' @title Impute MV in data.
 #' @description Impute MV in data.
 #' @author Xiaotao Shen
-#' \email{shenxt@@sioc.ac.cn}
+#' \email{shenxt1990@@outlook.com}
 #' @param object A mass_dataset object.
 #' @param sample_id which samples you want to impute missing value? 
 #' It is a index or character vector (sample_id)

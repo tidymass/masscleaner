@@ -8,7 +8,7 @@ articles:
   filter_variable_outlier: filter_variable_outlier.html
   missing_value_imputation: missing_value_imputation.html
   version_0_9_2: version_0_9_2.html
-last_built: 2021-12-19T09:36Z
+last_built: 2021-12-20T08:57Z
 urls:
   reference: https://tidymass.github.io/masscleaner//reference
   article: https://tidymass.github.io/masscleaner//articles

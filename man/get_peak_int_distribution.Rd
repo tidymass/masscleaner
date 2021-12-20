@@ -21,5 +21,5 @@ Get peak intensity distributation plot.
 }
 \author{
 Xiaotao Shen
-\email{shenxt@sioc.ac.cn}
+\email{shenxt1990@outlook.com}
 }

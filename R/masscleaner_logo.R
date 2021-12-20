@@ -1,7 +1,7 @@
 #' @title masscleaner_logo
 #' @description masscleaner_logo
 #' @author Xiaotao Shen
-#' \email{shenxt@@stanford.edu}
+#' \email{shenxt1990@@outlook.com}
 #' @importFrom crayon yellow red green bold bgRed
 #' @import ggplot2
 #' @importFrom pbapply pblapply pboptions

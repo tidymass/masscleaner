@@ -189,7 +189,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>normalize_data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidymass/masscleaner/blob/master/R/normalize_data.R'><code>R/normalize_data.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/tidymass/masscleaner/blob/master/R/data_normalization.R'><code>R/data_normalization.R</code></a></small>
     <div class="hidden name"><code>normalize_data.Rd</code></div>
     </div>
 
@@ -200,10 +200,12 @@
     <pre class="usage"><span class='fu'>normalize_data</span><span class='op'>(</span>
   <span class='va'>object</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"svr"</span>, <span class='st'>"total"</span>, <span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"pqn"</span>, <span class='st'>"loess"</span><span class='op'>)</span>,
-  keep.scale <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  keep_scale <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  pqn_reference <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"median"</span>, <span class='st'>"mean"</span><span class='op'>)</span>,
   begin <span class='op'>=</span> <span class='fl'>0.5</span>,
   end <span class='op'>=</span> <span class='fl'>1</span>,
   step <span class='op'>=</span> <span class='fl'>0.2</span>,
+  multiple <span class='op'>=</span> <span class='fl'>1</span>,
   threads <span class='op'>=</span> <span class='fl'>4</span>
 <span class='op'>)</span></pre>
 
@@ -212,7 +214,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>A metflowClass object.</p></td>
+      <td><p>A mass_dataset object.</p></td>
     </tr>
     <tr>
       <th>method</th>
@@ -220,8 +222,12 @@
 default is svr. Please see the details.</p></td>
     </tr>
     <tr>
-      <th>keep.scale</th>
+      <th>keep_scale</th>
       <td><p>Remain scale or not. Default is TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>pqn_reference</th>
+      <td><p>for pqn method.</p></td>
     </tr>
     <tr>
       <th>begin</th>
@@ -236,6 +242,10 @@ default is svr. Please see the details.</p></td>
       <td><p>0.2</p></td>
     </tr>
     <tr>
+      <th>multiple</th>
+      <td><p>multiple</p></td>
+    </tr>
+    <tr>
       <th>threads</th>
       <td><p>4</p></td>
     </tr>
@@ -243,11 +253,14 @@ default is svr. Please see the details.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A new metflowClass object.</p>
+    <p>A new mass_dataset object.
+data("object1", package = "demodata")
+object1 = impute_mv(object1, method = "minimum")
+object_mean = normalize_data(object = object1, method = "mean")</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Xiaotao Shen
-<a href='mailto:shenxt@sioc.ac.cn'>shenxt@sioc.ac.cn</a></p>
+<a href='mailto:shenxt1990@outlook.com'>shenxt1990@outlook.com</a></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
