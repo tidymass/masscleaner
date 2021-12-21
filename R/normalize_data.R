@@ -14,6 +14,7 @@
 #' @param threads 4
 #' @export
 #' @return A new mass_dataset object.
+#' @examples 
 #' data("object1", package = "demodata")
 #' object1 = impute_mv(object1, method = "minimum")
 #' object_mean = normalize_data(object = object1, method = "mean")
@@ -295,6 +296,6 @@ normalize_data =
     
     object@process_info = process_info
     
+    return(object)
     
-    invisible(object)
   }

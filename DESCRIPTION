@@ -67,7 +67,8 @@ Imports:
     Rtsne,
     ggrepel,
     BiocGenerics,
-    robust
+    robust,
+    demodata
 License: GPL-2 | file LICENSE
 URL: https://github.com/tidymass/masscleaner
 RoxygenNote: 7.1.1
@@ -82,4 +83,5 @@ biocViews: Metabolomics, MassSpectrometry, Data processing, Data analysis.
 Encoding: UTF-8
 Remotes: 
     tidymass/tinytools,
-    tidymass/massdataset
+    tidymass/massdataset,
+    tidymass/demodata
