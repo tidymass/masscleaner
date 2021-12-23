@@ -1,14 +1,5 @@
 base
 masscleaner
-BiocParallel
-BiocGenerics
-Biobase
-Rcpp
-mzR
-S4Vectors
-ProtGenerics
-MSnbase
-xcms
 massdataset
 magrittr
 tinytools

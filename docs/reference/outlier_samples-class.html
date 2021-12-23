@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List all packages in the masscleaner — masscleaner_packages • masscleaner</title>
+<title>An S4 class that stores the outlier sample information. — outlier_samples-class • masscleaner</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="List all packages in the masscleaner — masscleaner_packages" />
-<meta property="og:description" content="List all packages in the masscleaner" />
+<meta property="og:title" content="An S4 class that stores the outlier sample information. — outlier_samples-class" />
+<meta property="og:description" content="An S4 class that stores the outlier sample information." />
 <meta property="og:image" content="https://tidymass.github.io/masscleaner/logo.png" />
 
 
@@ -188,45 +188,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>List all packages in the masscleaner</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidymass/masscleaner/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>masscleaner_packages.Rd</code></div>
+    <h1>An S4 class that stores the outlier sample information.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidymass/masscleaner/blob/master/R/detect_outlier_samples.R'><code>R/detect_outlier_samples.R</code></a></small>
+    <div class="hidden name"><code>outlier_samples-class.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>List all packages in the masscleaner</p>
+    <p>An S4 class that stores the outlier sample information.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>masscleaner_packages</span><span class='op'>(</span>include_self <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>include_self</th>
-      <td><p>Include masscleaner in the list?</p></td>
-    </tr>
-    </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'>masscleaner_packages</span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "BiocParallel"  "cli"           "crayon"        "clisymbols"   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "dplyr"         "faahKO"        "ggplot2"       "ggsci"        </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "ggfortify"     "graphics"      "grDevices"     "pcaMethods"   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] "httr"          "impute"        "missForest"    "magrittr"     </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [17] "scatterplot3d" "pbapply"       "pheatmap"      "plyr"         </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [21] "purrr"         "beeswarm"      "ellipse"       "patchwork"    </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [25] "pls"           "plsdepot"      "pROC"          "e1071"        </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [29] "snow"          "tidyverse"     "methods"       "MSnbase"      </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [33] "mzR"           "massdataset"   "pander"        "utils"        </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [37] "rvest"         "stats"         "readr"         "readxl"       </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [41] "RColorBrewer"  "plotly"        "stringr"       "tibble"       </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [45] "tidyr"         "xcms"          "xml2"          "webchem"      </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [49] "tinytools"     "Biobase"       "rstudioapi"    "Rtsne"        </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [53] "ggrepel"       "BiocGenerics"  "robust"        "demodata"     </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [57] "masscleaner"  </span>
-</pre>
+    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+
+    
+
+<dl>
+<dt><code>outlier_samples_table</code></dt><dd><p>outlier_samples_table</p></dd>
+
+<dt><code>parameter</code></dt><dd><p>parameter</p></dd>
+
+<dt><code>parameter</code></dt><dd><p>parameter</p></dd>
+
+<dt><code>intermediate</code></dt><dd><p>intermediate</p></dd>
+
+<dt><code>ref</code></dt><dd><p>red</p></dd>
+
+</dl>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

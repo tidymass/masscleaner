@@ -216,9 +216,6 @@ detect_outlier = function(object,
 
 ##S4 class for outlier samples
 #' An S4 class that stores the outlier sample information.
-#' @title outlier_samples
-#' @name outlier_samples
-#' @docType class
 #' @slot outlier_samples_table outlier_samples_table
 #' @slot parameter parameter
 #' @slot parameter parameter
@@ -236,10 +233,6 @@ setClass(
 )
 
 
-#' @rdname outlier_samples-class
-#' @return message
-#' @export
-#' @importFrom methods show
 setMethod(
   f = "show",
   signature = "outlier_samples",

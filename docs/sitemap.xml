@@ -19,6 +19,9 @@
     <loc>https://tidymass.github.io/masscleaner//reference/baMZplot.html</loc>
   </url>
   <url>
+    <loc>https://tidymass.github.io/masscleaner//reference/check_for_data_integration.html</loc>
+  </url>
+  <url>
     <loc>https://tidymass.github.io/masscleaner//reference/check_for_qc_normalization.html</loc>
   </url>
   <url>
@@ -28,16 +31,13 @@
     <loc>https://tidymass.github.io/masscleaner//reference/extract_outlier_table.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/get_peak_int_distribution.html</loc>
-  </url>
-  <url>
     <loc>https://tidymass.github.io/masscleaner//reference/impute_mv.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/integrateData.html</loc>
+    <loc>https://tidymass.github.io/masscleaner//reference/integrate_data.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/integrate_data.html</loc>
+    <loc>https://tidymass.github.io/masscleaner//reference/masscleaner_conflicts.html</loc>
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//reference/masscleaner_logo.html</loc>
@@ -79,7 +79,7 @@
     <loc>https://tidymass.github.io/masscleaner//reference/optimize_loess_span.html</loc>
   </url>
   <url>
-    <loc>https://tidymass.github.io/masscleaner//reference/outlier_samples.html</loc>
+    <loc>https://tidymass.github.io/masscleaner//reference/outlier_samples-class.html</loc>
   </url>
   <url>
     <loc>https://tidymass.github.io/masscleaner//reference/rough_align.html</loc>
