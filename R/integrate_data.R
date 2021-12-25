@@ -11,6 +11,7 @@
 #' method has been used in this function.
 #' @export
 #' @examples 
+#'\dontrun{
 #' data("object1", package = "demodata")
 #' data("object2", package = "demodata")
 #' 
@@ -31,6 +32,7 @@
 #' massdataset::intensity_plot(object = new_object,
 #'                             variable_index = 2,
 #'                             order_by = "injection.order",color_by = "batch")
+#'}
 
 integrate_data = function(object,
                           method = c("qc_mean",

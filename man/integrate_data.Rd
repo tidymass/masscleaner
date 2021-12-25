@@ -27,6 +27,7 @@ Data integration is a necessary step for multiple batch dataset.
 method has been used in this function.
 }
 \examples{
+\dontrun{
 data("object1", package = "demodata")
 data("object2", package = "demodata")
 
@@ -47,6 +48,7 @@ massdataset::intensity_plot(object = object,
 massdataset::intensity_plot(object = new_object,
                             variable_index = 2,
                             order_by = "injection.order",color_by = "batch")
+}
 }
 \author{
 Xiaotao Shen
