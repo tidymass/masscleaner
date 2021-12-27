@@ -34,6 +34,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -46,18 +48,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">masscleaner</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Under development">0.9.2</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Help document
@@ -94,27 +90,28 @@
       <a href="../articles/version_0_9_2.html">Version 0.9.2</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../news/index.html">Change log</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../articles/contact_us.html">Contact us</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/contact_us.html">Contact us</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/tidymass/masscleaner/">
+  <a href="https://github.com/tidymass/masscleaner/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://twitter.com/JasperShen1990">
+  <a href="https://twitter.com/JasperShen1990" class="external-link">
     <span class="fab fa-twitter fa-lg"></span>
      
   </a>
@@ -135,15 +132,15 @@
 
       
 
-      </header><script src="data_normalization_integration_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Data normalization and integration</h1>
-                        <h4 class="author">Xiaotao Shen PhD (<a href="https://www.shenxt.info/" class="uri">https://www.shenxt.info/</a>)</h4>
+                        <h4 data-toc-skip class="author">Xiaotao Shen PhD (<a href="https://www.shenxt.info/" class="external-link uri">https://www.shenxt.info/</a>)</h4>
                         
-            <h4 class="date">Created on 2020-04-01 and updated on 2021-12-22</h4>
+            <h4 data-toc-skip class="date">Created on 2020-04-01 and updated on 2021-12-27</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/tidymass/masscleaner/blob/master/vignettes/data_normalization_integration.Rmd"><code>vignettes/data_normalization_integration.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidymass/masscleaner/blob/HEAD/vignettes/data_normalization_integration.Rmd" class="external-link"><code>vignettes/data_normalization_integration.Rmd</code></a></small>
       <div class="hidden name"><code>data_normalization_integration.Rmd</code></div>
 
     </div>
@@ -152,68 +149,68 @@
     
 <p>We can use <code>masscleaner</code> for data normalization and data integration.</p>
 <p>First, we need to prepare samples for <code>masscleaner</code>.</p>
-<div id="data-preparation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-preparation" class="anchor"></a><strong>Data preparation</strong>
+<div class="section level2">
+<h2 id="data-preparation">
+<strong>Data preparation</strong><a class="anchor" aria-label="anchor" href="#data-preparation"></a>
 </h2>
-<div id="peak-table" class="section level3">
-<h3 class="hasAnchor">
-<a href="#peak-table" class="anchor"></a><strong>Peak table</strong>
+<div class="section level3">
+<h3 id="peak-table">
+<strong>Peak table</strong><a class="anchor" aria-label="anchor" href="#peak-table"></a>
 </h3>
 <p>The peak table (csv format) can be from any software. We recomment that you use the <code>Peak_table_for_cleaning.csv</code> from <code>processData()</code> function from <code>masscleaner</code>.</p>
 <p>If you use other software, please make sure that the top 3 columns are <code>name</code> (peak name), <code>mz</code> and <code>rt</code> (rentention time, second). And the left column are sample intensity.</p>
-<p><img src="../man/figures/Screen%20Shot%202020-04-01%20at%201.07.37%20PM.png"></p>
+<p><img src="../reference/figures/Screen%20Shot%202020-04-01%20at%201.07.37%20PM.png"></p>
 </div>
-<div id="sample-information" class="section level3">
-<h3 class="hasAnchor">
-<a href="#sample-information" class="anchor"></a><strong>Sample information</strong>
+<div class="section level3">
+<h3 id="sample-information">
+<strong>Sample information</strong><a class="anchor" aria-label="anchor" href="#sample-information"></a>
 </h3>
 <p>We need the sample information (csv format) to define the detailed information of samples. Column 1 is <code>sample.name</code>, column 2 is <code>injection.order</code>, column 3 is <code>class</code> (such as Subject, QC, Blank), column 4 is <code>batch</code> and column 5 is <code>group</code> (such as control and case).</p>
-<p><img src="../man/figures/Screen%20Shot%202020-04-02%20at%208.40.02%20AM.png"></p>
+<p><img src="../reference/figures/Screen%20Shot%202020-04-02%20at%208.40.02%20AM.png"></p>
 </div>
 </div>
-<div id="read-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#read-data" class="anchor"></a><strong>Read data</strong>
+<div class="section level2">
+<h2 id="read-data">
+<strong>Read data</strong><a class="anchor" aria-label="anchor" href="#read-data"></a>
 </h2>
 <p>Then place the peak table and sample information in a folder. We use the demo data from <code>demoData</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymass/masscleaner">masscleaner</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">demoData</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code></pre></div>
-<div id="load-demo-data" class="section level3">
-<h3 class="hasAnchor">
-<a href="#load-demo-data" class="anchor"></a><strong>Load demo data</strong>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymass/masscleaner" class="external-link">masscleaner</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">demoData</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
+<div class="section level3">
+<h3 id="load-demo-data">
+<strong>Load demo data</strong><a class="anchor" aria-label="anchor" href="#load-demo-data"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">##create a folder named as example</span>
-<span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"."</span>, <span class="st">"example"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">path</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"."</span>, <span class="st">"example"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">path</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">##get demo data</span>
-<span class="va">demo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"masscleaner"</span>, package <span class="op">=</span> <span class="st">"demoData"</span><span class="op">)</span>
+<span class="va">demo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"masscleaner"</span>, package <span class="op">=</span> <span class="st">"demoData"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.copy</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">demo_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span><span class="va">demo_data</span><span class="op">)</span><span class="op">)</span>, 
+<span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.copy</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">demo_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="va">demo_data</span><span class="op">)</span><span class="op">)</span>, 
           to <span class="op">=</span> <span class="va">path</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>Here, we have two peak tables, <code>batch1.data.csv</code> and <code>batch2.data.csv</code>, and <code>sample_info.csv</code> are in your <code>./example</code> folder.</p>
 </div>
-<div id="create-metflowclass-object" class="section level3">
-<h3 class="hasAnchor">
-<a href="#create-metflowclass-object" class="anchor"></a><strong>Create <code>metflowClass</code> object</strong>
+<div class="section level3">
+<h3 id="create-metflowclass-object">
+<strong>Create <code>metflowClass</code> object</strong><a class="anchor" aria-label="anchor" href="#create-metflowclass-object"></a>
 </h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">object</span> <span class="op">&lt;-</span>
   <span class="fu">create_metflow_object</span><span class="op">(</span>
-    ms1.data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"batch1.data.csv"</span>, <span class="st">"batch2.data.csv"</span><span class="op">)</span>,
+    ms1.data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"batch1.data.csv"</span>, <span class="st">"batch2.data.csv"</span><span class="op">)</span>,
     sample.information <span class="op">=</span> <span class="st">"sample_info.csv"</span>,
     path <span class="op">=</span> <span class="va">path</span>
   <span class="op">)</span></code></pre></div>
 <p><code>object</code> is a <code>metflowClass</code> object, so you can print it in the console.</p>
 </div>
 </div>
-<div id="align-different-batches" class="section level2">
-<h2 class="hasAnchor">
-<a href="#align-different-batches" class="anchor"></a><strong>Align different batches</strong>
+<div class="section level2">
+<h2 id="align-different-batches">
+<strong>Align different batches</strong><a class="anchor" aria-label="anchor" href="#align-different-batches"></a>
 </h2>
 <p>Because there are two batch peak tables, so first we must align them.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -224,13 +221,13 @@
   use.int.tol <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></code></pre></div>
 </div>
-<div id="missing-value-processing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#missing-value-processing" class="anchor"></a><strong>Missing value processing</strong>
+<div class="section level2">
+<h2 id="missing-value-processing">
+<strong>Missing value processing</strong><a class="anchor" aria-label="anchor" href="#missing-value-processing"></a>
 </h2>
-<div id="remove-noisy-peaks-and-outlier-samples" class="section level3">
-<h3 class="hasAnchor">
-<a href="#remove-noisy-peaks-and-outlier-samples" class="anchor"></a><strong>Remove noisy peaks and outlier samples</strong>
+<div class="section level3">
+<h3 id="remove-noisy-peaks-and-outlier-samples">
+<strong>Remove noisy peaks and outlier samples</strong><a class="anchor" aria-label="anchor" href="#remove-noisy-peaks-and-outlier-samples"></a>
 </h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu">filter_peaks</span><span class="op">(</span>
@@ -242,18 +239,18 @@
   which.group <span class="op">=</span> <span class="st">"QC"</span>
 <span class="op">)</span></code></pre></div>
 </div>
-<div id="remove-outlier-samples" class="section level3">
-<h3 class="hasAnchor">
-<a href="#remove-outlier-samples" class="anchor"></a><strong>Remove outlier samples</strong>
+<div class="section level3">
+<h3 id="remove-outlier-samples">
+<strong>Remove outlier samples</strong><a class="anchor" aria-label="anchor" href="#remove-outlier-samples"></a>
 </h3>
 <p>Nest, we should remove some samples which have a lot of missing values.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/filter_samples.html">filter_samples</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object2</span>,
+<code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/filter_samples.html" class="external-link">filter_samples</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object2</span>,
                           min.fraction.peak <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="missing-value-imputation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#missing-value-imputation" class="anchor"></a><strong>Missing value imputation</strong>
+<div class="section level3">
+<h3 id="missing-value-imputation">
+<strong>Missing value imputation</strong><a class="anchor" aria-label="anchor" href="#missing-value-imputation"></a>
 </h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">object2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/impute_mv.html">impute_mv</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object2</span>,
@@ -261,9 +258,9 @@
 <span class="va">object2</span></code></pre></div>
 </div>
 </div>
-<div id="data-normalization" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-normalization" class="anchor"></a><strong>Data normalization</strong>
+<div class="section level2">
+<h2 id="data-normalization">
+<strong>Data normalization</strong><a class="anchor" aria-label="anchor" href="#data-normalization"></a>
 </h2>
 <p>Now we can normalize data using different methods.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -278,9 +275,9 @@
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">get_peak_int_distribution</span><span class="op">(</span>object <span class="op">=</span> <span class="va">object2</span>, peak_name <span class="op">=</span> <span class="st">"M114T670"</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="data-integration" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-integration" class="anchor"></a><strong>Data integration</strong>
+<div class="section level2">
+<h2 id="data-integration">
+<strong>Data integration</strong><a class="anchor" aria-label="anchor" href="#data-integration"></a>
 </h2>
 <p>Then we can use the <code><a href="../reference/integrate_data.html">integrate_data()</a></code> function to do data integration.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -291,17 +288,17 @@
 <span class="va">rsd4</span> <span class="op">&lt;-</span> <span class="fu">calculate_rsd</span><span class="op">(</span>object <span class="op">=</span> <span class="va">object4</span>, slot <span class="op">=</span> <span class="st">"QC"</span><span class="op">)</span></code></pre></div>
 <p>Then we can draw the comprison plot:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">rsd2</span>, <span class="va">rsd4</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"index"</span>, <span class="st">"name"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>class <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span><span class="va">rsd.y</span> <span class="op">&lt;</span> <span class="va">rsd.x</span> <span class="op">~</span> <span class="st">"Decrease"</span>,
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
+<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">rsd2</span>, <span class="va">rsd4</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"index"</span>, <span class="st">"name"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>class <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">rsd.y</span> <span class="op">&lt;</span> <span class="va">rsd.x</span> <span class="op">~</span> <span class="st">"Decrease"</span>,
                                          <span class="va">rsd.y</span> <span class="op">&gt;</span> <span class="va">rsd.x</span> <span class="op">~</span> <span class="st">"Increase"</span>,
-                                         <span class="va">rsd.y</span> <span class="op">==</span> <span class="va">rsd.y</span> <span class="op">~</span> <span class="st">"Equal"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">rsd.x</span>, <span class="va">rsd.y</span>, colour <span class="op">=</span> <span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">ggsci</span><span class="fu">::</span><span class="fu"><a href="https://nanx.me/ggsci/reference/scale_jama.html">scale_color_jama</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_abline</a></span><span class="op">(</span>slope <span class="op">=</span> <span class="fl">1</span>, intercept <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"RSD after normalization"</span>, y <span class="op">=</span> <span class="st">"RSD before normalization"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+                                         <span class="va">rsd.y</span> <span class="op">==</span> <span class="va">rsd.y</span> <span class="op">~</span> <span class="st">"Equal"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">rsd.x</span>, <span class="va">rsd.y</span>, colour <span class="op">=</span> <span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ggsci</span><span class="fu">::</span><span class="fu"><a href="https://nanx.me/ggsci/reference/scale_jama.html" class="external-link">scale_color_jama</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_abline</a></span><span class="op">(</span>slope <span class="op">=</span> <span class="fl">1</span>, intercept <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"RSD after normalization"</span>, y <span class="op">=</span> <span class="st">"RSD before normalization"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 
@@ -316,11 +313,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="hhttps://www.shenxt.info/">Xiaotao Shen</a>.</p>
+  <p></p>
+<p>masscleaner Developed by <a href="hhttps://www.shenxt.info/" class="external-link">Xiaotao Shen</a>. <br> from <i class="fa fa-university"></i> Stanford University <br><i class="fa fa-clinic-medical"></i>School of Medicine <br><i class="fa fa-dna"></i> Genetics Department</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p><b>Contact Us:</b> <br><i class="fa fa-envelope"></i> <a href="mailto:shenxt1990@outlook.com" class="email">shenxt1990@outlook.com</a> <br><i class="fa fa-weixin"></i> <a href="https://www.shenxt.info/files/wechat_QR.jpg" class="external-link">shenxt1990</a> <br><i class="fa fa-network-wired"></i> <a href="https://tidymass.github.io/tidymass/" class="external-link">A part of tidymass</a></p>
 </div>
 
       </footer>

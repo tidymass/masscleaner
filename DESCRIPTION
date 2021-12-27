@@ -70,6 +70,7 @@ Imports:
     massdataset
 License: GPL-2 | file LICENSE
 URL: https://github.com/tidymass/masscleaner
+BugReports: https://github.com/tidymass/masscleaner/issues
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,

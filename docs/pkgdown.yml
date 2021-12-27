@@ -1,5 +1,5 @@
 pandoc: 2.11.4
-pkgdown: 1.6.1
+pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
   align_batch: align_batch.html
@@ -8,8 +8,8 @@ articles:
   filter_variable_outlier: filter_variable_outlier.html
   missing_value_imputation: missing_value_imputation.html
   version_0_9_2: version_0_9_2.html
-last_built: 2021-12-23T07:35Z
+last_built: 2021-12-27T19:50Z
 urls:
-  reference: https://tidymass.github.io/masscleaner//reference
-  article: https://tidymass.github.io/masscleaner//articles
+  reference: https://tidymass.github.io/masscleaner/reference
+  article: https://tidymass.github.io/masscleaner/articles
 

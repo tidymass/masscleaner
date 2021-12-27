@@ -2,21 +2,21 @@
   "index_name": "masscleaner",
   "start_urls": [
     {
-      "url": "https://tidymass.github.io/masscleaner//index.html",
+      "url": "https://tidymass.github.io/masscleaner/index.html",
       "selectors_key": "homepage",
       "tags": [
         "homepage"
       ]
     },
     {
-      "url": "https://tidymass.github.io/masscleaner//reference",
+      "url": "https://tidymass.github.io/masscleaner/reference",
       "selectors_key": "reference",
       "tags": [
         "reference"
       ]
     },
     {
-      "url": "https://tidymass.github.io/masscleaner//articles",
+      "url": "https://tidymass.github.io/masscleaner/articles",
       "selectors_key": "articles",
       "tags": [
         "articles"
@@ -30,7 +30,7 @@
     "/articles/index.html"
   ],
   "sitemap_urls": [
-    "https://tidymass.github.io/masscleaner//sitemap.xml"
+    "https://tidymass.github.io/masscleaner/sitemap.xml"
   ],
   "selectors": {
     "homepage": {
