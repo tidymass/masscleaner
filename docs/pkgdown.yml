@@ -9,7 +9,7 @@ articles:
   masscleaner_install: masscleaner_install.html
   missing_value_imputation: missing_value_imputation.html
   version_0_9_2: version_0_9_2.html
-last_built: 2022-01-07T07:30Z
+last_built: 2022-01-07T07:34Z
 urls:
   reference: https://tidymass.github.io/masscleaner/reference
   article: https://tidymass.github.io/masscleaner/articles
