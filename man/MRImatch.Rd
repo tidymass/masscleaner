@@ -45,7 +45,7 @@ reName <- function(name) {
   lapply(temp.name, function(x) {
     temp.idx <- which(x == name)
     if (length(temp.idx) > 1) {
-      paste(name[temp.idx], 1:length(temp.idx), sep = "_")
+      paste(name[temp.idx], seq_len(length(temp.idx)), sep = "_")
     }
   })
 }
@@ -72,10 +72,10 @@ getBatchAlignmentInfo <- function(raw.data,
   rt.error.sd <- sd(abs(rt.error))
 
   int1 <-
-    log(apply(rough.align.data[[1]][, -c(1:3)], 1, function(x)
+    log(apply(rough.align.data[[1]][, -c(seq_len(3))], 1, function(x)
       mean(x, na.rm = TRUE)) + 1, 10)
   int2 <-
-    log(apply(rough.align.data[[2]][, -c(1:3)], 1, function(x)
+    log(apply(rough.align.data[[2]][, -c(seq_len(3))], 1, function(x)
       mean(x, na.rm = TRUE)) + 1, 10)
   int.error <- int2 - int1
   int.error.sd <- sd(abs(int.error))

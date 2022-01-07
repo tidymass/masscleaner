@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 
 Some times if you have more than two batch peak tables, and they are processed at different times, so you need to align them together before other analysis. In `masscleaner`, we use the `align_batch()` function to do that.
 
-## **Data preparation**
+# **Data preparation**
 
 See the [massdataset](https://tidymass.github.io/massdataset/) package, and create you metabolomics dataset into 2 mass_dataset objects.
 
@@ -50,7 +50,7 @@ library(tidyverse)
 ```
 
 
-## **Run `align_batch()` function**
+# **Run `align_batch()` function**
 
 ```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
 data(object1, package = "demodata")
@@ -74,7 +74,11 @@ new_object
 ```
 
 
+# **Session information**
 
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+sessionInfo()
+```
 
 
 

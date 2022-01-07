@@ -85,10 +85,10 @@ baINTplot <- function(simple.data) {
     ggplot2::theme(legend.text = ggplot2::element_text(size = 10))
   
   int1 <-
-    log(apply(simple.data[[1]][, -c(1:3)], 1, function(x)
+    log(apply(simple.data[[1]][, -c(seq_len(3))], 1, function(x)
       mean(x, na.rm = TRUE)) + 1, 10)
   int2 <-
-    log(apply(simple.data[[2]][, -c(1:3)], 1, function(x)
+    log(apply(simple.data[[2]][, -c(seq_len(3))], 1, function(x)
       mean(x, na.rm = TRUE)) + 1, 10)
   int.error <- int2 - int1
   

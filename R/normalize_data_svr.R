@@ -64,7 +64,7 @@ normalize_data_svr <- function(subject_data,
     }
   
   
-  peak_index <- 1:nrow(qc_data)
+  peak_index <- seq_len(nrow(qc_data))
   
   if (tinytools::get_os() == "windows") {
     bpparam =

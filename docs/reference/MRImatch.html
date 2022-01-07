@@ -35,16 +35,16 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/correct_rt.html">Correct retention time</a>
+      <a href="../articles/masscleaner_install.html">Install masscleaner</a>
     </li>
     <li>
       <a href="../articles/align_batch.html">Align different batch peak tables</a>
     </li>
     <li>
-      <a href="../articles/missing_value_imputation.html">Impute missing values</a>
+      <a href="../articles/filter_variable_outlier.html">Filter noisy variables and outlier samples</a>
     </li>
     <li>
-      <a href="../articles/filter_variable_outlier.html">Filter noisy variables and outlier samples</a>
+      <a href="../articles/missing_value_imputation.html">Impute missing values</a>
     </li>
     <li>
       <a href="../articles/data_normalization_integration.html">Data normalization and integration</a>
@@ -149,7 +149,7 @@
   lapply(temp.name, function(x) 
     temp.idx &lt;- which(x == name)
     if (length(temp.idx) &gt; 1) 
-      paste(name[temp.idx], 1:length(temp.idx), sep = "_")  )
+      paste(name[temp.idx], seq_len(length(temp.idx)), sep = "_")  )
 
 #' @title getBatchAlignmentInfo
 #' @description getBatchAlignmentInfo
@@ -169,10 +169,10 @@
     (rough.align.data[[2]]$mz - rough.align.data[[1]]$mz) * 10 ^ 6 / rough.align.data[[2]]$mz
   mz.error.sd &lt;- sd(abs(mz.error))  rt.error &lt;- rough.align.data[[2]]$rt - rough.align.data[[1]]$rt
   rt.error.sd &lt;- sd(abs(rt.error))  int1 &lt;-
-    log(apply(rough.align.data[[1]][, -c(1:3)], 1, function(x)
+    log(apply(rough.align.data[[1]][, -c(seq_len(3))], 1, function(x)
       mean(x, na.rm = TRUE)) + 1, 10)
   int2 &lt;-
-    log(apply(rough.align.data[[2]][, -c(1:3)], 1, function(x)
+    log(apply(rough.align.data[[2]][, -c(seq_len(3))], 1, function(x)
       mean(x, na.rm = TRUE)) + 1, 10)
   int.error &lt;- int2 - int1
   int.error.sd &lt;- sd(abs(int.error))  parameter.info &lt;-

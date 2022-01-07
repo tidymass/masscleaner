@@ -6,6 +6,9 @@
 \usage{
 masscleaner_logo()
 }
+\value{
+logo
+}
 \description{
 masscleaner_logo
 }

@@ -84,7 +84,7 @@ normalize_data_loess <- function(subject_data,
       return(return_result)
     }
   
-  peak_index <- 1:nrow(qc_data)
+  peak_index <- seq_len(nrow(qc_data))
   
   if (tinytools::get_os() == "windows") {
     bpparam =
@@ -173,7 +173,7 @@ optimize_loess_span =
                   try(predict(object = temp_result,
                               newdata = temp_data[idx, -2, drop = FALSE]))
                 
-                if (class(prediction) == "try-error") {
+                if (class(prediction)[1] == "try-error") {
                   data.frame(real = temp_data$y[idx],
                              prediction = NA)
                 } else{
@@ -210,7 +210,7 @@ optimize_loess_span =
       dplyr::filter(!is.na(rmse))
     #
     # idx = which.min(span_rmse$rmse)
-    # # for(i in 1:nrow(span_rmse)){
+    # # for(i in seq_len(nrow(span_rmse))){
     # plot =
     #   plot +
     #   geom_smooth(

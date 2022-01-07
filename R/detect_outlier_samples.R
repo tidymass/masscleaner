@@ -1,5 +1,6 @@
 #' @title Detect outlier samples
-#' @description Detect outlier samples
+#' @description Detect outlier samples. See more here:
+#' \url{https://privefl.github.io/blog/detecting-outlier-samples-in-pca/}
 #' @author Xiaotao Shen
 #' \email{shenxt1990@@outlook.com}
 #' @param object A mass_dataset object.
@@ -8,7 +9,6 @@
 #' @param mad_fold_change mad_fold_change
 #' @param dist_p_cutoff dist_p_cutoff
 #' @return A new mass_dataset object.
-#' @seealso https://privefl.github.io/blog/detecting-outlier-samples-in-pca/
 #' @export
 #' @examples
 #' library(massdataset)
@@ -145,7 +145,7 @@ detect_outlier = function(object,
   ##Kettenring 1972, Yohai and Zamar (1988), Maronna and Zamar (2002),
   ##Todorov, Filzmoser, and others (2009)) and that is reexported
   ## in {bigutilsr}.
-  dist <- robust::covRob(data = pc[, c(1:2)],
+  dist <- robust::covRob(data = pc[, c(seq_len(2))],
                          estim = "pairwiseGK")$dist
   
   ##This new criterion provides similar results for this data.
@@ -202,10 +202,10 @@ detect_outlier = function(object,
       accordint_to_distance = list(dist = dist)
     ),
     ref = list(
-      according_to_na = "https://privefl.github.io/blog/detecting-outlier-samples-in-pca/",
-      according_to_pc_sd = "https://privefl.github.io/blog/detecting-outlier-samples-in-pca/",
-      according_to_pc_mad = "https://privefl.github.io/blog/detecting-outlier-samples-in-pca/",
-      accordint_to_distance = "https://privefl.github.io/blog/detecting-outlier-samples-in-pca/"
+      according_to_na = "privefl.github.io/blog/detecting-outlier-samples-in-pca",
+      according_to_pc_sd = "privefl.github.io/blog/detecting-outlier-samples-in-pca",
+      according_to_pc_mad = "privefl.github.io/blog/detecting-outlier-samples-in-pca",
+      accordint_to_distance = "privefl.github.io/blog/detecting-outlier-samples-in-pca"
     )
   )
   
@@ -240,7 +240,7 @@ setMethod(
     cat(crayon::yellow(paste(rep("-", 20), collapse = ""), "\n"))
     cat(crayon::green("masscleaner", "\n"))
     cat(crayon::yellow(paste(rep("-", 20), collapse = ""), "\n"))
-    for (i in 1:length(object@outlier_samples_table)) {
+    for (i in seq_len(length(object@outlier_samples_table))) {
       cat(crayon::green(i, names(object@outlier_samples_table)[i], ": "))
       cat(sum(object@outlier_samples_table[[i]][, 2]),
           "outlier samples.\n")

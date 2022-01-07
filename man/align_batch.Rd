@@ -18,9 +18,11 @@ align_batch(
 
 \item{y}{A mass_dataset object}
 
-\item{combine.mz.tol}{m/z tolerance for batch alignment, default is 25 ppm.}
+\item{combine.mz.tol}{m/z tolerance for batch alignment, 
+default is 25 ppm.}
 
-\item{combine.rt.tol}{RT tolerance for batch alignment, default is 30 seconds.}
+\item{combine.rt.tol}{RT tolerance for batch alignment, 
+default is 30 seconds.}
 
 \item{use.int.tol}{Whether use intensity match for batch alignment.}
 

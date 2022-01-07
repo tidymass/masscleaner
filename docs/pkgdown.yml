@@ -6,9 +6,10 @@ articles:
   contact_us: contact_us.html
   data_normalization_integration: data_normalization_integration.html
   filter_variable_outlier: filter_variable_outlier.html
+  masscleaner_install: masscleaner_install.html
   missing_value_imputation: missing_value_imputation.html
   version_0_9_2: version_0_9_2.html
-last_built: 2021-12-27T19:50Z
+last_built: 2022-01-07T07:30Z
 urls:
   reference: https://tidymass.github.io/masscleaner/reference
   article: https://tidymass.github.io/masscleaner/articles

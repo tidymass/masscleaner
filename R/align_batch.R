@@ -4,8 +4,10 @@
 #' \email{shenxt1990@@outlook.com}
 #' @param x A mass_dataset object
 #' @param y A mass_dataset object
-#' @param combine.mz.tol m/z tolerance for batch alignment, default is 25 ppm.
-#' @param combine.rt.tol RT tolerance for batch alignment, default is 30 seconds.
+#' @param combine.mz.tol m/z tolerance for batch alignment, 
+#' default is 25 ppm.
+#' @param combine.rt.tol RT tolerance for batch alignment, 
+#' default is 30 seconds.
 #' @param use.int.tol Whether use intensity match for batch alignment.
 #' @param return_index return index or new object.
 #' @return A index table or a new mass_dataset object.
@@ -45,8 +47,10 @@ align_batch = function(x,
   
   rough_match_result <- rough_align(
     peak.table = list(
-      cbind(x@variable_info[, c("variable_id", "mz", "rt")], x@expression_data),
-      cbind(y@variable_info[, c("variable_id", "mz", "rt")], y@expression_data)
+      cbind(x@variable_info[, c("variable_id", "mz", "rt")], 
+            x@expression_data),
+      cbind(y@variable_info[, c("variable_id", "mz", "rt")], 
+            y@expression_data)
     ),
     combine.mz.tol = combine.mz.tol,
     combine.rt.tol = combine.rt.tol
@@ -57,8 +61,10 @@ align_batch = function(x,
   accurate_match_result <-
     accurate_align(
       peak.table = list(
-        cbind(x@variable_info[, c("variable_id", "mz", "rt")], x@expression_data),
-        cbind(y@variable_info[, c("variable_id", "mz", "rt")], y@expression_data)
+        cbind(x@variable_info[, c("variable_id", "mz", "rt")], 
+              x@expression_data),
+        cbind(y@variable_info[, c("variable_id", "mz", "rt")], 
+              y@expression_data)
       ),
       simple.data = rough_match_result,
       use.int.tol = use.int.tol
@@ -154,15 +160,15 @@ simply_data <- function(data,
   variable_id <- data$variable_id
   mz <- data$mz
   rt <- data$rt
-  int <- apply(data[, -c(1:3)], 1, function(x)
+  int <- apply(data[, -c(seq_len(3))], 1, function(x)
     mean(x, na.rm = TRUE))
   names(mz) <- names(rt) <- names(int) <- variable_id
   
   #group peaks according to mz and RT
   
-  all.index <- 1:length(variable_id)
+  all.index <- seq_len(length(variable_id))
   remain.idx <- vector(mode = "list", length = length(variable_id))
-  for (idx in 1:length(variable_id)) {
+  for (idx in seq_len(length(variable_id))) {
     if (all(idx != all.index))
       next()
     temp.mz <- mz[idx]
@@ -307,10 +313,10 @@ baMZplot <- function(simple.data) {
 #'     ggplot2::theme(legend.text = ggplot2::element_text(size = 10))
 #'   
 #'   int1 <-
-#'     log(apply(simple.data[[1]][, -c(1:3)], 1, function(x)
+#'     log(apply(simple.data[[1]][, -c(seq_len(3))], 1, function(x)
 #'       mean(x, na.rm = TRUE)) + 1, 10)
 #'   int2 <-
-#'     log(apply(simple.data[[2]][, -c(1:3)], 1, function(x)
+#'     log(apply(simple.data[[2]][, -c(seq_len(3))], 1, function(x)
 #'       mean(x, na.rm = TRUE)) + 1, 10)
 #'   int.error <- int2 - int1
 #'   
@@ -364,10 +370,10 @@ accurate_align <- function(peak.table,
   rt.error.sd <- sd(abs(rt.error))
   
   int1 <-
-    log(apply(simple.data[[1]][, -c(1:3)], 1, function(x)
+    log(apply(simple.data[[1]][, -c(seq_len(3))], 1, function(x)
       mean(x, na.rm = TRUE)) + 1, 10)
   int2 <-
-    log(apply(simple.data[[2]][, -c(1:3)], 1, function(x)
+    log(apply(simple.data[[2]][, -c(seq_len(3))], 1, function(x)
       mean(x, na.rm = TRUE)) + 1, 10)
   int.error <- int2 - int1
   
@@ -421,7 +427,7 @@ align_2batch <- function(batch1,
                          int.weight = 0.2) {
   data1 <- batch1[, c("mz", "rt")]
   int1 <-
-    log(apply(batch1[, -c(1:3)], 1, function(x)
+    log(apply(batch1[, -c(seq_len(3))], 1, function(x)
       mean(x, na.rm = TRUE)) + 1, 10)
   data1 <- data.frame(data1, int1, stringsAsFactors = FALSE)
   colnames(data1)[3] <- "int"
@@ -429,7 +435,7 @@ align_2batch <- function(batch1,
   
   data2 <- batch2[, c("mz", "rt")]
   int2 <-
-    log(apply(batch2[, -c(1:3)], 1, function(x)
+    log(apply(batch2[, -c(seq_len(3))], 1, function(x)
       mean(x, na.rm = TRUE)) + 1, 10)
   data2 <- data.frame(data2, int2, stringsAsFactors = FALSE)
   colnames(data2)[3] <- "int"
@@ -456,20 +462,24 @@ align_2batch <- function(batch1,
     temp.mz.error <- temp.result[, "mz.error"]
     temp.rt.error <- temp.result[, "rt.error"]
     temp.int.error <- temp.result[, "int.error"]
-    temp.mz.score <- sapply(temp.mz.error, function(x) {
+    temp.mz.score <- lapply(temp.mz.error, function(x) {
       matchScore(error = x, sd = mz.error.sd)
-    })
+    }) %>% 
+      unlist()
     
-    temp.rt.score <- sapply(temp.rt.error, function(x) {
+    temp.rt.score <- lapply(temp.rt.error, function(x) {
       matchScore(error = x, sd = rt.error.sd)
-    })
+    }) %>% 
+      unlist()
     
-    temp.int.score <- sapply(temp.int.error, function(x) {
+    temp.int.score <- lapply(temp.int.error, function(x) {
       matchScore(error = x, sd = int.error.sd)
-    })
+    }) %>% 
+      unlist()
     
     temp.score <-
-      mz.weight * temp.mz.score + rt.weight * temp.rt.score + int.weight * temp.int.score
+      mz.weight * temp.mz.score + rt.weight * temp.rt.score + 
+      int.weight * temp.int.score
     return(temp.idx[which.max(temp.score)])
   }))
   
@@ -497,20 +507,24 @@ align_2batch <- function(batch1,
     temp.mz.error <- temp.result[, "mz.error"]
     temp.rt.error <- temp.result[, "rt.error"]
     temp.int.error <- temp.result[, "int.error"]
-    temp.mz.score <- sapply(temp.mz.error, function(x) {
+    temp.mz.score <- lapply(temp.mz.error, function(x) {
       matchScore(error = x, sd = mz.error.sd)
-    })
+    }) %>% 
+      unlist()
     
-    temp.rt.score <- sapply(temp.rt.error, function(x) {
+    temp.rt.score <- lapply(temp.rt.error, function(x) {
       matchScore(error = x, sd = rt.error.sd)
-    })
+    }) %>% 
+      unlist()
     
-    temp.int.score <- sapply(temp.int.error, function(x) {
+    temp.int.score <- lapply(temp.int.error, function(x) {
       matchScore(error = x, sd = int.error.sd)
-    })
+    }) %>% 
+      unlist()
     
     temp.score <-
-      mz.weight * temp.mz.score + rt.weight * temp.rt.score + int.weight * temp.int.score
+      mz.weight * temp.mz.score + rt.weight * temp.rt.score + 
+      int.weight * temp.int.score
     return(temp.idx[which.max(temp.score)])
   }))
   
@@ -553,7 +567,9 @@ align_2batch <- function(batch1,
   # new.name <- tinytools::name_duplicated(new.name)
   #
   # return.data <- data.frame(new.name, new.mz, new.rt,
-  #                           batch1[, -c(1:3)], batch2[, -c(1:3)], stringsAsFactors = FALSE)
+  #                           batch1[, -c(seq_len(3))], 
+  #                           batch2[, -c(seq_len(3))], 
+  #                           stringsAsFactors = FALSE)
   # rownames(return.data) <- new.name
   # rm(
   #   list = c(
@@ -596,7 +612,7 @@ matchScore <- function(error, sd) {
 #'   lapply(temp.name, function(x) {
 #'     temp.idx <- which(x == name)
 #'     if (length(temp.idx) > 1) {
-#'       paste(name[temp.idx], 1:length(temp.idx), sep = "_")
+#'       paste(name[temp.idx], seq_len(length(temp.idx)), sep = "_")
 #'     }
 #'   })
 #' }
@@ -625,10 +641,10 @@ matchScore <- function(error, sd) {
 #'   rt.error.sd <- sd(abs(rt.error))
 #'
 #'   int1 <-
-#'     log(apply(rough.align.data[[1]][, -c(1:3)], 1, function(x)
+#'     log(apply(rough.align.data[[1]][, -c(seq_len(3))], 1, function(x)
 #'       mean(x, na.rm = TRUE)) + 1, 10)
 #'   int2 <-
-#'     log(apply(rough.align.data[[2]][, -c(1:3)], 1, function(x)
+#'     log(apply(rough.align.data[[2]][, -c(seq_len(3))], 1, function(x)
 #'       mean(x, na.rm = TRUE)) + 1, 10)
 #'   int.error <- int2 - int1
 #'   int.error.sd <- sd(abs(int.error))
@@ -744,7 +760,7 @@ MRImatch = function(data1,
     result <- mapply(function(x, y) {
       list(cbind(x, y))
     },
-    x <- 1:length(info1),
+    x <- seq_len(length(info1)),
     y = result)
     result <- do.call(rbind, result)
   }

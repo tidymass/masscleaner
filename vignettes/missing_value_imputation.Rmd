@@ -27,13 +27,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-## **Introduction**
+# **Introduction**
 
 We can use `masscleaner` for missing value (MV) imputation.
 
 First, we need to prepare samples for `masscleaner`.
-
-Then place the peak table and sample information in a folder. We use the demo data from `massdataset` package.
 
 ```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
 library(masscleaner)
@@ -41,7 +39,7 @@ library(massdataset)
 library(tidyverse)
 ```
 
-## **Missing value processing**
+# **Data preparation**
 
 ```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
 data("expression_data")
@@ -57,8 +55,17 @@ object
 
 get_mv_number(object)
 massdataset::get_mv_number(object, by = "sample")
+head(massdataset::get_mv_number(object, by = "variable"))
 
-###remove variables who have mv in more than 20% QC samples
+massdataset::get_mv_number(object, by = "sample", show_by = "percentage")
+head(massdataset::get_mv_number(object, by = "variable"), show_by = "percentage")
+```
+
+# **Filter noisy features**
+
+Remove variables who have mv in more than 20% QC samples.
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
 qc_id =
   object %>%
   activate_mass_dataset(what = "sample_info") %>%
@@ -77,8 +84,14 @@ object =
   mutate_variable_na_freq(according_to_samples = subject_id) %>%
   activate_mass_dataset(what = "variable_info") %>%
   filter(na_freq < 0.2 & na_freq.1 < 0.5)
+object
+```
 
-###remove samples with MV > 50% except Blank samples
+# **Filter outlier samples**
+
+Remove samples with MV > 50% except Blank samples.
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
 object =
   filter_samples(
     object = object,
@@ -88,7 +101,16 @@ object =
     apply_to = c(qc_id, subject_id),
     prune = TRUE
   )
+```
 
+# **Missing value processing**
+
+For Blank samples and subject samples, we use different method to impute missing
+values.
+
+For Blank samples, just use the zero.
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
 blank_id =
   object %>%
   activate_mass_dataset(what = "sample_info") %>%
@@ -105,15 +127,40 @@ object1 %>%
   select(dplyr::contains("Blank")) %>%
   extract_expression_data() %>% 
   head()
+```
+
+For non-Blank samples, just use the knn method
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+non_blank_id =
+  object %>%
+  activate_mass_dataset(what = "sample_info") %>%
+  filter(class != "Blank") %>%
+  pull(sample_id)
+
+non_blank_id
 
 object2 =
-  impute_mv(object = object,
-            sample_id = subject_id,
+  impute_mv(object = object1,
+            sample_id = non_blank_id,
             method = "knn")
 
 object2 %>%
   activate_mass_dataset(what = "sample_info") %>%
-  filter(class == "Subject") %>%
+  filter(class != "Blank") %>%
   extract_expression_data() %>% 
   head()
+
+object2 %>%
+  activate_mass_dataset(what = "sample_info") %>%
+  filter(class == "Blank") %>%
+  extract_expression_data() %>% 
+  head()
+```
+
+
+# **Session information**
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+sessionInfo()
 ```

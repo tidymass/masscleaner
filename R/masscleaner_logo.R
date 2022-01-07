@@ -28,6 +28,8 @@
 #' @importFrom pcaMethods pca completeObs
 #' @importFrom patchwork plot_layout
 #' @import patchwork
+#' @import tidyr
+#' @import snow
 #' @importFrom robust covRob
 #' @importFrom stats coefficients lm loess median predict mad pchisq
 #' @importFrom stats rgamma rt sd cor p.adjust prcomp t.test wilcox.test
@@ -35,6 +37,8 @@
 #' @importFrom massdataset check_object_class get_sample_id show_sample_missing_values mutate_variable_na_freq activate_mass_dataset
 #' @importFrom massdataset intensity_plot
 #' @importClassesFrom massdataset mass_dataset tidymass_parameter
+#' @import graphics
+#' @return logo
 #' @export
 
 masscleaner_logo <- function() {
@@ -43,7 +47,7 @@ masscleaner_logo <- function() {
   cat(crayon::green("Bug fixing\n"))
   cat(
     crayon::green(
-      "More information can be found at https://tidymass.github.io/masscleaner/\n"
+      "More information: google tidymass cleaner.\n"
     )
   )
   cat(crayon::green(

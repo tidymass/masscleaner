@@ -27,21 +27,20 @@ knitr::opts_chunk$set(
 )
 ```
 
-## **Introduction**
+# **Introduction**
 
-We can use `masscleaner` for missing value (MV) imputation.
+We can use `masscleaner` to remove noisy features and outlier samples.
 
 First, we need to prepare samples for `masscleaner`.
 
-Then place the peak table and sample information in a folder. We use the demo data from `massdataset` package.
+# **Data preparation**
+
 
 ```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
 library(masscleaner)
 library(massdataset)
 library(tidyverse)
 ```
-
-## **Filter variables and samples**
 
 ```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
 data("expression_data")
@@ -53,20 +52,98 @@ object =
     sample_info = sample_info,
     variable_info = variable_info
   )
+object
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+get_mv_number(object)
+massdataset::get_mv_number(object, by = "sample")
+head(massdataset::get_mv_number(object, by = "variable"))
+
+massdataset::get_mv_number(object, by = "sample", show_by = "percentage")
+head(massdataset::get_mv_number(object, by = "variable"), show_by = "percentage")
+```
+
+# **Filter noisy features**
+
+Remove variables who have mv in more than 20% QC samples.
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+
+show_variable_missing_values(object = object, percentage = TRUE)
+
+qc_id =
+  object %>%
+  activate_mass_dataset(what = "sample_info") %>%
+  filter(class == "QC") %>%
+  pull(sample_id)
+
+subject_id =
+  object %>%
+  activate_mass_dataset(what = "sample_info") %>%
+  filter(class == "Subject") %>%
+  pull(sample_id)
 
 object =
   object %>%
-  log() %>%
-  scale()
+  mutate_variable_na_freq(according_to_samples = qc_id) %>%
+  mutate_variable_na_freq(according_to_samples = subject_id) %>%
+  activate_mass_dataset(what = "variable_info") %>%
+  filter(na_freq < 0.2 & na_freq.1 < 0.5)
+object
+```
 
-outlier_samples =
-  object %>%
-  detect_outlier()
 
-extract_outlier_table(outlier_samples)
 
-###MV plot
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+show_variable_missing_values(object = object[,qc_id], 
+                             percentage = TRUE)
+show_variable_missing_values(object = object[,subject_id], 
+                             percentage = TRUE)
+```
+
+# **Filter outlier samples**
+
+We can use the `detect_outlier()` to find the outlier samples.
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
 massdataset::show_sample_missing_values(object = object,
                                         color_by = "class",
                                         percentage = TRUE)
+```
+
+Detect outlier samples.
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+##Blank samples are not outlier samples
+non_blank_id = 
+  object %>% 
+  activate_mass_dataset(what = "sample_info") %>% 
+  filter(class != "Blank") %>% 
+  pull(sample_id)
+
+outlier_samples =
+  object[,non_blank_id] %>%
+  log() %>%
+  scale() %>%
+  detect_outlier()
+
+outlier_samples
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+outlier_table = 
+extract_outlier_table(outlier_samples)
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+###MV plot
+massdataset::show_sample_missing_values(object = object[,non_blank_id],
+                                        color_by = "class",
+                                        percentage = TRUE)
+```
+# **Session information**
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+sessionInfo()
 ```

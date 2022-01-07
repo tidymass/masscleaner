@@ -6,6 +6,9 @@
 \usage{
 masscleaner_conflicts()
 }
+\value{
+masscleaner_conflicts
+}
 \description{
 This function lists all the conflicts between packages in the masscleaner
 and other packages that you have loaded.

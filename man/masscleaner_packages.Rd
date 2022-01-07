@@ -9,6 +9,9 @@ masscleaner_packages(include_self = TRUE)
 \arguments{
 \item{include_self}{Include masscleaner in the list?}
 }
+\value{
+masscleaner_packages
+}
 \description{
 List all packages in the masscleaner
 }

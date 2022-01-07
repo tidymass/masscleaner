@@ -23,7 +23,7 @@ Integrate different batch datasets together.
 }
 \details{
 Data integration is a necessary step for multiple batch dataset.
-\href{https://www.readcube.com/library/fe13374b-5bc9-4c61-9b7f-6a354690947e:abe41368-d08d-4806-871f-3aa035d21743}{Dunn's}
+\url{https://www.readcube.com/library/fe13374b-5bc9-4c61-9b7f-6a354690947e:abe41368-d08d-4806-871f-3aa035d21743}{Dunn's}
 method has been used in this function.
 }
 \examples{

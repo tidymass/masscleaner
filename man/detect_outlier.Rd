@@ -27,7 +27,8 @@ detect_outlier(
 A new mass_dataset object.
 }
 \description{
-Detect outlier samples
+Detect outlier samples. See more here:
+\url{https://privefl.github.io/blog/detecting-outlier-samples-in-pca/}
 }
 \examples{
 library(massdataset)
@@ -56,9 +57,6 @@ extract_outlier_table(outlier_samples)
 massdataset::show_sample_missing_values(object = object,
                                         color_by = "class",
                                         percentage = TRUE)
-}
-\seealso{
-https://privefl.github.io/blog/detecting-outlier-samples-in-pca/
 }
 \author{
 Xiaotao Shen

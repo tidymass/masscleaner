@@ -29,6 +29,7 @@ text_col <- function(x) {
 #'
 #' @param include_self Include masscleaner in the list?
 #' @export
+#' @return masscleaner_packages
 #' @examples
 #' masscleaner_packages()
 masscleaner_packages <- function(include_self = TRUE) {
