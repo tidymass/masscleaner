@@ -6,7 +6,7 @@
 #' @return error information
 #' @export
 
-check_for_qc_normalization = function(object) {
+check_for_qc_normalization <- function(object) {
   ###QC samples
   if (all(unique(object@sample_info$class) != "QC")) {
     return("error: No QC samples in object, please check.")
@@ -19,21 +19,21 @@ check_for_qc_normalization = function(object) {
   
   ###has batch or not
   if (all(colnames(object@sample_info) != "batch")) {
-    object@sample_info$injection.order = 1
+    object@sample_info$injection.order <- 1
   }
   
   ###check injection.order information
-  sample_info =
+  sample_info <-
     object@sample_info
   
   purrr::map(
     unique(sample_info$batch),
     .f = function(batch_idx) {
-      temp_sample_info =
+      temp_sample_info <-
         sample_info %>%
         dplyr::filter(batch == batch_idx)
       
-      qc_order = temp_sample_info %>%
+      qc_order <- temp_sample_info %>%
         dplyr::filter(class == "QC") %>%
         dplyr::pull(injection.order)
       
@@ -66,7 +66,7 @@ check_for_qc_normalization = function(object) {
 #' @return error information
 #' @export
 
-check_for_data_integration = function(object,
+check_for_data_integration <- function(object,
                                       method = c("qc_mean",
                                                  "qc_median",
                                                  "subject_mean",
@@ -92,7 +92,7 @@ check_for_data_integration = function(object,
     purrr::map(
       unique(object@sample_info$batch),
       .f = function(temp_batch) {
-        number =
+        number <-
           object@sample_info %>%
           dplyr::filter(batch == temp_batch & class == "QC") %>%
           nrow()
@@ -114,7 +114,7 @@ check_for_data_integration = function(object,
     purrr::map(
       unique(object@sample_info$batch),
       .f = function(temp_batch) {
-        number =
+        number <-
           object@sample_info %>%
           dplyr::filter(batch == temp_batch & class == "Subject") %>%
           nrow()

@@ -14,7 +14,7 @@ Description: This package is uesd to do the data cleaning for LC-MS metabolomics
              The functions in this package only support mass_dataset class from
              massdataset package.
 LazyData: true
-Depends: R (>= 4.1)
+Depends: R (>= 4.2)
 Imports:
     BiocParallel,
     cli,
@@ -53,12 +53,13 @@ Imports:
 License: GPL-2 | file LICENSE
 URL: https://github.com/tidymass/masscleaner
 BugReports: https://github.com/tidymass/masscleaner/issues
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: 
     knitr,
     rmarkdown,
     BiocStyle,
-    RUnit
+    RUnit,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Note:
 biocViews: Metabolomics, MassSpectrometry
@@ -66,3 +67,4 @@ Encoding: UTF-8
 Remotes: 
     tidymass/tinytools,
     tidymass/massdataset
+Config/testthat/edition: 3

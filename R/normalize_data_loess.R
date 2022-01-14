@@ -22,7 +22,7 @@ normalize_data_loess <- function(subject_data,
                                  end = 1,
                                  step = 0.2,
                                  threads = 4) {
-  cat(crayon::green("LOESS normalization...\n"))
+  message(crayon::green("LOESS normalization...\n"))
   
   temp.fun <-
     function(idx,
@@ -79,7 +79,7 @@ normalize_data_loess <- function(subject_data,
         0
       subject_nor1[which(as.numeric(subject_nor1) < 0)] <-
         0
-      names(qc_nor1) = colnames(qc_data)
+      names(qc_nor1) <- colnames(qc_data)
       return_result <- list(qc_nor1, subject_nor1)
       return(return_result)
     }
@@ -87,11 +87,11 @@ normalize_data_loess <- function(subject_data,
   peak_index <- seq_len(nrow(qc_data))
   
   if (tinytools::get_os() == "windows") {
-    bpparam =
+    bpparam <-
       BiocParallel::SnowParam(workers = threads,
                               progressbar = TRUE)
   } else{
-    bpparam = BiocParallel::MulticoreParam(workers = threads,
+    bpparam <- BiocParallel::MulticoreParam(workers = threads,
                                            progressbar = TRUE)
   }
   
@@ -129,10 +129,10 @@ normalize_data_loess <- function(subject_data,
   
   qc_data_nor <- qc_median * qc_data_nor
   subject_data_nor <- qc_median * subject_data_nor
-  rownames(qc_data_nor) = rownames(qc_data)
-  rownames(subject_data_nor) = rownames(qc_data)
+  rownames(qc_data_nor) <- rownames(qc_data)
+  rownames(subject_data_nor) <- rownames(qc_data)
   return_result <- list(qc_data_nor, subject_data_nor)
-  cat(crayon::green("LOESS normalization is done.\n"))
+  message(crayon::green("LOESS normalization is done.\n"))
   return(return_result)
 }
 
@@ -147,33 +147,34 @@ normalize_data_loess <- function(subject_data,
 #' @param span_range numeric vector
 #' @return optimization result
 #' @export
-optimize_loess_span =
+optimize_loess_span <-
   function(x,
            y,
            degree_range = c(1, 2),
            span_range = seq(0.2, 0.6, 0.1)) {
-    span_rmse =
+    span_rmse <-
       purrr::map(degree_range, function(degree) {
         purrr::map(span_range, function(span) {
-          temp_data =
+          temp_data <-
             data.frame(x, y)
           
-          prediction =
+          prediction <-
             purrr::map(
               2:(nrow(temp_data) - 1),
               .f = function(idx) {
-                temp_result =
+                temp_result <-
                   loess(
                     formula = y ~ x,
                     data = temp_data[-idx,],
                     span = span,
                     degree = degree
                   )
-                prediction =
+                prediction <-
                   try(predict(object = temp_result,
                               newdata = temp_data[idx, -2, drop = FALSE]))
                 
-                if (class(prediction)[1] == "try-error") {
+                # if (class(prediction)[1] == "try-error") {
+                if (is(prediction, class2 = "try-error")) {
                   data.frame(real = temp_data$y[idx],
                              prediction = NA)
                 } else{
@@ -185,9 +186,9 @@ optimize_loess_span =
             dplyr::bind_rows()
           
           if (all(is.na(prediction$prediction))) {
-            temp_rmse = NA
+            temp_rmse <- NA
           } else{
-            temp_rmse = sqrt(sum((
+            temp_rmse <- sqrt(sum((
               prediction$real - prediction$prediction
             ) ^ 2) / nrow(prediction))
           }
@@ -205,7 +206,7 @@ optimize_loess_span =
     #   ggplot(aes(x, y)) +
     #   geom_point(size = 5)
     
-    span_rmse =
+    span_rmse <-
       span_rmse %>%
       dplyr::filter(!is.na(rmse))
     #

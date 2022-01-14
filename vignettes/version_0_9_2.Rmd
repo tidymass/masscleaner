@@ -50,3 +50,9 @@ output_eic(path = ".",
 ```
 
 Then the peak shape of plots will be outputted in `example/POS/Result`.
+
+# **Session information**
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+sessionInfo()
+```

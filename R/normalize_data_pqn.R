@@ -25,22 +25,22 @@ normalize_data_pqn <-
     
     if (!is.null(pgn_reference_sample)) {
       if (pqn_reference == "mean") {
-        mx = as.numeric(apply(x[, pgn_reference_sample], 1 , mean))
+        mx <- as.numeric(apply(x[, pgn_reference_sample], 1 , mean))
       }
       if (pqn_reference == "median") {
-        mx = as.numeric(apply(x[, pgn_reference_sample], 1 , median))
+        mx <- as.numeric(apply(x[, pgn_reference_sample], 1 , median))
       }
     } else {
       if (pqn_reference == "mean") {
-        mx = as.numeric(apply(x, 1 , mean))
+        mx <- as.numeric(apply(x, 1 , mean))
       }
       if (pqn_reference == "median") {
-        mx = as.numeric(apply(x, 1 , median))
+        mx <- as.numeric(apply(x, 1 , median))
       }
     }
     
     # do the actual normalisation
-    new_x =
+    new_x <-
       purrr::map(
         x,
         .f = function(value) {
@@ -49,6 +49,6 @@ normalize_data_pqn <-
       ) %>%
       dplyr::bind_cols()
     
-    rownames(new_x) = rownames(x)
+    rownames(new_x) <- rownames(x)
     return(x)
   }

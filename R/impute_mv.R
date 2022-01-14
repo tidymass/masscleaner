@@ -100,7 +100,7 @@
 #'   head()
 
 ####impute missing values
-impute_mv = function(object,
+impute_mv <- function(object,
                      sample_id,
                      method = c("knn",
                                 "rf",
@@ -128,10 +128,10 @@ impute_mv = function(object,
   options(warn = -1)
   massdataset::check_object_class(object = object, class = "mass_dataset")
   
-  method = match.arg(method)
+  method <- match.arg(method)
   
   if (missing(sample_id)) {
-    sample_id = massdataset::get_sample_id(object = object)
+    sample_id <- massdataset::get_sample_id(object = object)
   } else{
     if (!any(sample_id %in% massdataset::get_sample_id(object = object))) {
       stop("some sample_ids are not in expression_data, please check.\n")
@@ -139,10 +139,10 @@ impute_mv = function(object,
   }
   
   #### MV imputation
-  expression_data =
+  expression_data <-
     object@expression_data
   
-  expression_data1 =
+  expression_data1 <-
     expression_data[, sample_id]
   
   if (sum(is.na(expression_data1)) == 0) {
@@ -164,17 +164,14 @@ impute_mv = function(object,
       rng.seed = rng.seed
     )
     expression_data1 <- expression_data1$data
-    
-    expression_data[, sample_id] =
+    expression_data[, sample_id] <-
       expression_data1
-    
-    object@expression_data =
+    object@expression_data <-
       expression_data
     
     ##processing information
     ####add parameters
-    process_info = object@process_info
-    
+    process_info <- object@process_info
     parameter <- new(
       Class = "tidymass_parameter",
       pacakge_name = "masscleaner",
@@ -191,16 +188,15 @@ impute_mv = function(object,
     )
     
     if (all(names(process_info) != "impute_mv")) {
-      process_info$impute_mv = parameter
+      process_info$impute_mv <- parameter
     } else{
-      process_info$impute_mv = c(process_info$impute_mv,
+      process_info$impute_mv <- c(process_info$impute_mv,
                                  parameter)
     }
     
-    object@process_info = process_info
+    object@process_info <- process_info
     return(object)
   }
-  
   
   ## rf method
   if (method == "rf") {
@@ -214,15 +210,15 @@ impute_mv = function(object,
       )
     expression_data1 <- as.data.frame(t(expression_data1$ximp))
     
-    expression_data[, sample_id] =
+    expression_data[, sample_id] <-
       expression_data1
     
-    object@expression_data =
+    object@expression_data <-
       expression_data
     
     ##processing information
     ####add parameters
-    process_info = object@process_info
+    process_info <- object@process_info
     
     parameter <- new(
       Class = "tidymass_parameter",
@@ -239,13 +235,13 @@ impute_mv = function(object,
     )
     
     if (all(names(process_info) != "impute_mv")) {
-      process_info$impute_mv = parameter
+      process_info$impute_mv <- parameter
     } else{
-      process_info$impute_mv = c(process_info$impute_mv,
+      process_info$impute_mv <- c(process_info$impute_mv,
                                  parameter)
     }
     
-    object@process_info = process_info
+    object@process_info <- process_info
     return(object)
   }
   
@@ -272,15 +268,15 @@ impute_mv = function(object,
       as.data.frame()
     colnames(expression_data1) <- sample_id
     
-    expression_data[, sample_id] =
+    expression_data[, sample_id] <-
       expression_data1
     
-    object@expression_data =
+    object@expression_data <-
       expression_data
     
     ##processing information
     ####add parameters
-    process_info = object@process_info
+    process_info <- object@process_info
     
     parameter <- new(
       Class = "tidymass_parameter",
@@ -291,13 +287,13 @@ impute_mv = function(object,
     )
     
     if (all(names(process_info) != "impute_mv")) {
-      process_info$impute_mv = parameter
+      process_info$impute_mv <- parameter
     } else{
-      process_info$impute_mv = c(process_info$impute_mv,
+      process_info$impute_mv <- c(process_info$impute_mv,
                                  parameter)
     }
     
-    object@process_info = process_info
+    object@process_info <- process_info
     return(object)
   }
   
@@ -314,15 +310,15 @@ impute_mv = function(object,
     expression_data1 <-
       as.data.frame(t(pcaMethods::completeObs(expression_data1)))
     
-    expression_data[, sample_id] =
+    expression_data[, sample_id] <-
       expression_data1
     
-    object@expression_data =
+    object@expression_data <-
       expression_data
     
     ##processing information
     ####add parameters
-    process_info = object@process_info
+    process_info <- object@process_info
     
     parameter <- new(
       Class = "tidymass_parameter",
@@ -338,13 +334,13 @@ impute_mv = function(object,
     )
     
     if (all(names(process_info) != "impute_mv")) {
-      process_info$impute_mv = parameter
+      process_info$impute_mv <- parameter
     } else{
-      process_info$impute_mv = c(process_info$impute_mv,
+      process_info$impute_mv <- c(process_info$impute_mv,
                                  parameter)
     }
     
-    object@process_info = process_info
+    object@process_info <- process_info
     return(object)
   }
 }

@@ -39,7 +39,7 @@
 #'                                         percentage = TRUE)
 
 ####impute missing values
-detect_outlier = function(object,
+detect_outlier <- function(object,
                           na_percentage_cutoff = 0.5,
                           sd_fold_change = 6,
                           mad_fold_change = 6,
@@ -49,46 +49,46 @@ detect_outlier = function(object,
   
   ####according to NA percentage
   
-  na_percentage =
+  na_percentage <-
     apply(object@expression_data, 2, function(x) {
       sum(is.na(x)) / nrow(object@expression_data)
     })
   
-  according_to_na =
+  according_to_na <-
     na_percentage > na_percentage_cutoff
   
-  according_to_na =
+  according_to_na <-
     data.frame(according_to_na) %>%
     tibble::rownames_to_column(var = "sample_id")
   
   ###PCA
   if (sum(is.na(object@expression_data)) > 0) {
     warning("MVs in you object,\nwill remove variables > 50% and imputate with zero.\n")
-    object =
+    object <-
       object %>%
       massdataset::mutate_variable_na_freq()
-    object =
+    object <-
       object %>%
       massdataset::activate_mass_dataset(what = "variable_info") %>%
       dplyr::filter(na_freq < 0.5)
   }
   
-  sample_info = object@sample_info
-  expression_data = object@expression_data
+  sample_info <- object@sample_info
+  expression_data <- object@expression_data
   
-  expression_data =
+  expression_data <-
     expression_data %>%
     apply(1, function(x) {
-      x[is.na(x)] = min(x[!is.na(x)])
+      x[is.na(x)] <- min(x[!is.na(x)])
       x
     }) %>%
     t()
   
-  pca_object = prcomp(x = t(as.matrix(expression_data)),
+  pca_object <- prcomp(x = t(as.matrix(expression_data)),
                       center = FALSE,
                       scale. = FALSE)
   
-  pc = as.data.frame(pca_object$x)
+  pc <- as.data.frame(pca_object$x)
   
   # pc %>%
   #   ggplot(aes(PC1, PC2)) +
@@ -97,7 +97,7 @@ detect_outlier = function(object,
   #####according to first PCs and if they out of 6 sds
   #####The standard way to detect outliers in genetics is the
   #####criterion of being “more than 6 standard deviations away from the mean”.
-  according_to_pc_sd =
+  according_to_pc_sd <-
     apply(pc[, c(1, 2)], 2, function(x)
       abs(x - mean(x)) > (sd_fold_change * sd(x))) %>%
     as.data.frame() %>%
@@ -106,19 +106,19 @@ detect_outlier = function(object,
     dplyr::rename(pc1_sd = PC1,
                   pc2_sd = PC2)
   
-  according_to_pc_sd$pc_sd =
+  according_to_pc_sd$pc_sd <-
     apply(according_to_pc_sd[, -1], 1, function(x) {
       any(x)
     })
   
-  according_to_pc_sd =
+  according_to_pc_sd <-
     according_to_pc_sd %>%
     dplyr::select(sample_id, pc_sd)
   
   #####according to first PCs and if they out of 6 mads
   #####TNote that you might want to use median() instead of mean() and mad()
   #####instead of sd() because they are more robust estimators. This becomes
-  according_to_pc_mad =
+  according_to_pc_mad <-
     apply(pc[, c(1, 2)], 2, function(x)
       abs(x - median(x)) > (mad_fold_change * mad(x))) %>%
     as.data.frame() %>%
@@ -127,12 +127,12 @@ detect_outlier = function(object,
     dplyr::rename(pc1_mad = PC1,
                   pc2_mad = PC2)
   
-  according_to_pc_mad$pc_mad =
+  according_to_pc_mad$pc_mad <-
     apply(according_to_pc_mad[, -1], 1, function(x) {
       any(x)
     })
   
-  according_to_pc_mad =
+  according_to_pc_mad <-
     according_to_pc_mad %>%
     dplyr::select(sample_id, pc_mad)
   
@@ -158,7 +158,7 @@ detect_outlier = function(object,
   accordint_to_distance <-
     (pval < (dist_p_cutoff / length(dist)))  # Bonferroni correction
   
-  accordint_to_distance =
+  accordint_to_distance <-
     data.frame(accordint_to_distance) %>%
     tibble::rownames_to_column(var = "sample_id")
   
@@ -245,12 +245,12 @@ setMethod(
       cat(sum(object@outlier_samples_table[[i]][, 2]),
           "outlier samples.\n")
       if (sum(object@outlier_samples_table[[i]][, 2]) > 0) {
-        sample_id =
+        sample_id <-
           object@outlier_samples_table[[i]]$sample_id[object@outlier_samples_table[[i]][, 2]]
         if (length(sample_id) > 5) {
-          sample_id = paste(c(head(sample_id, 5), "..."), collapse = ",")
+          sample_id <- paste(c(head(sample_id, 5), "..."), collapse = ",")
         } else{
-          sample_id = paste(head(sample_id, 5), collapse = ",")
+          sample_id <- paste(head(sample_id, 5), collapse = ",")
         }
         cat(crayon::green(sample_id, ".\n"))
         
@@ -269,7 +269,7 @@ setMethod(
 #' @return A data frame.
 #' @export
 
-extract_outlier_table = function(object) {
+extract_outlier_table <- function(object) {
   object@outlier_samples_table %>%
     lapply(function(x) {
       x %>%

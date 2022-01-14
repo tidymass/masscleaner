@@ -34,7 +34,7 @@
 #' new_object
 #' }
 
-align_batch = function(x,
+align_batch <- function(x,
                        y,
                        combine.mz.tol = 25,
                        combine.rt.tol = 30,
@@ -43,7 +43,7 @@ align_batch = function(x,
   massdataset::check_object_class(object = x, class = "mass_dataset")
   massdataset::check_object_class(object = y, class = "mass_dataset")
   
-  cat("Rough aligning...\n")
+  message("Rough aligning...\n")
   
   rough_match_result <- rough_align(
     peak.table = list(
@@ -56,7 +56,7 @@ align_batch = function(x,
     combine.rt.tol = combine.rt.tol
   )
   
-  cat("Accurate aligning...\n")
+  message("Accurate aligning...\n")
   
   accurate_match_result <-
     accurate_align(
@@ -72,11 +72,11 @@ align_batch = function(x,
   if (return_index) {
     return(accurate_match_result)
   } else{
-    x = x[accurate_match_result$Index1, ]
-    y = y[accurate_match_result$Index2, ]
+    x <- x[accurate_match_result$Index1, ]
+    y <- y[accurate_match_result$Index2, ]
     
-    y@variable_info$variable_id = x@variable_info$variable_id
-    rownames(y@expression_data) = x@variable_info$variable_id
+    y@variable_info$variable_id <- x@variable_info$variable_id
+    rownames(y@expression_data) <- x@variable_info$variable_id
     if (length(intersect(colnames(x), colnames(y))) > 0) {
       warning("Overlap sample IDs in x and y.\n")
     }
@@ -541,10 +541,10 @@ align_2batch <- function(batch1,
   match.result <- match.result1[temp.index, ] %>%
     as.data.frame()
   
-  match.result$variable_id1 = batch1$variable_id[match.result$Index1]
-  match.result$variable_id2 = batch2$variable_id[match.result$Index2]
+  match.result$variable_id1 <- batch1$variable_id[match.result$Index1]
+  match.result$variable_id2 <- batch2$variable_id[match.result$Index2]
   
-  match.result =
+  match.result <-
     match.result %>%
     dplyr::select(variable_id1, variable_id2, dplyr::everything())
   
@@ -698,7 +698,7 @@ matchScore <- function(error, sd) {
 #' @param int.tol int.tol
 #' @return result
 
-MRImatch = function(data1,
+MRImatch <- function(data1,
                     data2,
                     mz.tol,
                     #rt.tol is relative

@@ -33,7 +33,7 @@
 #' @importFrom robust covRob
 #' @importFrom stats coefficients lm loess median predict mad pchisq
 #' @importFrom stats rgamma rt sd cor p.adjust prcomp t.test wilcox.test
-#' @importFrom methods new
+#' @importFrom methods new is
 #' @importFrom massdataset check_object_class get_sample_id show_sample_missing_values mutate_variable_na_freq activate_mass_dataset
 #' @importFrom massdataset intensity_plot
 #' @importClassesFrom massdataset mass_dataset tidymass_parameter
@@ -42,10 +42,10 @@
 #' @export
 
 masscleaner_logo <- function() {
-  cat(crayon::green("Thank you for using masscleaner!\n"))
-  cat(crayon::green("Version 0.0.1 (2021-12-3)\n"))
-  cat(crayon::green("Bug fixing\n"))
-  cat(
+  message(crayon::green("Thank you for using masscleaner!\n"))
+  message(crayon::green("Version 0.0.1 (2021-12-3)\n"))
+  message(crayon::green("Bug fixing\n"))
+  message(
     crayon::green(
       "More information: google tidymass cleaner.\n"
     )
@@ -65,6 +65,22 @@ masscleaner_logo <- function() {
   ), sep = "\n")
 }
 
+
+masscleaner_version <- "0.9.2"
+
+
+#' @title get_masscleaner_version
+#' @description get_masscleaner_version
+#' @author Xiaotao Shen
+#' \email{shenxt1990@@outlook.com}
+#' @return masscleaner_version
+#' @export
+#' @examples 
+#' get_masscleaner_version
+
+get_masscleaner_version <- function(){
+  return(masscleaner_version)
+}
 
 # library(cowsay)
 # ##https://onlineasciitools.com/convert-text-to-ascii-art

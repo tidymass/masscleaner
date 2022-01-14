@@ -196,3 +196,9 @@ dplyr::left_join(rsd2, rsd4, by = c("index", "name")) %>%
   labs(x = "RSD after normalization", y = "RSD before normalization") +
   theme_bw()
 ```
+
+# **Session information**
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+sessionInfo()
+```
