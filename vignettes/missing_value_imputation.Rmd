@@ -33,7 +33,7 @@ We can use `masscleaner` for missing value (MV) imputation.
 
 First, we need to prepare samples for `masscleaner`.
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUEE, cache=TRUE}
 library(masscleaner)
 library(massdataset)
 library(tidyverse)
@@ -41,7 +41,7 @@ library(tidyverse)
 
 # **Data preparation**
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUEE, cache=TRUE}
 data("expression_data")
 data("sample_info")
 data("variable_info")
@@ -65,7 +65,7 @@ head(massdataset::get_mv_number(object, by = "variable"), show_by = "percentage"
 
 Remove variables who have mv in more than 20% QC samples.
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUEE, cache=TRUE}
 qc_id =
   object %>%
   activate_mass_dataset(what = "sample_info") %>%
@@ -91,7 +91,7 @@ object
 
 Remove samples with MV > 50% except Blank samples.
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUEE, cache=TRUE}
 object =
   filter_samples(
     object = object,
@@ -110,7 +110,7 @@ values.
 
 For Blank samples, just use the zero.
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUEE, cache=TRUE}
 blank_id =
   object %>%
   activate_mass_dataset(what = "sample_info") %>%
@@ -131,7 +131,7 @@ object1 %>%
 
 For non-Blank samples, just use the knn method
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUEE, cache=TRUE}
 non_blank_id =
   object %>%
   activate_mass_dataset(what = "sample_info") %>%
@@ -161,6 +161,6 @@ object2 %>%
 
 # **Session information**
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUEE, cache=TRUE}
 sessionInfo()
 ```

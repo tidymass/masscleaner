@@ -138,7 +138,7 @@
       <h1 data-toc-skip>Filter noisy variables and outlier samples</h1>
                         <h4 data-toc-skip class="author">Xiaotao Shen (<a href="https://www.shenxt.info/" class="external-link uri">https://www.shenxt.info/</a>)</h4>
                         
-            <h4 data-toc-skip class="date">Created on 2020-04-01 and updated on 2022-01-14</h4>
+            <h4 data-toc-skip class="date">Created on 2020-04-01 and updated on 2022-01-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tidymass/masscleaner/blob/HEAD/vignettes/filter_variable_outlier.Rmd" class="external-link"><code>vignettes/filter_variable_outlier.Rmd</code></a></small>
       <div class="hidden name"><code>filter_variable_outlier.Rmd</code></div>
@@ -153,143 +153,254 @@
 </h1>
 <p>We can use <code>masscleaner</code> to remove noisy features and outlier samples.</p>
 <p>First, we need to prepare samples for <code>masscleaner</code>.</p>
+<p>Download the demo data: peak tables <a href="https://drive.google.com/file/d/1mXljBn8lbEMlN4tMHaSFLNsJRmZwKPhU/view?usp=sharing" class="external-link">here</a> and uncompress.</p>
+<p><img src="figures/Screen-Shot.png"></p>
+<p>Download the demo data: sample information <a href="https://drive.google.com/file/d/1yyJeOMUhuMSTmPWfzKuFTCRfZ3zdhO6q/view?usp=sharing" class="external-link">here</a> and uncompress.</p>
+<p><img src="figures/Screen-Shot-1.png"></p>
 </div>
 <div class="section level1">
 <h1 id="data-preparation">
 <strong>Data preparation</strong><a class="anchor" aria-label="anchor" href="#data-preparation"></a>
 </h1>
+<p>Here we only use the positive mode as an example.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymass/masscleaner" class="external-link">masscleaner</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymass/massdataset" class="external-link">massdataset</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"expression_data"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sample_info"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"variable_info"</span><span class="op">)</span>
-<span class="va">object</span> <span class="op">=</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/create_mass_dataset.html" class="external-link">create_mass_dataset</a></span><span class="op">(</span>
-    expression_data <span class="op">=</span> <span class="va">expression_data</span>,
-    sample_info <span class="op">=</span> <span class="va">sample_info</span>,
-    variable_info <span class="op">=</span> <span class="va">variable_info</span>
-  <span class="op">)</span>
-<span class="va">object</span>
+<code class="sourceCode R"><span class="va">peak_table_pos</span> <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"peak_tables/POS/Peak_table_for_cleaning.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">10149</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">262</span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
+<span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span>
+<span class="co">#&gt; <span style="color: #BB0000;">chr</span>   (1): variable_id</span>
+<span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (261): mz, rt, sample_06, sample_103, sample_11, sample_112, sample_117,...</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use <span style="color: #262626; background-color: #DADADA;">`spec()`</span> to retrieve the full column specification for this data.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set <span style="color: #262626; background-color: #DADADA;">`show_col_types = FALSE`</span> to quiet this message.</span>
+<span class="va">sample_info_pos</span> <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"sample_info/sample_info_pos.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">259</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">6</span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
+<span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span>
+<span class="co">#&gt; <span style="color: #BB0000;">chr</span> (4): sample_id, class, subject_id, group</span>
+<span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (2): injection.order, batch</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use <span style="color: #262626; background-color: #DADADA;">`spec()`</span> to retrieve the full column specification for this data.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set <span style="color: #262626; background-color: #DADADA;">`show_col_types = FALSE`</span> to quiet this message.</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">expression_data_pos</span> <span class="op">&lt;-</span> 
+  <span class="va">peak_table_pos</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">variable_id</span>, <span class="va">mz</span>, <span class="va">rt</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">variable_info_pos</span> <span class="op">&lt;-</span> 
+  <span class="va">peak_table_pos</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">variable_id</span>, <span class="va">mz</span>, <span class="va">rt</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">expression_data_pos</span><span class="op">)</span> <span class="op">=</span> <span class="va">variable_info_pos</span><span class="op">$</span><span class="va">variable_id</span>
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">expression_data_pos</span><span class="op">)</span>
+<span class="co">#&gt; [1] 10149   259</span>
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">sample_info_pos</span><span class="op">)</span>
+<span class="co">#&gt; [1] 259   6</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">expression_data_pos</span><span class="op">)</span> <span class="op">==</span> <span class="va">sample_info_pos</span><span class="op">$</span><span class="va">sample_id</span>
+<span class="co">#&gt;   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt;  [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt;  [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt;  [37] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt;  [49] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt;  [61] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt;  [73] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt;  [85] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt;  [97] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [109] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [121] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [133] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [145] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [157] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [169] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [181] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [193] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [205] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [217] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [229] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [241] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="co">#&gt; [253] FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">expression_data_pos</span> <span class="op">=</span>
+  <span class="va">expression_data_pos</span><span class="op">[</span>,<span class="va">sample_info_pos</span><span class="op">$</span><span class="va">sample_id</span><span class="op">]</span>
+<span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">expression_data_pos</span><span class="op">)</span> <span class="op">==</span> <span class="va">sample_info_pos</span><span class="op">$</span><span class="va">sample_id</span><span class="op">)</span>
+<span class="co">#&gt; [1] 259</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">object</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/create_mass_dataset.html" class="external-link">create_mass_dataset</a></span><span class="op">(</span>expression_data <span class="op">=</span> <span class="va">expression_data_pos</span>, 
+                      sample_info <span class="op">=</span> <span class="va">sample_info_pos</span>, 
+                      variable_info <span class="op">=</span> <span class="va">variable_info_pos</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">object</span>
 <span class="co">#&gt; <span style="color: #BBBB00;">-------------------- </span></span>
 <span class="co"><span style="color: #BBBB00;">#&gt; </span><span style="color: #00BB00;">massdataset version: 0.99.1 </span></span>
 <span class="co"><span style="color: #00BB00;">#&gt; </span><span style="color: #BBBB00;">-------------------- </span></span>
-<span class="co"><span style="color: #BBBB00;">#&gt; </span><span style="color: #00BB00;">1.expression_data:</span>[ 1000 x 8 data.frame]</span>
-<span class="co">#&gt; <span style="color: #00BB00;">2.sample_info:</span>[ 8 x 4 data.frame]</span>
-<span class="co">#&gt; <span style="color: #00BB00;">3.variable_info:</span>[ 1000 x 3 data.frame]</span>
-<span class="co">#&gt; <span style="color: #00BB00;">4.sample_info_note:</span>[ 4 x 2 data.frame]</span>
+<span class="co"><span style="color: #BBBB00;">#&gt; </span><span style="color: #00BB00;">1.expression_data:</span>[ 10149 x 259 data.frame]</span>
+<span class="co">#&gt; <span style="color: #00BB00;">2.sample_info:</span>[ 259 x 6 data.frame]</span>
+<span class="co">#&gt; <span style="color: #00BB00;">3.variable_info:</span>[ 10149 x 3 data.frame]</span>
+<span class="co">#&gt; <span style="color: #00BB00;">4.sample_info_note:</span>[ 6 x 2 data.frame]</span>
 <span class="co">#&gt; <span style="color: #00BB00;">5.variable_info_note:</span>[ 3 x 2 data.frame]</span>
 <span class="co">#&gt; <span style="color: #00BB00;">6.ms2_data:</span>[ 0 variables x 0 MS2 spectra]</span>
 <span class="co">#&gt; <span style="color: #BBBB00;">-------------------- </span></span>
 <span class="co"><span style="color: #BBBB00;">#&gt; </span><span style="color: #00BB00;">Processing information (extract_process_info())</span></span>
 <span class="co"><span style="color: #00BB00;">#&gt; create_mass_dataset ---------- </span></span>
 <span class="co"><span style="color: #00BB00;">#&gt; </span>      Package         Function.used                Time</span>
-<span class="co">#&gt; 1 massdataset create_mass_dataset() 2022-01-14 10:10:43</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/get_mv_number.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-<span class="co">#&gt; [1] 3829</span>
-<span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/get_mv_number.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span>, by <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span>
-<span class="co">#&gt; Blank_3 Blank_4    QC_1    QC_2   PS4P1   PS4P2   PS4P3   PS4P4 </span>
-<span class="co">#&gt;     682     702     397     381     424     427     405     411</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/get_mv_number.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span>, by <span class="op">=</span> <span class="st">"variable"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; M136T55_2_POS    M79T35_POS  M307T548_POS  M183T224_POS   M349T47_POS </span>
-<span class="co">#&gt;             2             2             3             6             2 </span>
-<span class="co">#&gt;  M182T828_POS </span>
-<span class="co">#&gt;             1</span>
+<span class="co">#&gt; 1 massdataset create_mass_dataset() 2022-01-17 23:07:04</span></code></pre></div>
+<p>Summary information.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/summary-mass_dataset.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
+<span class="co">#&gt; [1] 785821</span>
+<span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/summary-mass_dataset.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span>, by <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; sample_QC_01    sample_01    sample_02    sample_06    sample_07    sample_11 </span>
+<span class="co">#&gt;         4410         4562         4298         4016         4365         4063</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/summary-mass_dataset.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span>, by <span class="op">=</span> <span class="st">"variable"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt;  M70T73_POS  M70T53_POS M70T183_POS M70T527_POS M71T695_POS M71T183_POS </span>
+<span class="co">#&gt;         129          16         155          54         133         169</span>
 
-<span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/get_mv_number.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span>, by <span class="op">=</span> <span class="st">"sample"</span>, show_by <span class="op">=</span> <span class="st">"percentage"</span><span class="op">)</span>
-<span class="co">#&gt; Blank_3 Blank_4    QC_1    QC_2   PS4P1   PS4P2   PS4P3   PS4P4 </span>
-<span class="co">#&gt;   0.682   0.702   0.397   0.381   0.424   0.427   0.405   0.411</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/get_mv_number.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span>, by <span class="op">=</span> <span class="st">"variable"</span><span class="op">)</span>, show_by <span class="op">=</span> <span class="st">"percentage"</span><span class="op">)</span>
-<span class="co">#&gt; M136T55_2_POS    M79T35_POS  M307T548_POS  M183T224_POS   M349T47_POS </span>
-<span class="co">#&gt;             2             2             3             6             2 </span>
-<span class="co">#&gt;  M182T828_POS </span>
-<span class="co">#&gt;             1</span></code></pre></div>
+<span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/summary-mass_dataset.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span>, by <span class="op">=</span> <span class="st">"sample"</span>, show_by <span class="op">=</span> <span class="st">"percentage"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; sample_QC_01    sample_01    sample_02    sample_06    sample_07    sample_11 </span>
+<span class="co">#&gt;    0.4345256    0.4495024    0.4234900    0.3957040    0.4300916    0.4003350</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/summary-mass_dataset.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span>, by <span class="op">=</span> <span class="st">"variable"</span><span class="op">)</span>, show_by <span class="op">=</span> <span class="st">"percentage"</span><span class="op">)</span>
+<span class="co">#&gt;  M70T73_POS  M70T53_POS M70T183_POS M70T527_POS M71T695_POS M71T183_POS </span>
+<span class="co">#&gt;         129          16         155          54         133         169</span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="filter-noisy-features">
 <strong>Filter noisy features</strong><a class="anchor" aria-label="anchor" href="#filter-noisy-features"></a>
 </h1>
-<p>Remove variables who have mv in more than 20% QC samples.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/show_variable_missing_values.html" class="external-link">show_variable_missing_values</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span>, percentage <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p><img src="filter_variable_outlier_files/figure-html/unnamed-chunk-5-1.png" width="100%"></p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">qc_id</span> <span class="op">=</span>
+<p>Remove variables who have mv in more than 20% QC samples and in at lest 50% samples in control group or case group.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span>
+<span class="co">#&gt;     group   n</span>
+<span class="co">#&gt; 1    Case 110</span>
+<span class="co">#&gt; 2 Control 110</span>
+<span class="co">#&gt; 3      QC  39</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/show_variable_missing_values.html" class="external-link">show_variable_missing_values</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span>, 
+                             percentage <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html" class="external-link">scale_size_continuous</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="filter_variable_outlier_files/figure-html/unnamed-chunk-10-1.png" width="100%"></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">qc_id</span> <span class="op">=</span>
   <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span>
 
-<span class="va">subject_id</span> <span class="op">=</span>
+<span class="va">control_id</span> <span class="op">=</span>
   <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"Subject"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"Control"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span>
+
+<span class="va">case_id</span> <span class="op">=</span>
+  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"Case"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span>
 
 <span class="va">object</span> <span class="op">=</span>
   <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/mutate_variable_na_freq.html" class="external-link">mutate_variable_na_freq</a></span><span class="op">(</span>according_to_samples <span class="op">=</span> <span class="va">qc_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/mutate_variable_na_freq.html" class="external-link">mutate_variable_na_freq</a></span><span class="op">(</span>according_to_samples <span class="op">=</span> <span class="va">subject_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/add_new_column-mass_dataset.html" class="external-link">mutate_variable_na_freq</a></span><span class="op">(</span>according_to_samples <span class="op">=</span> <span class="va">qc_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/add_new_column-mass_dataset.html" class="external-link">mutate_variable_na_freq</a></span><span class="op">(</span>according_to_samples <span class="op">=</span> <span class="va">control_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/add_new_column-mass_dataset.html" class="external-link">mutate_variable_na_freq</a></span><span class="op">(</span>according_to_samples <span class="op">=</span> <span class="va">case_id</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/extract-mass_dataset.html" class="external-link">extract_variable_info</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt;   variable_id       mz        rt    na_freq na_freq.1 na_freq.2</span>
+<span class="co">#&gt; 1  M70T73_POS 70.04074  73.31705 0.28205128 0.6000000 0.4727273</span>
+<span class="co">#&gt; 2  M70T53_POS 70.06596  52.78542 0.00000000 0.1454545 0.0000000</span>
+<span class="co">#&gt; 3 M70T183_POS 70.19977 182.87981 0.00000000 0.6636364 0.7454545</span>
+<span class="co">#&gt; 4 M70T527_POS 70.36113 526.76657 0.02564103 0.1818182 0.3000000</span>
+<span class="co">#&gt; 5 M71T695_POS 70.56911 694.84592 0.02564103 0.6454545 0.5545455</span>
+<span class="co">#&gt; 6 M71T183_POS 70.75034 182.77790 0.05128205 0.7272727 0.7909091</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">object</span> <span class="op">&lt;-</span> 
+  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"variable_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">na_freq</span> <span class="op">&lt;</span> <span class="fl">0.2</span> <span class="op">&amp;</span> <span class="va">na_freq.1</span> <span class="op">&lt;</span> <span class="fl">0.5</span><span class="op">)</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">na_freq</span> <span class="op">&lt;</span> <span class="fl">0.2</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">na_freq.1</span> <span class="op">&lt;</span> <span class="fl">0.5</span> <span class="op">|</span> <span class="va">na_freq.2</span> <span class="op">&lt;</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>
 <span class="va">object</span>
 <span class="co">#&gt; <span style="color: #BBBB00;">-------------------- </span></span>
 <span class="co"><span style="color: #BBBB00;">#&gt; </span><span style="color: #00BB00;">massdataset version: 0.99.1 </span></span>
 <span class="co"><span style="color: #00BB00;">#&gt; </span><span style="color: #BBBB00;">-------------------- </span></span>
-<span class="co"><span style="color: #BBBB00;">#&gt; </span><span style="color: #00BB00;">1.expression_data:</span>[ 357 x 8 data.frame]</span>
-<span class="co">#&gt; <span style="color: #00BB00;">2.sample_info:</span>[ 8 x 4 data.frame]</span>
-<span class="co">#&gt; <span style="color: #00BB00;">3.variable_info:</span>[ 357 x 5 data.frame]</span>
-<span class="co">#&gt; <span style="color: #00BB00;">4.sample_info_note:</span>[ 4 x 2 data.frame]</span>
-<span class="co">#&gt; <span style="color: #00BB00;">5.variable_info_note:</span>[ 5 x 2 data.frame]</span>
+<span class="co"><span style="color: #BBBB00;">#&gt; </span><span style="color: #00BB00;">1.expression_data:</span>[ 5101 x 259 data.frame]</span>
+<span class="co">#&gt; <span style="color: #00BB00;">2.sample_info:</span>[ 259 x 6 data.frame]</span>
+<span class="co">#&gt; <span style="color: #00BB00;">3.variable_info:</span>[ 5101 x 6 data.frame]</span>
+<span class="co">#&gt; <span style="color: #00BB00;">4.sample_info_note:</span>[ 6 x 2 data.frame]</span>
+<span class="co">#&gt; <span style="color: #00BB00;">5.variable_info_note:</span>[ 6 x 2 data.frame]</span>
 <span class="co">#&gt; <span style="color: #00BB00;">6.ms2_data:</span>[ 0 variables x 0 MS2 spectra]</span>
 <span class="co">#&gt; <span style="color: #BBBB00;">-------------------- </span></span>
 <span class="co"><span style="color: #BBBB00;">#&gt; </span><span style="color: #00BB00;">Processing information (extract_process_info())</span></span>
 <span class="co"><span style="color: #00BB00;">#&gt; create_mass_dataset ---------- </span></span>
 <span class="co"><span style="color: #00BB00;">#&gt; </span>      Package         Function.used                Time</span>
-<span class="co">#&gt; 1 massdataset create_mass_dataset() 2022-01-14 10:10:43</span>
+<span class="co">#&gt; 1 massdataset create_mass_dataset() 2022-01-17 23:07:04</span>
 <span class="co">#&gt; <span style="color: #00BB00;">mutate_variable_na_freq ---------- </span></span>
 <span class="co"><span style="color: #00BB00;">#&gt; </span>      Package             Function.used                Time</span>
-<span class="co">#&gt; 1 massdataset mutate_variable_na_freq() 2022-01-14 10:10:44</span>
-<span class="co">#&gt; 2 massdataset mutate_variable_na_freq() 2022-01-14 10:10:44</span>
+<span class="co">#&gt; 1 massdataset mutate_variable_na_freq() 2022-01-17 23:07:09</span>
+<span class="co">#&gt; 2 massdataset mutate_variable_na_freq() 2022-01-17 23:07:09</span>
+<span class="co">#&gt; 3 massdataset mutate_variable_na_freq() 2022-01-17 23:07:09</span>
 <span class="co">#&gt; <span style="color: #00BB00;">filter ---------- </span></span>
 <span class="co"><span style="color: #00BB00;">#&gt; </span>      Package Function.used                Time</span>
-<span class="co">#&gt; 1 massdataset      filter() 2022-01-14 10:10:44</span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<span class="co">#&gt; 1 massdataset      filter() 2022-01-17 23:07:10</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/show_variable_missing_values.html" class="external-link">show_variable_missing_values</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span><span class="op">[</span>,<span class="va">qc_id</span><span class="op">]</span>, 
                              percentage <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p><img src="filter_variable_outlier_files/figure-html/unnamed-chunk-6-1.png" width="100%"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/show_variable_missing_values.html" class="external-link">show_variable_missing_values</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span><span class="op">[</span>,<span class="va">subject_id</span><span class="op">]</span>, 
+<p><img src="filter_variable_outlier_files/figure-html/unnamed-chunk-13-1.png" width="100%"></p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/show_variable_missing_values.html" class="external-link">show_variable_missing_values</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span><span class="op">[</span>,<span class="va">control_id</span><span class="op">]</span>, 
                              percentage <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p><img src="filter_variable_outlier_files/figure-html/unnamed-chunk-6-2.png" width="100%"></p>
+<p><img src="filter_variable_outlier_files/figure-html/unnamed-chunk-14-1.png" width="100%"></p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/show_variable_missing_values.html" class="external-link">show_variable_missing_values</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span><span class="op">[</span>,<span class="va">case_id</span><span class="op">]</span>, 
+                             percentage <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p><img src="filter_variable_outlier_files/figure-html/unnamed-chunk-15-1.png" width="100%"></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"variable_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">na_freq.1</span> <span class="op">&gt;</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/extract-mass_dataset.html" class="external-link">extract_variable_info</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">na_freq.1</span>, <span class="va">na_freq.2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="filter_variable_outlier_files/figure-html/unnamed-chunk-16-1.png" width="100%"></p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"variable_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">na_freq.2</span> <span class="op">&gt;</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/extract-mass_dataset.html" class="external-link">extract_variable_info</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">na_freq.1</span>, <span class="va">na_freq.2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="filter_variable_outlier_files/figure-html/unnamed-chunk-17-1.png" width="100%"></p>
 </div>
 <div class="section level1">
 <h1 id="filter-outlier-samples">
 <strong>Filter outlier samples</strong><a class="anchor" aria-label="anchor" href="#filter-outlier-samples"></a>
 </h1>
 <p>We can use the <code><a href="../reference/detect_outlier.html">detect_outlier()</a></code> to find the outlier samples.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<p>More information about how to detect outlier samples can be found <a href="https://privefl.github.io/blog/detecting-outlier-samples-in-pca/" class="external-link">here</a>.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/show_sample_missing_values.html" class="external-link">show_sample_missing_values</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span>,
-                                        color_by <span class="op">=</span> <span class="st">"class"</span>,
-                                        percentage <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p><img src="filter_variable_outlier_files/figure-html/unnamed-chunk-7-1.png" width="100%"></p>
+                                        color_by <span class="op">=</span> <span class="st">"group"</span>,
+                                        order_by <span class="op">=</span> <span class="st">"injection.order"</span>,
+                                        percentage <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ggsci</span><span class="fu">::</span><span class="fu"><a href="https://nanx.me/ggsci/reference/scale_aaas.html" class="external-link">scale_color_aaas</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="filter_variable_outlier_files/figure-html/unnamed-chunk-18-1.png" width="100%"></p>
 <p>Detect outlier samples.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">##Blank samples are not outlier samples</span>
-<span class="va">non_blank_id</span> <span class="op">=</span> 
-  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">!=</span> <span class="st">"Blank"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span>
-
-<span class="va">outlier_samples</span> <span class="op">=</span>
-  <span class="va">object</span><span class="op">[</span>,<span class="va">non_blank_id</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">outlier_samples</span> <span class="op">=</span>
+  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">`+`</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/detect_outlier.html">detect_outlier</a></span><span class="op">(</span><span class="op">)</span>
 
@@ -299,22 +410,292 @@
 <span class="co"><span style="color: #00BB00;">#&gt; </span><span style="color: #BBBB00;">-------------------- </span></span>
 <span class="co"><span style="color: #BBBB00;">#&gt; </span><span style="color: #00BB00;">1 according_to_na : </span>0 outlier samples.</span>
 <span class="co">#&gt; <span style="color: #00BB00;">2 according_to_pc_sd : </span>0 outlier samples.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">3 according_to_pc_mad : </span>1 outlier samples.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">QC_2 .</span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; 4 accordint_to_distance : </span>1 outlier samples.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">QC_2 .</span></span>
-<span class="co"><span style="color: #00BB00;">#&gt; </span><span style="color: #BBBB00;">extract all outlier table using extract_outlier_table()</span></span>
+<span class="co">#&gt; <span style="color: #00BB00;">3 according_to_pc_mad : </span>0 outlier samples.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">4 accordint_to_distance : </span>0 outlier samples.</span>
+<span class="co">#&gt; <span style="color: #BBBB00;">extract all outlier table using extract_outlier_table()</span></span>
 <span class="co"><span style="color: #BBBB00;">#&gt; </span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">outlier_table</span> <span class="op">=</span> 
-<span class="fu"><a href="../reference/extract_outlier_table.html">extract_outlier_table</a></span><span class="op">(</span><span class="va">outlier_samples</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">###MV plot</span>
-<span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/show_sample_missing_values.html" class="external-link">show_sample_missing_values</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span><span class="op">[</span>,<span class="va">non_blank_id</span><span class="op">]</span>,
-                                        color_by <span class="op">=</span> <span class="st">"class"</span>,
-                                        percentage <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p><img src="filter_variable_outlier_files/figure-html/unnamed-chunk-10-1.png" width="100%"> # <strong>Session information</strong></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">outlier_table</span> <span class="op">&lt;-</span>
+<span class="fu"><a href="../reference/extract_outlier_table.html">extract_outlier_table</a></span><span class="op">(</span><span class="va">outlier_samples</span><span class="op">)</span>
+<span class="va">outlier_table</span>
+<span class="co">#&gt;              according_to_na pc_sd pc_mad accordint_to_distance</span>
+<span class="co">#&gt; sample_QC_01           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_01              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_02              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_06              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_07              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_11              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_02           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_12              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_13              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_14              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_16              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_19              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_20              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_22              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_03           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_25              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_26              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_27              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_28              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_29              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_30              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_31              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_04           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_34              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_35              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_36              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_05           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_38              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_39              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_42              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_43              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_45              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_46              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_48              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_49              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_50              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_06           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_51              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_52              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_55              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_56              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_57              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_63              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_64              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_07           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_66              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_67              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_68              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_71              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_75              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_08           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_76              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_77              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_78              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_79              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_80              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_09           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_86              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_87              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_88              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_89              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_90              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_93              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_10           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_94              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_95              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_96              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_97              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_98              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_100             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_103             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_104             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_107             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_11           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_108             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_109             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_110             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_112             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_115             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_117             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_12           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_119             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_120             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_122             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_123             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_124             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_13           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_125             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_127             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_128             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_129             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_134             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_135             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_136             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_14           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_138             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_141             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_142             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_143             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_144             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_145             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_147             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_148             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_15           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_149             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_150             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_152             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_153             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_156             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_157             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_160             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_16           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_163             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_164             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_166             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_167             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_17           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_168             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_171             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_172             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_173             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_175             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_176             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_177             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_178             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_18           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_179             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_180             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_181             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_182             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_184             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_185             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_19           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_188             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_189             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_190             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_193             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_195             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_197             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_199             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_201             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_20           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_205             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_208             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_209             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_210             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_21           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_211             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_212             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_214             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_215             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_217             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_219             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_220             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_22           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_221             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_222             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_223             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_224             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_225             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_226             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_228             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_229             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_230             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_23           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_231             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_232             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_233             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_234             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_235             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_237             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_24           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_243             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_244             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_245             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_247             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_25           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_249             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_251             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_252             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_253             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_254             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_255             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_256             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_257             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_259             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_260             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_26           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_261             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_262             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_264             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_265             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_268             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_270             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_272             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_27           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_274             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_275             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_276             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_277             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_282             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_283             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_284             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_28           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_285             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_286             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_287             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_288             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_289             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_290             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_29           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_293             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_297             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_298             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_299             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_30           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_304             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_309             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_310             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_311             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_313             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_314             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_31           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_319             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_320             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_321             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_322             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_324             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_325             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_32           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_327             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_33           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_47              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_69              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_34           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_35           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_36           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_40              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_41              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_60              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_99              FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_101             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_118             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_37           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_174             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_187             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_191             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_203             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_204             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_236             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_279             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_303             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_38           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_315             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_328             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_329             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_QC_39           FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_139             FALSE FALSE  FALSE                 FALSE</span>
+<span class="co">#&gt; sample_131             FALSE FALSE  FALSE                 FALSE</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">outlier_table</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">`&gt;`</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; named integer(0)</span></code></pre></div>
+<p>No outlier samples.</p>
+<p>Save data for next analysis.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">object</span>, file <span class="op">=</span> <span class="st">"peak_tables/POS/object"</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level1">
+<h1 id="session-information">
+<strong>Session information</strong><a class="anchor" aria-label="anchor" href="#session-information"></a>
+</h1>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; R Under development (unstable) (2022-01-11 r81473)</span>
 <span class="co">#&gt; Platform: x86_64-apple-darwin17.0 (64-bit)</span>
@@ -341,43 +722,44 @@
 <span class="co">#&gt;   [4] class_7.3-20          leaflet_2.0.4.1       rprojroot_2.0.2      </span>
 <span class="co">#&gt;   [7] circlize_0.4.14       GlobalOptions_0.1.2   fs_1.5.2             </span>
 <span class="co">#&gt;  [10] clue_0.3-60           rstudioapi_0.13       proxy_0.4-26         </span>
-<span class="co">#&gt;  [13] farver_2.1.0          ggrepel_0.9.1         lubridate_1.8.0      </span>
-<span class="co">#&gt;  [16] fansi_1.0.0           mvtnorm_1.1-2         xml2_1.3.3           </span>
-<span class="co">#&gt;  [19] codetools_0.2-18      doParallel_1.0.16     cachem_1.0.6         </span>
-<span class="co">#&gt;  [22] impute_1.69.0         robustbase_0.93-8     knitr_1.37           </span>
-<span class="co">#&gt;  [25] itertools_0.1-3       jsonlite_1.7.2        broom_0.7.11         </span>
-<span class="co">#&gt;  [28] dbplyr_2.1.1          cluster_2.1.2         png_0.1-7            </span>
-<span class="co">#&gt;  [31] missForest_1.4        rrcov_1.6-0           compiler_4.2.0       </span>
-<span class="co">#&gt;  [34] httr_1.4.2            backports_1.4.1       assertthat_0.2.1     </span>
-<span class="co">#&gt;  [37] fastmap_1.1.0         lazyeval_0.2.2        cli_3.1.0            </span>
-<span class="co">#&gt;  [40] htmltools_0.5.2       tools_4.2.0           gtable_0.3.0         </span>
-<span class="co">#&gt;  [43] glue_1.6.0            Rcpp_1.0.7            Biobase_2.55.0       </span>
-<span class="co">#&gt;  [46] cellranger_1.1.0      jquerylib_0.1.4       pkgdown_2.0.1        </span>
-<span class="co">#&gt;  [49] vctrs_0.3.8           iterators_1.0.13      crosstalk_1.2.0      </span>
-<span class="co">#&gt;  [52] xfun_0.29             rvest_1.0.2           openxlsx_4.2.5       </span>
-<span class="co">#&gt;  [55] lifecycle_1.0.1       DEoptimR_1.0-10       MASS_7.3-55          </span>
-<span class="co">#&gt;  [58] scales_1.1.1          ragg_1.2.1            pcaMethods_1.87.0    </span>
-<span class="co">#&gt;  [61] clisymbols_1.2.0      hms_1.1.1             parallel_4.2.0       </span>
-<span class="co">#&gt;  [64] RColorBrewer_1.1-2    ComplexHeatmap_2.11.0 yaml_2.2.1           </span>
-<span class="co">#&gt;  [67] memoise_2.0.1         pbapply_1.5-0         yulab.utils_0.0.4    </span>
-<span class="co">#&gt;  [70] sass_0.4.0            stringi_1.7.6         highr_0.9            </span>
-<span class="co">#&gt;  [73] S4Vectors_0.33.10     desc_1.4.0            pcaPP_1.9-74         </span>
-<span class="co">#&gt;  [76] foreach_1.5.1         randomForest_4.6-14   e1071_1.7-9          </span>
-<span class="co">#&gt;  [79] BiocGenerics_0.41.2   zip_2.2.0             BiocParallel_1.29.10 </span>
-<span class="co">#&gt;  [82] shape_1.4.6           rlang_0.4.12          pkgconfig_2.0.3      </span>
-<span class="co">#&gt;  [85] systemfonts_1.0.3     matrixStats_0.61.0    evaluate_0.14        </span>
-<span class="co">#&gt;  [88] lattice_0.20-45       labeling_0.4.2        patchwork_1.1.1      </span>
-<span class="co">#&gt;  [91] htmlwidgets_1.5.4     tidyselect_1.1.1      robust_0.6-1         </span>
-<span class="co">#&gt;  [94] ggsci_2.9             plyr_1.8.6            R6_2.5.1             </span>
-<span class="co">#&gt;  [97] IRanges_2.29.1        snow_0.4-4            generics_0.1.1       </span>
-<span class="co">#&gt; [100] fit.models_0.64       DBI_1.1.2             withr_2.4.3          </span>
-<span class="co">#&gt; [103] haven_2.4.3           pillar_1.6.4          modelr_0.1.8         </span>
-<span class="co">#&gt; [106] crayon_1.4.2          utf8_1.2.2            plotly_4.10.0        </span>
-<span class="co">#&gt; [109] tzdb_0.2.0            rmarkdown_2.11        GetoptLong_1.0.5     </span>
-<span class="co">#&gt; [112] grid_4.2.0            readxl_1.3.1          data.table_1.14.2    </span>
-<span class="co">#&gt; [115] reprex_2.0.1          digest_0.6.29         gridGraphics_0.5-1   </span>
-<span class="co">#&gt; [118] textshaping_0.3.6     stats4_4.2.0          munsell_0.5.0        </span>
-<span class="co">#&gt; [121] viridisLite_0.4.0     ggplotify_0.1.0       bslib_0.3.1</span></code></pre></div>
+<span class="co">#&gt;  [13] farver_2.1.0          bit64_4.0.5           ggrepel_0.9.1        </span>
+<span class="co">#&gt;  [16] lubridate_1.8.0       fansi_1.0.0           mvtnorm_1.1-2        </span>
+<span class="co">#&gt;  [19] xml2_1.3.3            codetools_0.2-18      doParallel_1.0.16    </span>
+<span class="co">#&gt;  [22] cachem_1.0.6          impute_1.69.0         robustbase_0.93-8    </span>
+<span class="co">#&gt;  [25] knitr_1.37            itertools_0.1-3       jsonlite_1.7.2       </span>
+<span class="co">#&gt;  [28] broom_0.7.11          dbplyr_2.1.1          cluster_2.1.2        </span>
+<span class="co">#&gt;  [31] png_0.1-7             missForest_1.4        rrcov_1.6-0          </span>
+<span class="co">#&gt;  [34] compiler_4.2.0        httr_1.4.2            backports_1.4.1      </span>
+<span class="co">#&gt;  [37] assertthat_0.2.1      fastmap_1.1.0         lazyeval_0.2.2       </span>
+<span class="co">#&gt;  [40] cli_3.1.0             htmltools_0.5.2       tools_4.2.0          </span>
+<span class="co">#&gt;  [43] gtable_0.3.0          glue_1.6.0            Rcpp_1.0.7           </span>
+<span class="co">#&gt;  [46] Biobase_2.55.0        cellranger_1.1.0      jquerylib_0.1.4      </span>
+<span class="co">#&gt;  [49] pkgdown_2.0.1         vctrs_0.3.8           iterators_1.0.13     </span>
+<span class="co">#&gt;  [52] crosstalk_1.2.0       xfun_0.29             rvest_1.0.2          </span>
+<span class="co">#&gt;  [55] openxlsx_4.2.5        lifecycle_1.0.1       DEoptimR_1.0-10      </span>
+<span class="co">#&gt;  [58] MASS_7.3-55           scales_1.1.1          vroom_1.5.7          </span>
+<span class="co">#&gt;  [61] ragg_1.2.1            pcaMethods_1.87.0     clisymbols_1.2.0     </span>
+<span class="co">#&gt;  [64] hms_1.1.1             parallel_4.2.0        RColorBrewer_1.1-2   </span>
+<span class="co">#&gt;  [67] ComplexHeatmap_2.11.0 yaml_2.2.1            memoise_2.0.1        </span>
+<span class="co">#&gt;  [70] pbapply_1.5-0         yulab.utils_0.0.4     sass_0.4.0           </span>
+<span class="co">#&gt;  [73] stringi_1.7.6         highr_0.9             S4Vectors_0.33.10    </span>
+<span class="co">#&gt;  [76] desc_1.4.0            pcaPP_1.9-74          foreach_1.5.1        </span>
+<span class="co">#&gt;  [79] randomForest_4.6-14   e1071_1.7-9           BiocGenerics_0.41.2  </span>
+<span class="co">#&gt;  [82] zip_2.2.0             BiocParallel_1.29.10  shape_1.4.6          </span>
+<span class="co">#&gt;  [85] rlang_0.4.12          pkgconfig_2.0.3       systemfonts_1.0.3    </span>
+<span class="co">#&gt;  [88] matrixStats_0.61.0    evaluate_0.14         lattice_0.20-45      </span>
+<span class="co">#&gt;  [91] labeling_0.4.2        patchwork_1.1.1       htmlwidgets_1.5.4    </span>
+<span class="co">#&gt;  [94] bit_4.0.4             tidyselect_1.1.1      robust_0.6-1         </span>
+<span class="co">#&gt;  [97] ggsci_2.9             plyr_1.8.6            R6_2.5.1             </span>
+<span class="co">#&gt; [100] IRanges_2.29.1        snow_0.4-4            generics_0.1.1       </span>
+<span class="co">#&gt; [103] fit.models_0.64       DBI_1.1.2             withr_2.4.3          </span>
+<span class="co">#&gt; [106] haven_2.4.3           pillar_1.6.4          modelr_0.1.8         </span>
+<span class="co">#&gt; [109] crayon_1.4.2          utf8_1.2.2            plotly_4.10.0        </span>
+<span class="co">#&gt; [112] tzdb_0.2.0            rmarkdown_2.11        GetoptLong_1.0.5     </span>
+<span class="co">#&gt; [115] grid_4.2.0            readxl_1.3.1          data.table_1.14.2    </span>
+<span class="co">#&gt; [118] reprex_2.0.1          digest_0.6.29         gridGraphics_0.5-1   </span>
+<span class="co">#&gt; [121] textshaping_0.3.6     stats4_4.2.0          munsell_0.5.0        </span>
+<span class="co">#&gt; [124] viridisLite_0.4.0     ggplotify_0.1.0       bslib_0.3.1</span></code></pre></div>
 </div>
   </div>
 

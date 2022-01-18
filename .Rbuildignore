@@ -13,3 +13,14 @@ example
 Result
 pkgdown/
 logo.txt
+
+vignettes/*.html
+vignettes/*.pdf
+vignettes/*.png
+vignettes/*._cache
+vignettes/peak_tables
+vignettes/peak_tables/
+vignettes/figures
+vignettes/figures/
+vignettes/sample_info
+vignettes/sample_info/

@@ -33,117 +33,217 @@ We can use `masscleaner` to remove noisy features and outlier samples.
 
 First, we need to prepare samples for `masscleaner`.
 
+Download the demo data: [peak tables](https://drive.google.com/file/d/1mXljBn8lbEMlN4tMHaSFLNsJRmZwKPhU/view?usp=sharing) and uncompress.
+
+![](figures/Screen-Shot.png)
+
+Download the demo data: [sample information](https://drive.google.com/file/d/1yyJeOMUhuMSTmPWfzKuFTCRfZ3zdhO6q/view?usp=sharing) and uncompress.
+
+![](figures/Screen-Shot-1.png)
+
 # **Data preparation**
 
+Here we only use the positive mode as an example.
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
 library(masscleaner)
-library(massdataset)
 library(tidyverse)
 ```
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-data("expression_data")
-data("sample_info")
-data("variable_info")
-object =
-  create_mass_dataset(
-    expression_data = expression_data,
-    sample_info = sample_info,
-    variable_info = variable_info
-  )
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+peak_table_pos = readr::read_csv("peak_tables/POS/Peak_table_for_cleaning.csv") %>%
+  as.data.frame()
+sample_info_pos = readr::read_csv("sample_info/sample_info_pos.csv") %>%
+  as.data.frame()
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+expression_data_pos <- 
+  peak_table_pos %>% 
+  dplyr::select(-c(variable_id, mz, rt))
+
+variable_info_pos <- 
+  peak_table_pos %>% 
+  dplyr::select(c(variable_id, mz, rt))
+
+rownames(expression_data_pos) = variable_info_pos$variable_id
+dim(expression_data_pos)
+dim(sample_info_pos)
+colnames(expression_data_pos) == sample_info_pos$sample_id
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+expression_data_pos =
+  expression_data_pos[,sample_info_pos$sample_id]
+sum(colnames(expression_data_pos) == sample_info_pos$sample_id)
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object <-
+  create_mass_dataset(expression_data = expression_data_pos, 
+                      sample_info = sample_info_pos, 
+                      variable_info = variable_info_pos)
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
 object
 ```
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+Summary information.
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
 get_mv_number(object)
-massdataset::get_mv_number(object, by = "sample")
+massdataset::get_mv_number(object, by = "sample") %>% 
+  head()
 head(massdataset::get_mv_number(object, by = "variable"))
 
-massdataset::get_mv_number(object, by = "sample", show_by = "percentage")
+massdataset::get_mv_number(object, by = "sample", show_by = "percentage") %>% 
+  head()
 head(massdataset::get_mv_number(object, by = "variable"), show_by = "percentage")
 ```
 
 # **Filter noisy features**
 
-Remove variables who have mv in more than 20% QC samples.
+Remove variables who have mv in more than 20% QC samples and in at lest 50% samples in control group or case group.
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object %>% 
+  activate_mass_dataset(what = "sample_info") %>% 
+  dplyr::count(group)
+```
 
-show_variable_missing_values(object = object, percentage = TRUE)
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+show_variable_missing_values(object = object, 
+                             percentage = TRUE) +
+  scale_size_continuous(range = c(0.01, 2))
+```
 
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
 qc_id =
   object %>%
   activate_mass_dataset(what = "sample_info") %>%
   filter(class == "QC") %>%
   pull(sample_id)
 
-subject_id =
+control_id =
   object %>%
   activate_mass_dataset(what = "sample_info") %>%
-  filter(class == "Subject") %>%
+  filter(group == "Control") %>%
+  pull(sample_id)
+
+case_id =
+  object %>%
+  activate_mass_dataset(what = "sample_info") %>%
+  filter(group == "Case") %>%
   pull(sample_id)
 
 object =
   object %>%
   mutate_variable_na_freq(according_to_samples = qc_id) %>%
-  mutate_variable_na_freq(according_to_samples = subject_id) %>%
+  mutate_variable_na_freq(according_to_samples = control_id) %>%
+  mutate_variable_na_freq(according_to_samples = case_id)
+
+head(extract_variable_info(object))
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object <- 
+  object %>% 
   activate_mass_dataset(what = "variable_info") %>%
-  filter(na_freq < 0.2 & na_freq.1 < 0.5)
+  filter(na_freq < 0.2 & (na_freq.1 < 0.5 | na_freq.2 < 0.5))
 object
 ```
 
-
-
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
 show_variable_missing_values(object = object[,qc_id], 
                              percentage = TRUE)
-show_variable_missing_values(object = object[,subject_id], 
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+show_variable_missing_values(object = object[,control_id], 
                              percentage = TRUE)
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+show_variable_missing_values(object = object[,case_id], 
+                             percentage = TRUE)
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object %>% 
+  activate_mass_dataset(what = "variable_info") %>% 
+  dplyr::filter(na_freq.1 > 0.5) %>% 
+  extract_variable_info() %>% 
+  ggplot(aes(na_freq.1, na_freq.2)) +
+  geom_point() +
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0,1))
+```
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object %>% 
+  activate_mass_dataset(what = "variable_info") %>% 
+  dplyr::filter(na_freq.2 > 0.5) %>% 
+  extract_variable_info() %>% 
+  ggplot(aes(na_freq.1, na_freq.2)) +
+  geom_point() +
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0,1))
 ```
 
 # **Filter outlier samples**
 
 We can use the `detect_outlier()` to find the outlier samples.
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+More information about how to detect outlier samples can be found [here](https://privefl.github.io/blog/detecting-outlier-samples-in-pca/).
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
 massdataset::show_sample_missing_values(object = object,
-                                        color_by = "class",
-                                        percentage = TRUE)
+                                        color_by = "group",
+                                        order_by = "injection.order",
+                                        percentage = TRUE) +
+  ggsci::scale_color_aaas()
 ```
 
 Detect outlier samples.
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-##Blank samples are not outlier samples
-non_blank_id = 
-  object %>% 
-  activate_mass_dataset(what = "sample_info") %>% 
-  filter(class != "Blank") %>% 
-  pull(sample_id)
-
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
 outlier_samples =
-  object[,non_blank_id] %>%
-  log() %>%
+  object %>%
+  `+`(1) %>% 
+  log(2) %>%
   scale() %>%
   detect_outlier()
 
 outlier_samples
 ```
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-outlier_table = 
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+outlier_table <-
 extract_outlier_table(outlier_samples)
+outlier_table %>% 
+  head()
 ```
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-###MV plot
-massdataset::show_sample_missing_values(object = object[,non_blank_id],
-                                        color_by = "class",
-                                        percentage = TRUE)
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+outlier_table %>% 
+  apply(1, function(x){
+    sum(x)
+  }) %>% 
+  `>`(0) %>% 
+  which()
 ```
+
+No outlier samples.
+
+Save data for next analysis.
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+save(object, file = "peak_tables/POS/object")
+```
+
 # **Session information**
 
-```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
 sessionInfo()
 ```
