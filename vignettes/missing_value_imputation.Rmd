@@ -58,6 +58,14 @@ head(massdataset::get_mv_number(object, by = "variable"), show_by = "percentage"
 
 # **Impute missing values**
 
+## zero
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object_zero = 
+  impute_mv(object = object, method = "zero")
+get_mv_number(object_zero)
+```
+
 ## KNN
 
 ```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
@@ -66,13 +74,6 @@ object =
 get_mv_number(object)
 ```
 
-## zero
-
-```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
-object_zero = 
-  impute_mv(object = object, method = "zero")
-get_mv_number(object_zero)
-```
 
 More methods can be found `?impute_mv()`.
 

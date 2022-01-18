@@ -2,7 +2,7 @@
 title: "Data normalization and integration"
 author:
 - name: Xiaotao Shen PhD (https://www.shenxt.info/)
-date: "Created on 2020-04-01 and updated on `r Sys.Date()`"
+date: "Created on 2022-01-18 and updated on `r Sys.Date()`"
 output:
   html_document:
     df_print: paged
@@ -31,171 +31,194 @@ We can use `masscleaner` for data normalization and data integration.
 
 First, we need to prepare samples for `masscleaner`.
 
-## **Data preparation**
+# **Data preparation**
 
-### **Peak table**
+Load data from [previous step](https://tidymass.github.io/masscleaner/articles/missing_value_imputation.html).
 
-The peak table (csv format) can be from any software. We recomment that you use the `Peak_table_for_cleaning.csv` from `processData()` function from `masscleaner`.
-
-If you use other software, please make sure that the top 3 columns are `name` (peak name), `mz` and `rt` (rentention time, second). And the left column are sample intensity.
-
-![](../man/figures/Screen Shot 2020-04-01 at 1.07.37 PM.png)
-
-### **Sample information**
-
-We need the sample information (csv format) to define the detailed information of samples. Column 1 is `sample.name`, column 2 is `injection.order`, column 3 is `class` (such as Subject, QC, Blank), column 4 is `batch` and column 5 is `group` (such as control and case).
-
-
-![](../man/figures/Screen Shot 2020-04-02 at 8.40.02 AM.png)
-
-
-## **Read data**
-
-Then place the peak table and sample information in a folder. We use the demo data from `demoData` package.
-
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=FALSE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
 library(masscleaner)
-library(demoData)
 library(tidyverse)
+load("peak_tables/POS/object")
+object
 ```
 
-### **Load demo data**
+# **Data quality assessment**
 
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE,cache = TRUE}
-##create a folder named as example
-path <- file.path(".", "example")
-dir.create(path = path, showWarnings = FALSE)
-```
+We can use the [`massqc` package](https://tidymass.github.io/massqc/) to assess the data quality.
 
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-##get demo data
-demo_data <- system.file("masscleaner", package = "demoData")
-
-file.copy(from = file.path(demo_data, dir(demo_data)), 
-          to = path, overwrite = TRUE, recursive = TRUE)
-```
-
-Here, we have two peak tables, `batch1.data.csv` and `batch2.data.csv`, and `sample_info.csv` are in your `./example` folder.
-
-### **Create `metflowClass` object**
-
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+library(massqc)
 object <-
-  create_metflow_object(
-    ms1.data = c("batch1.data.csv", "batch2.data.csv"),
-    sample.information = "sample_info.csv",
-    path = path
-  )
+  object %>% 
+  activate_mass_dataset(what = "sample_info") %>% 
+  dplyr::mutate(batch = as.character(batch))
+
+object %>% 
+  `+`(1) %>% 
+  log(2) %>% 
+massqc::massqc_pca(color_by = "batch", line = FALSE)
 ```
 
-`object` is a `metflowClass` object, so you can print it in the console.
+We can see the clear batch effect.
 
-
-## **Align different batches**
-
-Because there are two batch peak tables, so first we must align them.
-
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-object <- align_batch(
-  object = object,
-  combine.mz.tol = 15,
-  combine.rt.tol = 30,
-  use.int.tol = FALSE
-)
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object %>% 
+  activate_mass_dataset(what = "sample_info") %>% 
+  dplyr::filter(class == "QC") %>% 
+  `+`(1) %>% 
+  log(2) %>% 
+  massqc::massqc_sample_boxplot(color_by = "group", 
+                                order_by = "injection.order") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
 ```
 
-## **Missing value processing**
-
-### **Remove noisy peaks and outlier samples**
-
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-object2 <- filter_peaks(
-  object = object,
-  min.fraction = 0.5,
-  type = "any",
-  min.subject.blank.ratio = 2,
-  according.to = "class",
-  which.group = "QC"
-)
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object %>% 
+  activate_mass_dataset(what = "sample_info") %>% 
+  dplyr::filter(class == "QC") %>% 
+  `+`(1) %>% 
+  log(2) %>% 
+  massqc::massqc_rsd_plot()
 ```
 
-### **Remove outlier samples**
-
-Nest, we should remove some samples which have a lot of missing values.
-
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-object2 <- filter_samples(object = object2,
-                          min.fraction.peak = 0.9)
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object %>% 
+  activate_mass_dataset(what = "sample_info") %>% 
+  dplyr::filter(class == "QC") %>% 
+  `+`(1) %>% 
+  log(2) %>% 
+  massqc::massqc_sample_correlation(method = "square", tl.cex = 5) +
+  theme(axis.text = element_text(size = 5))
 ```
 
-### **Missing value imputation**
+# **Data normalization**
 
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-object2 <- impute_mv(object = object2,
-                    method = "knn")
-object2
+## Total/median/mean
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object1 <- 
+  normalize_data(object, method = "total")
+
+##PCA
+object1 %>% 
+  `+`(1) %>% 
+  log(2) %>% 
+massqc::massqc_pca(color_by = "batch", line = FALSE)
 ```
 
-## **Data normalization**
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object2 <- 
+  normalize_data(object, method = "median")
 
-Now we can normalize data using different methods.
-
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-object3 <- normalize_data(object = object2, method = "mean")
+##PCA
+object2 %>% 
+  `+`(1) %>% 
+  log(2) %>% 
+massqc::massqc_pca(color_by = "batch", line = FALSE)
 ```
 
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-object3 <- normalize_data(object = object2, method = "svr", threads = 1)
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object3 <- 
+  normalize_data(object, method = "mean")
+
+##PCA
+object3 %>% 
+  `+`(1) %>% 
+  log(2) %>% 
+massqc::massqc_pca(color_by = "batch", line = FALSE)
 ```
 
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-# object3 <- normalize_data(object = object2, method = "pqn")
+## Loess/SVR
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object4 <- 
+  normalize_data(object, method = "loess")
+
+##PCA
+object4 %>% 
+  `+`(1) %>% 
+  log(2) %>% 
+massqc::massqc_pca(color_by = "batch", line = FALSE)
 ```
 
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object5 <- 
+  normalize_data(object, method = "svr")
 
-After data normaliztion, you can use the `get_peak_int_distribution()` function to see each peak intensity distributation plot.
-
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-get_peak_int_distribution(object = object3, peak_name = "M114T670", interactive = TRUE)
+##PCA
+object5 %>% 
+  `+`(1) %>% 
+  log(2) %>% 
+massqc::massqc_pca(color_by = "batch", line = FALSE)
 ```
 
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-get_peak_int_distribution(object = object2, peak_name = "M114T670", interactive = TRUE)
+We select the median method.
+
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object_normalization <- object2
 ```
 
+# **Data integration**
 
-## **Data integration**
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+object_integration <- 
+  integrate_data(object_normalization, method = "qc_median")
 
-Then we can use the `integrate_data()` function to do data integration.
-
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-object4 <- integrate_data(object = object3, method = "qc.mean")
+##PCA
+object_integration %>% 
+  `+`(1) %>% 
+  log(2) %>% 
+massqc::massqc_pca(color_by = "batch", line = FALSE)
 ```
 
+Then we can draw the compare plot for RSD:
 
-We can also get the RSDs of all the peaks before and after data normalization and data integration.
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+qc_id = 
+  object %>% 
+  activate_mass_dataset(what = "sample_info") %>% 
+  filter(class == "QC") %>% 
+  pull(sample_id)
 
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-rsd2 <- calculate_rsd(object = object2, slot = "QC")
-rsd4 <- calculate_rsd(object = object4, slot = "QC")
-```
+rsd_before = 
+object %>% 
+  mutate_rsd(according_to_samples = qc_id) %>% 
+  activate_mass_dataset(what = "variable_info") %>% 
+  pull(rsd)
+
+rsd_after = 
+object_integration %>% 
+  mutate_rsd(according_to_samples = qc_id) %>% 
+  activate_mass_dataset(what = "variable_info") %>% 
+  pull(rsd)
 
 
-Then we can draw the comprison plot:
-
-```{r,eval=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
-library(ggplot2)
-dplyr::left_join(rsd2, rsd4, by = c("index", "name")) %>% 
-  dplyr::mutate(class = dplyr::case_when(rsd.y < rsd.x ~ "Decrease",
-                                         rsd.y > rsd.x ~ "Increase",
-                                         rsd.y == rsd.y ~ "Equal")) %>% 
-  ggplot(aes(rsd.x, rsd.y, colour = class)) +
+data.frame(rsd_before, rsd_after) %>% 
+  dplyr::mutate(class = dplyr::case_when(rsd_after < rsd_before ~ "Decrease",
+                                         rsd_after > rsd_before ~ "Increase",
+                                         rsd_after == rsd_before ~ "Equal")) %>% 
+  ggplot(aes(rsd_before, rsd_after, colour = class)) +
   ggsci::scale_color_jama() +
   geom_abline(slope = 1, intercept = 0) +
   geom_point() +
   labs(x = "RSD after normalization", y = "RSD before normalization") +
   theme_bw()
 ```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+intensity_plot(object = object, variable_index = 1, 
+               color_by = "group", 
+               order_by = "injection.order", interactive = FALSE) 
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+intensity_plot(object = object_integration, variable_index = 1, 
+               color_by = "group", 
+               order_by = "injection.order", interactive = FALSE) +
+  ggsci::scale_fill_aaas()
+```
+
 
 # **Session information**
 

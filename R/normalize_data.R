@@ -6,6 +6,7 @@
 #' @param method Normalization method, mean, median, total svr or loess,
 #' default is svr. Please see the details.
 #' @param keep_scale Remain scale or not. Default is TRUE.
+#' @param optimization TRUE or not.
 #' @param pqn_reference for pqn method.
 #' @param begin 0.5
 #' @param end 1
@@ -25,6 +26,7 @@ normalize_data <-
   function(object,
            method = c("svr", "total", "median", "mean", "pqn", "loess"),
            keep_scale = TRUE,
+           optimization = TRUE,
            pqn_reference = c("median", "mean"),
            begin = 0.5,
            end = 1,

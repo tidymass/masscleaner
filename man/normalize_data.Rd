@@ -8,6 +8,7 @@ normalize_data(
   object,
   method = c("svr", "total", "median", "mean", "pqn", "loess"),
   keep_scale = TRUE,
+  optimization = TRUE,
   pqn_reference = c("median", "mean"),
   begin = 0.5,
   end = 1,
@@ -23,6 +24,8 @@ normalize_data(
 default is svr. Please see the details.}
 
 \item{keep_scale}{Remain scale or not. Default is TRUE.}
+
+\item{optimization}{TRUE or not.}
 
 \item{pqn_reference}{for pqn method.}
 
