@@ -215,10 +215,15 @@ intensity_plot(object = object, variable_index = 1,
 ```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
 intensity_plot(object = object_integration, variable_index = 1, 
                color_by = "group", 
-               order_by = "injection.order", interactive = FALSE) +
-  ggsci::scale_fill_aaas()
+               order_by = "injection.order", interactive = FALSE)
 ```
 
+
+Save for next analysis.
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=TRUE, cache=TRUE}
+save(object_integration, file = "peak_tables/POS/object_integration")
+```
 
 # **Session information**
 
