@@ -123,7 +123,7 @@ rough_align <- function(peak.table,
   data1 <- simple.batch1[, c(2:3)]
   data2 <- simple.batch2[, c(2:3)]
   
-  match.result <- tinytools::mz_rt_match(
+  match.result <- masstools::mz_rt_match(
     data1 = as.matrix(data1),
     data2 = as.matrix(data2),
     mz.tol = combine.mz.tol,
@@ -564,7 +564,7 @@ align_2batch <- function(batch1,
   # new.name <-
   #   paste("M", round(new.mz), "T", round(new.rt), sep = "")
   #
-  # new.name <- tinytools::name_duplicated(new.name)
+  # new.name <- masstools::name_duplicated(new.name)
   #
   # return.data <- data.frame(new.name, new.mz, new.rt,
   #                           batch1[, -c(seq_len(3))], 

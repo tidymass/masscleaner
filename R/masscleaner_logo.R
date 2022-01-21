@@ -17,7 +17,7 @@
 #' @importFrom readr read_csv cols
 #' @importFrom readxl read_excel
 #' @importFrom ggrepel geom_text_repel
-#' @importFrom tinytools get_os
+#' @importFrom masstools get_os
 #' @importFrom BiocParallel MulticoreParam SnowParam bplapply
 #' @importFrom e1071 svm
 #' @importFrom magrittr %>%

@@ -86,7 +86,7 @@ normalize_data_loess <- function(subject_data,
   
   peak_index <- seq_len(nrow(qc_data))
   
-  if (tinytools::get_os() == "windows") {
+  if (masstools::get_os() == "windows") {
     bpparam <-
       BiocParallel::SnowParam(workers = threads,
                               progressbar = TRUE)

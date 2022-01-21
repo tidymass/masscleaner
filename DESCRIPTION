@@ -14,7 +14,7 @@ Description: This package is uesd to do the data cleaning for LC-MS metabolomics
              The functions in this package only support mass_dataset class from
              massdataset package.
 LazyData: true
-Depends: R (>= 4.2)
+Depends: R (>= 4.1)
 Imports:
     BiocParallel,
     cli,
@@ -44,7 +44,7 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    tinytools,
+    masstools,
     rstudioapi,
     ggrepel,
     BiocGenerics,
@@ -65,6 +65,6 @@ Note:
 biocViews: Metabolomics, MassSpectrometry
 Encoding: UTF-8
 Remotes: 
-    tidymass/tinytools,
+    tidymass/masstools,
     tidymass/massdataset
 Config/testthat/edition: 3

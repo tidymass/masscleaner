@@ -1,4 +1,4 @@
-core <- c("massdataset", "tinytools")
+core <- c("massdataset", "masstools")
 
 masscleaner_core_unloaded <- function() {
   search <- paste0("package:", core)
