@@ -43,7 +43,7 @@
 
 masscleaner_logo <- function() {
   message(crayon::green("Thank you for using masscleaner!\n"))
-  message(crayon::green("Version 0.0.1 (2021-12-3)\n"))
+  message(crayon::green("Version", masscleaner_version, "(", update_date, ')\n'))
   message(crayon::green("Bug fixing\n"))
   message(
     crayon::green(
@@ -66,8 +66,8 @@ masscleaner_logo <- function() {
 }
 
 
-masscleaner_version <- "0.9.2"
-
+masscleaner_version <- "0.99.3"
+update_date = as.character(Sys.time())
 
 #' @title get_masscleaner_version
 #' @description get_masscleaner_version
