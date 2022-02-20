@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">masscleaner</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.3</span>
       </span>
     </div>
 
@@ -138,7 +138,7 @@
       <h1 data-toc-skip>Data normalization and integration</h1>
                         <h4 data-toc-skip class="author">Xiaotao Shen PhD (<a href="https://www.shenxt.info/" class="external-link uri">https://www.shenxt.info/</a>)</h4>
                         
-            <h4 data-toc-skip class="date">Created on 2022-01-18 and updated on 2022-01-18</h4>
+            <h4 data-toc-skip class="date">Created on 2022-01-18 and updated on 2022-02-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tidymass/masscleaner/blob/HEAD/vignettes/data_normalization_integration.Rmd" class="external-link"><code>vignettes/data_normalization_integration.Rmd</code></a></small>
       <div class="hidden name"><code>data_normalization_integration.Rmd</code></div>
@@ -149,10 +149,10 @@
     
 <p>We can use <code>masscleaner</code> for data normalization and data integration.</p>
 <p>First, we need to prepare samples for <code>masscleaner</code>.</p>
-<div class="section level1">
-<h1 id="data-preparation">
+<div class="section level2">
+<h2 id="data-preparation">
 <strong>Data preparation</strong><a class="anchor" aria-label="anchor" href="#data-preparation"></a>
-</h1>
+</h2>
 <p>Load data from <a href="https://tidymass.github.io/masscleaner/articles/missing_value_imputation.html">previous step</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymass/masscleaner" class="external-link">masscleaner</a></span><span class="op">)</span>
@@ -201,10 +201,10 @@
 <span class="co"><span style="color: #00BB00;">#&gt; </span>      Package Function.used                Time</span>
 <span class="co">#&gt; 1 masscleaner   impute_mv() 2022-01-17 23:20:44</span></code></pre></div>
 </div>
-<div class="section level1">
-<h1 id="data-quality-assessment">
+<div class="section level2">
+<h2 id="data-quality-assessment">
 <strong>Data quality assessment</strong><a class="anchor" aria-label="anchor" href="#data-quality-assessment"></a>
-</h1>
+</h2>
 <p>We can use the <a href="https://tidymass.github.io/massqc/" class="external-link"><code>massqc</code> package</a> to assess the data quality.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymass/massqc" class="external-link">massqc</a></span><span class="op">)</span>
@@ -256,13 +256,13 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="data_normalization_integration_files/figure-html/unnamed-chunk-6-1.png" width="100%"></p>
 </div>
-<div class="section level1">
-<h1 id="data-normalization">
-<strong>Data normalization</strong><a class="anchor" aria-label="anchor" href="#data-normalization"></a>
-</h1>
 <div class="section level2">
-<h2 id="totalmedianmean">Total/median/mean<a class="anchor" aria-label="anchor" href="#totalmedianmean"></a>
+<h2 id="data-normalization">
+<strong>Data normalization</strong><a class="anchor" aria-label="anchor" href="#data-normalization"></a>
 </h2>
+<div class="section level3">
+<h3 id="totalmedianmean">Total/median/mean<a class="anchor" aria-label="anchor" href="#totalmedianmean"></a>
+</h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">object1</span> <span class="op">&lt;-</span> 
   <span class="fu"><a href="../reference/normalize_data.html">normalize_data</a></span><span class="op">(</span><span class="va">object</span>, method <span class="op">=</span> <span class="st">"total"</span><span class="op">)</span>
@@ -294,9 +294,9 @@
 <span class="fu">massqc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massqc/man/massqc_pca.html" class="external-link">massqc_pca</a></span><span class="op">(</span>color_by <span class="op">=</span> <span class="st">"batch"</span>, line <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="data_normalization_integration_files/figure-html/unnamed-chunk-9-1.png" width="100%"></p>
 </div>
-<div class="section level2">
-<h2 id="loesssvr">Loess/SVR<a class="anchor" aria-label="anchor" href="#loesssvr"></a>
-</h2>
+<div class="section level3">
+<h3 id="loesssvr">Loess/SVR<a class="anchor" aria-label="anchor" href="#loesssvr"></a>
+</h3>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>object4 <span class="ot">&lt;-</span> </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">normalize_data</span>(object, <span class="at">method =</span> <span class="st">"loess"</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [33mBatch 1 ... </span></span>
@@ -1712,10 +1712,10 @@
 <code class="sourceCode R"><span class="va">object_normalization</span> <span class="op">&lt;-</span> <span class="va">object2</span></code></pre></div>
 </div>
 </div>
-<div class="section level1">
-<h1 id="data-integration">
+<div class="section level2">
+<h2 id="data-integration">
 <strong>Data integration</strong><a class="anchor" aria-label="anchor" href="#data-integration"></a>
-</h1>
+</h2>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">object_integration</span> <span class="op">&lt;-</span> 
   <span class="fu"><a href="../reference/integrate_data.html">integrate_data</a></span><span class="op">(</span><span class="va">object_normalization</span>, method <span class="op">=</span> <span class="st">"qc_median"</span><span class="op">)</span>
@@ -1772,10 +1772,10 @@
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">object_integration</span>, file <span class="op">=</span> <span class="st">"peak_tables/POS/object_integration"</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level1">
-<h1 id="session-information">
+<div class="section level2">
+<h2 id="session-information">
 <strong>Session information</strong><a class="anchor" aria-label="anchor" href="#session-information"></a>
-</h1>
+</h2>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; R Under development (unstable) (2022-01-11 r81473)</span>

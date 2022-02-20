@@ -25,10 +25,10 @@ You can install `masscleaner` from
 
 ``` r
 # Install `masscleaner` from GitHub
-if(!require(devtools)){
-install.packages("devtools")
+if(!require(remotes)){
+install.packages("remotes")
 }
-devtools::install_github("tidymass/masscleaner")
+remotes::install_github("tidymass/masscleaner")
 ```
 
 We use the demo data in `demodata` package to show how to use
