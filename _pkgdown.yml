@@ -44,6 +44,9 @@ navbar:
         href: articles/missing_value_imputation.html
       - text: Data normalization and integration
         href: articles/data_normalization_integration.html
+      - text: "Frequency Asked Questions"
+      - text: No Subject or QC
+        href: articles/error_no_subject_qc.html
     twitter:
       icon: "fab fa-twitter fa-lg"
       href: https://twitter.com/JasperShen1990

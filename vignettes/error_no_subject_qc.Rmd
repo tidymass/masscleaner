@@ -1,0 +1,79 @@
+---
+title: "No Subject or QC"
+author:
+- name: Xiaotao Shen (https://www.shenxt.info/)
+date: "Created on 2022-02-08 and updated on `r Sys.Date()`"
+output:
+  html_document:
+    df_print: paged
+    toc: no
+  pdf_document:
+    toc: no
+vignette: >
+  %\VignetteIndexEntry{align_batch}
+  %\VignettePackage{masscleaner}
+  % \VignetteEngine{knitr::rmarkdown}
+  % \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = TRUE,
+  out.width = "100%"
+)
+```
+
+When you use the functions which need specific identification for `Subject` or `QC` samples in `class` of `sample_info`, if there is a error:
+
+```
+Error: error: No Subject samples in object, please check and see here:
+```
+
+You need to change the column `class` in `sample_info`.
+
+# Step 1: check the class in your sample_info
+
+```{r,eval=TRUE,echo=FALSE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+load("object_neg")
+object <- object_neg
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+library(masscleaner)
+library(tidyverse)
+object@sample_info$class
+```
+
+We can see there are no "Subject" in the class, so we need to change the `case` and `control` to `Subject`.
+
+# Step 2: change class
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+object <- 
+  object %>% 
+  activate_mass_dataset(what = "sample_info") %>% 
+  mutate(class = case_when(
+    class == "QC" ~ "QC",
+    TRUE ~ "Subject"
+  ))
+```
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+object@sample_info$class
+```
+
+# Session information
+
+```{r,eval=TRUE,warning=FALSE, R.options="", message=FALSE, cache=TRUE}
+sessionInfo()
+```
+
+
+
+
+
+
