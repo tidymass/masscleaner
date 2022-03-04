@@ -144,11 +144,11 @@ normalize_data <-
       sample_info$batch <- 1
     }
     
-    if(!"Subject" %in% unique(sample_info$class)) {
-      stop("No Subject in your sample_info column 'class'")
-    }
-    
     if (method == "loess") {
+      if(!"Subject" %in% unique(sample_info$class)) {
+        stop("No Subject in your sample_info column 'class'")
+      }
+      
       data_nor <-
         purrr::map(unique(sample_info$batch), function(batch_idx) {
           message(crayon::yellow("Batch", batch_idx, "...", "\n"))
@@ -223,6 +223,11 @@ normalize_data <-
     }
     
     if (method == "svr") {
+      
+      if(!"Subject" %in% unique(sample_info$class)) {
+        stop("No Subject in your sample_info column 'class'")
+      }
+      
       data_nor <-
         purrr::map(unique(sample_info$batch), function(batch_idx) {
           message(crayon::yellow("Batch", batch_idx, "...", "\n"))
