@@ -167,8 +167,8 @@ normalize_data <-
           
           qc_idx <- match(qc_id, sample_info$sample_id)
           
-          subject_data <- expression_data[, subject_idx]
-          qc_data <- expression_data[, qc_idx]
+          subject_data <- expression_data[, subject_idx, drop = FALSE]
+          qc_data <- expression_data[, qc_idx, drop = FALSE]
           
           subject_order <- sample_info$injection.order[subject_idx]
           qc_order <- sample_info$injection.order[qc_idx]
@@ -200,7 +200,7 @@ normalize_data <-
       new_expression_data <-
         expression_data
       
-      new_expression_data[, colnames(data_nor)] <-
+      new_expression_data[, colnames(data_nor), drop = FALSE] <-
         data_nor
       
       object@expression_data <- new_expression_data
@@ -246,8 +246,8 @@ normalize_data <-
           
           qc_idx <- match(qc_id, sample_info$sample_id)
           
-          subject_data <- expression_data[, subject_idx]
-          qc_data <- expression_data[, qc_idx]
+          subject_data <- expression_data[, subject_idx, drop = FALSE]
+          qc_data <- expression_data[, qc_idx, drop = FALSE]
           
           subject_order <- sample_info$injection.order[subject_idx]
           qc_order <- sample_info$injection.order[qc_idx]
@@ -276,7 +276,7 @@ normalize_data <-
       new_expression_data <-
         expression_data
       
-      new_expression_data[, colnames(data_nor)] <-
+      new_expression_data[, colnames(data_nor), drop = FALSE] <-
         data_nor
       
       object@expression_data <- new_expression_data

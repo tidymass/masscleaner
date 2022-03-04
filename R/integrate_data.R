@@ -78,7 +78,7 @@ integrate_data <-
           temp_sample_info <-
             sample_info %>%
             dplyr::filter(batch == temp_batch)
-          expression_data[, temp_sample_info$sample_id]
+          expression_data[, temp_sample_info$sample_id, drop = FALSE]
         }
       )
     
@@ -91,19 +91,19 @@ integrate_data <-
           which(colnames(x) %in% sample_info$sample_id[sample_info$class == "Subject"])
         
         if (method == "qc_mean") {
-          return(apply(x[, qc_idx], 1, mean))
+          return(apply(x[, qc_idx, drop = FALSE], 1, mean))
         }
         
         if (method == "qc_median") {
-          return(apply(x[, qc_idx], 1, median))
+          return(apply(x[, qc_idx, drop = FALSE], 1, median))
         }
         
         if (method == "subject_mean") {
-          return(apply(x[, subject_idx], 1, mean))
+          return(apply(x[, subject_idx, drop = FALSE], 1, mean))
         }
         
         if (method == "subject_median") {
-          return(apply(x[, subject_idx], 1, median))
+          return(apply(x[, subject_idx, drop = FALSE], 1, median))
         }
         
       })
@@ -131,7 +131,7 @@ integrate_data <-
       dplyr::bind_cols()
     
     new_expression_data <-
-      new_expression_data[, object@sample_info$sample_id]
+      new_expression_data[, object@sample_info$sample_id, drop = FALSE]
     
     object@expression_data <- new_expression_data
     
