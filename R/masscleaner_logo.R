@@ -66,7 +66,7 @@ masscleaner_logo <- function() {
 }
 
 
-masscleaner_version <- "0.99.6"
+masscleaner_version <- "0.99.7"
 update_date = as.character(Sys.time())
 
 #' @title get_masscleaner_version

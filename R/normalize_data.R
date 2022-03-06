@@ -200,7 +200,7 @@ normalize_data <-
       new_expression_data <-
         expression_data
       
-      new_expression_data[, colnames(data_nor), drop = FALSE] <-
+      new_expression_data[, colnames(data_nor)] <-
         data_nor
       
       object@expression_data <- new_expression_data
@@ -276,7 +276,7 @@ normalize_data <-
       new_expression_data <-
         expression_data
       
-      new_expression_data[, colnames(data_nor), drop = FALSE] <-
+      new_expression_data[, colnames(data_nor)] <-
         data_nor
       
       object@expression_data <- new_expression_data
