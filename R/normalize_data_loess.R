@@ -13,128 +13,129 @@
 #' @param step step ?loess
 #' @param threads threads
 #' @return result
-normalize_data_loess <- function(subject_data,
-                                 qc_data,
-                                 subject_order,
-                                 qc_order,
-                                 optimization = TRUE,
-                                 begin = 0.5,
-                                 end = 1,
-                                 step = 0.2,
-                                 threads = 4) {
-  message(crayon::green("LOESS normalization...\n"))
-  
-  temp.fun <-
-    function(idx,
-             qc_data,
-             qc_order,
-             subject_data,
-             subject_order,
-             optimization = TRUE,
-             begin,
-             end,
-             step,
-             optimize_loess_span) {
-      if (optimization) {
-        para <- optimize_loess_span(
-          x = qc_order,
-          y = as.numeric(qc_data[idx,]),
-          degree_range = c(1, 2),
-          span_range = seq(begin, end, step)
-        ) %>%
-          dplyr::filter(rmse == min(rmse)) %>%
-          head()
+normalize_data_loess <-
+  function(subject_data,
+           qc_data,
+           subject_order,
+           qc_order,
+           optimization = TRUE,
+           begin = 0.5,
+           end = 1,
+           step = 0.2,
+           threads = 4) {
+    message(crayon::green("LOESS normalization...\n"))
+    
+    temp.fun <-
+      function(idx,
+               qc_data,
+               qc_order,
+               subject_data,
+               subject_order,
+               optimization = TRUE,
+               begin,
+               end,
+               step,
+               optimize_loess_span) {
+        if (optimization) {
+          para <- optimize_loess_span(
+            x = qc_order,
+            y = as.numeric(qc_data[idx, ]),
+            degree_range = c(1, 2),
+            span_range = seq(begin, end, step)
+          ) %>%
+            dplyr::filter(rmse == min(rmse)) %>%
+            head()
+          
+          loess.reg <-
+            loess(
+              formula = as.numeric(qc_data[idx,]) ~ qc_order,
+              span = para$span[1],
+              degree = para$degree[1]
+            )
+        } else {
+          loess.reg <- loess(as.numeric(qc_data[idx,]) ~ qc_order)
+        }
         
-        loess.reg <-
-          loess(
-            formula = as.numeric(qc_data[idx, ]) ~ qc_order,
-            span = para$span[1],
-            degree = para$degree[1]
-          )
-      } else {
-        loess.reg <- loess(as.numeric(qc_data[idx, ]) ~ qc_order)
+        qc_data_pred <-
+          summary(loess.reg)$fitted
+        
+        qc_nor1 <-
+          as.numeric(qc_data[idx,]) / qc_data_pred
+        
+        #if the predict value is 0, then set the ratio to 0
+        qc_nor1[is.nan(unlist(qc_nor1))] <- 0
+        qc_nor1[is.infinite(unlist(qc_nor1))] <- 0
+        
+        subject_data_pred <-
+          predict(loess.reg, data.frame(qc_order = c(subject_order)))
+        
+        subject_nor1 <-
+          unlist(subject_data[idx,]) / subject_data_pred
+        
+        subject_nor1[is.nan(as.numeric(subject_nor1))] <-
+          0
+        subject_nor1[is.infinite(as.numeric(subject_nor1))] <-
+          0
+        subject_nor1[is.na(as.numeric(subject_nor1))] <-
+          0
+        subject_nor1[which(as.numeric(subject_nor1) < 0)] <-
+          0
+        names(qc_nor1) <- colnames(qc_data)
+        return_result <- list(qc_nor1, subject_nor1)
+        return(return_result)
       }
-      
-      qc_data_pred <-
-        summary(loess.reg)$fitted
-      
-      qc_nor1 <-
-        as.numeric(qc_data[idx, ]) / qc_data_pred
-      
-      #if the predict value is 0, then set the ratio to 0
-      qc_nor1[is.nan(unlist(qc_nor1))] <- 0
-      qc_nor1[is.infinite(unlist(qc_nor1))] <- 0
-      
-      subject_data_pred <-
-        predict(loess.reg, data.frame(qc_order = c(subject_order)))
-      
-      subject_nor1 <-
-        unlist(subject_data[idx, ]) / subject_data_pred
-      
-      subject_nor1[is.nan(as.numeric(subject_nor1))] <-
-        0
-      subject_nor1[is.infinite(as.numeric(subject_nor1))] <-
-        0
-      subject_nor1[is.na(as.numeric(subject_nor1))] <-
-        0
-      subject_nor1[which(as.numeric(subject_nor1) < 0)] <-
-        0
-      names(qc_nor1) <- colnames(qc_data)
-      return_result <- list(qc_nor1, subject_nor1)
-      return(return_result)
+    
+    peak_index <- seq_len(nrow(qc_data))
+    
+    if (masstools::get_os() == "windows") {
+      bpparam <-
+        BiocParallel::SnowParam(workers = threads,
+                                progressbar = TRUE)
+    } else{
+      bpparam <- BiocParallel::MulticoreParam(workers = threads,
+                                              progressbar = TRUE)
     }
-  
-  peak_index <- seq_len(nrow(qc_data))
-  
-  if (masstools::get_os() == "windows") {
-    bpparam <-
-      BiocParallel::SnowParam(workers = threads,
-                              progressbar = TRUE)
-  } else{
-    bpparam <- BiocParallel::MulticoreParam(workers = threads,
-                                           progressbar = TRUE)
+    
+    data_nor <-
+      BiocParallel::bplapply(
+        peak_index,
+        FUN = temp.fun,
+        BPPARAM = bpparam,
+        qc_data = qc_data,
+        qc_order = qc_order,
+        subject_data = subject_data,
+        subject_order = subject_order,
+        optimization = optimization,
+        begin = begin,
+        end = end,
+        step = step,
+        optimize_loess_span = optimize_loess_span
+      )
+    
+    qc_data_nor <-
+      data_nor %>%
+      purrr::map(function(x) {
+        x[[1]]
+      }) %>%
+      dplyr::bind_rows()
+    
+    subject_data_nor <-
+      data_nor %>%
+      purrr::map(function(x) {
+        x[[2]]
+      }) %>%
+      dplyr::bind_rows()
+    
+    qc_median <- apply(qc_data, 1, median)
+    
+    qc_data_nor <- qc_median * qc_data_nor
+    subject_data_nor <- qc_median * subject_data_nor
+    rownames(qc_data_nor) <- rownames(qc_data)
+    rownames(subject_data_nor) <- rownames(qc_data)
+    return_result <- list(qc_data_nor, subject_data_nor)
+    message(crayon::green("LOESS normalization is done.\n"))
+    return(return_result)
   }
-  
-  data_nor <-
-    BiocParallel::bplapply(
-      peak_index,
-      FUN = temp.fun,
-      BPPARAM = bpparam,
-      qc_data = qc_data,
-      qc_order = qc_order,
-      subject_data = subject_data,
-      subject_order = subject_order,
-      optimization = optimization,
-      begin = begin,
-      end = end,
-      step = step,
-      optimize_loess_span = optimize_loess_span
-    )
-
-  qc_data_nor <-
-    data_nor %>% 
-    purrr::map(function(x){
-      x[[1]]
-    }) %>% 
-    dplyr::bind_rows()
-  
-  subject_data_nor <-
-    data_nor %>% 
-    purrr::map(function(x){
-      x[[2]]
-    }) %>% 
-    dplyr::bind_rows()
-
-  qc_median <- apply(qc_data, 1, median)
-  
-  qc_data_nor <- qc_median * qc_data_nor
-  subject_data_nor <- qc_median * subject_data_nor
-  rownames(qc_data_nor) <- rownames(qc_data)
-  rownames(subject_data_nor) <- rownames(qc_data)
-  return_result <- list(qc_data_nor, subject_data_nor)
-  message(crayon::green("LOESS normalization is done.\n"))
-  return(return_result)
-}
 
 
 #' @title optimize_loess_span
@@ -165,7 +166,7 @@ optimize_loess_span <-
                 temp_result <-
                   loess(
                     formula = y ~ x,
-                    data = temp_data[-idx,],
+                    data = temp_data[-idx, ],
                     span = span,
                     degree = degree
                   )
