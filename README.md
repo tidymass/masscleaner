@@ -7,7 +7,7 @@
 [![Dependencies](https://tinyverse.netlify.com/badge/masscleaner)](https://cran.r-project.org/package=masscleaner)
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-`masscleaner` is a part of [tidymass](https://tidymass.github.io/tidymass/).
+`masscleaner` is a part of [tidymass](https://www.tidymass.org/).
 
 ------
 
