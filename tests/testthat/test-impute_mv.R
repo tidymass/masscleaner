@@ -51,8 +51,6 @@ blank_id =
   filter(class == "Blank") %>%
   pull(sample_id)
 
-
-
 test_that("impute_mv", {
   object1 <-
     impute_mv(object = object,

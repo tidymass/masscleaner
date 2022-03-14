@@ -45,11 +45,7 @@ masscleaner_logo <- function() {
   message(crayon::green("Thank you for using masscleaner!\n"))
   message(crayon::green("Version", masscleaner_version, "(", update_date, ')\n'))
   message(crayon::green("Bug fixing\n"))
-  message(
-    crayon::green(
-      "More information: google tidymass cleaner.\n"
-    )
-  )
+  message(crayon::green("More information: google tidymass cleaner.\n"))
   cat(crayon::green(
     c(
       "                           _____ _                            ",
@@ -66,7 +62,7 @@ masscleaner_logo <- function() {
 }
 
 
-masscleaner_version <- "0.99.7"
+masscleaner_version <- utils::packageVersion("masscleaner")
 update_date = as.character(Sys.time())
 
 #' @title get_masscleaner_version
@@ -75,10 +71,10 @@ update_date = as.character(Sys.time())
 #' \email{shenxt1990@@outlook.com}
 #' @return masscleaner_version
 #' @export
-#' @examples 
+#' @examples
 #' get_masscleaner_version
 
-get_masscleaner_version <- function(){
+get_masscleaner_version <- function() {
   return(masscleaner_version)
 }
 

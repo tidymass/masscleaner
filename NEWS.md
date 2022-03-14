@@ -51,3 +51,7 @@
 # Version 0.9.2 (20210312)
 --------------
 * Add output_eic function.
+
+# Version 0.9.8 (20220314)
+--------------
+* Fix a bug when there is NA in sample_info for data normalization.
