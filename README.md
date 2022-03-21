@@ -70,10 +70,10 @@ CA 94304](https://www.google.com/maps/place/Alway+Building/@37.4322345,-122.1770
 
 If you use `masscleaner` in you publication, please cite this publication:
 
-X Shen, ZJ Zhu - Bioinformatics (Oxford, England), 2019, MetFlow: An
-interactive and integrated workflow for metabolomics data cleaning and
-differential metabolite discovery.  
-[Web
-Link](https://www.researchgate.net/profile/Xiaotao_Shen/publication/330410794_MetFlow_An_Interactive_and_Integrated_Workflow_for_Metabolomics_Data_Cleaning_and_Differential_Metabolite_Discovery/links/5cb3ca7892851c8d22ec3a89/MetFlow-An-Interactive-and-Integrated-Workflow-for-Metabolomics-Data-Cleaning-and-Differential-Metabolite-Discovery.pdf).
+TidyMass: An Object-oriented Reproducible Analysis Framework for LC-MS Data.
+
+Xiaotao Shen, Hong Yan, Chuchu Wang, Peng Gao, Caroline H. Johnson, Michael P. Snyder.
+
+[Web Link](https://www.biorxiv.org/content/10.1101/2022.03.15.484499v1).
 
 Thanks very much\!
