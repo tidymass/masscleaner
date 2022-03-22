@@ -9,45 +9,35 @@
 
 `masscleaner` is a part of [tidymass](https://www.tidymass.org/).
 
-------
-
-## **About**
+# **About**
 
 `masscleaner` is a R package which is used for untargeted metabolomics data
 cleaning.
 
------
 
-## **Installation**
+# **Installation**
 
-You can install `masscleaner` from
-[Github](https://github.com/tidymass/masscleaner).
+You can install `masscleaner` from [GitLab](https://gitlab.com/jaspershen/masscleaner)
 
 ``` r
-# Install `masscleaner` from GitHub
 if(!require(remotes)){
 install.packages("remotes")
 }
+remotes::install_gitlab("jaspershen/masscleaner")
+```
+
+or [GitHub](https://github.com/tidymass/masscleaner)
+
+``` r
 remotes::install_github("tidymass/masscleaner")
 ```
 
-We use the demo data in `demodata` package to show how to use
-`masscleaner`. Please install it first.
+# **Usage**
 
-``` r
-devtools::install_github("tidymass/demodata")
-```
+Please see the `Help document` page.
 
------
 
-## **Usage**
-
-Please see the [Help document](https://tidymass.github.io/masscleaner/articles/masscleaner_instruction.html)
-page to get the instrduction of `masscleaner`.
-
------
-
-## **Need help?**
+# **Need help?**
 
 If you have any quesitions about `masscleaner`, please don’t hesitate to
 email me (<shenxt@stanford.edu>).
@@ -64,9 +54,7 @@ email me (<shenxt@stanford.edu>).
 Palo Alto,
 CA 94304](https://www.google.com/maps/place/Alway+Building/@37.4322345,-122.1770883,17z/data=!3m1!4b1!4m5!3m4!1s0x808fa4d335c3be37:0x9057931f3b312c29!8m2!3d37.4322345!4d-122.1748996)
 
------
-
-## **Citation**
+# **Citation**
 
 If you use `masscleaner` in you publication, please cite this publication:
 
@@ -76,4 +64,4 @@ Xiaotao Shen, Hong Yan, Chuchu Wang, Peng Gao, Caroline H. Johnson, Michael P. S
 
 [Web Link](https://www.biorxiv.org/content/10.1101/2022.03.15.484499v1).
 
-Thanks very much\!
+Thanks very much!
