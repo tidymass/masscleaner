@@ -50,5 +50,5 @@ normalize_data_pqn <-
       dplyr::bind_cols()
     
     rownames(new_x) <- rownames(x)
-    return(x)
+    return(new_x)
   }

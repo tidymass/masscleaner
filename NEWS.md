@@ -55,3 +55,7 @@
 # Version 0.9.8 (20220314)
 --------------
 * Fix a bug when there is NA in sample_info for data normalization.
+
+# Version 1.0.1 (20220728)
+--------------
+* Fix a bug for PQN normalization.

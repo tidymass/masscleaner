@@ -26,7 +26,7 @@ impute_mv(
 \arguments{
 \item{object}{A mass_dataset object.}
 
-\item{sample_id}{which samples you want to impute missing value? 
+\item{sample_id}{which samples you want to impute missing value?
 It is a index or character vector (sample_id)}
 
 \item{method}{Imputation method. It
@@ -123,10 +123,10 @@ object1 =
             sample_id = blank_id,
             method = "zero")
 
-object1 \%>\% 
-  activate_mass_dataset(what = "expression_data") \%>\% 
-  select(dplyr::contains("Blank")) \%>\% 
-  extract_expression_data() \%>\% 
+object1 \%>\%
+  activate_mass_dataset(what = "expression_data") \%>\%
+  select(dplyr::contains("Blank")) \%>\%
+  extract_expression_data() \%>\%
   head()
 
 object2 =
@@ -137,7 +137,7 @@ object2 =
 object2 \%>\%
   activate_mass_dataset(what = "sample_info") \%>\%
   filter(class == "Subject") \%>\%
-  extract_expression_data() \%>\% 
+  extract_expression_data() \%>\%
   head()
 }
 \author{
