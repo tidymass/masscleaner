@@ -38,7 +38,7 @@ baRTplot <- function(simple.data) {
     ) +
     ggplot2::theme(legend.title = ggplot2::element_text(size = 12)) +
     ggplot2::theme(legend.text = ggplot2::element_text(size = 10))
-  
+
   rt.error <- simple.data[[2]]$rt - simple.data[[1]]$rt
   rt1 <- simple.data[[1]]$rt
   temp.data <- data.frame(rt1, rt.error, stringsAsFactors = FALSE)
@@ -61,7 +61,7 @@ baRTplot <- function(simple.data) {
       vjust = 2,
       label = rt.error.sd
     )
-  
+
   return(rt.plot)
 }
 #' @title baINTplot
@@ -83,7 +83,7 @@ baINTplot <- function(simple.data) {
     ) +
     ggplot2::theme(legend.title = ggplot2::element_text(size = 12)) +
     ggplot2::theme(legend.text = ggplot2::element_text(size = 10))
-  
+
   int1 <-
     log(apply(simple.data[[1]][, -c(seq_len(3))], 1, function(x)
       mean(x, na.rm = TRUE)) + 1, 10)
@@ -91,7 +91,7 @@ baINTplot <- function(simple.data) {
     log(apply(simple.data[[2]][, -c(seq_len(3))], 1, function(x)
       mean(x, na.rm = TRUE)) + 1, 10)
   int.error <- int2 - int1
-  
+
   int.error.sd <- sd(abs(int.error))
   int.error.sd <-
     paste("Log10int error standard:", round(int.error.sd, 2))

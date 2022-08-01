@@ -4,9 +4,9 @@
 #' \email{shenxt1990@@outlook.com}
 #' @param x A mass_dataset object
 #' @param y A mass_dataset object
-#' @param combine.mz.tol m/z tolerance for batch alignment, 
+#' @param combine.mz.tol m/z tolerance for batch alignment,
 #' default is 25 ppm.
-#' @param combine.rt.tol RT tolerance for batch alignment, 
+#' @param combine.rt.tol RT tolerance for batch alignment,
 #' default is 30 seconds.
 #' @param use.int.tol Whether use intensity match for batch alignment.
 #' @param return_index return index or new object.
@@ -35,11 +35,11 @@
 #' }
 
 align_batch <- function(x,
-                       y,
-                       combine.mz.tol = 25,
-                       combine.rt.tol = 30,
-                       use.int.tol = FALSE,
-                       return_index = FALSE) {
+                        y,
+                        combine.mz.tol = 25,
+                        combine.rt.tol = 30,
+                        use.int.tol = FALSE,
+                        return_index = FALSE) {
   massdataset::check_object_class(object = x, class = "mass_dataset")
   massdataset::check_object_class(object = y, class = "mass_dataset")
   
@@ -47,9 +47,9 @@ align_batch <- function(x,
   
   rough_match_result <- rough_align(
     peak.table = list(
-      cbind(x@variable_info[, c("variable_id", "mz", "rt")], 
+      cbind(x@variable_info[, c("variable_id", "mz", "rt")],
             x@expression_data),
-      cbind(y@variable_info[, c("variable_id", "mz", "rt")], 
+      cbind(y@variable_info[, c("variable_id", "mz", "rt")],
             y@expression_data)
     ),
     combine.mz.tol = combine.mz.tol,
@@ -61,9 +61,9 @@ align_batch <- function(x,
   accurate_match_result <-
     accurate_align(
       peak.table = list(
-        cbind(x@variable_info[, c("variable_id", "mz", "rt")], 
+        cbind(x@variable_info[, c("variable_id", "mz", "rt")],
               x@expression_data),
-        cbind(y@variable_info[, c("variable_id", "mz", "rt")], 
+        cbind(y@variable_info[, c("variable_id", "mz", "rt")],
               y@expression_data)
       ),
       simple.data = rough_match_result,
@@ -72,8 +72,8 @@ align_batch <- function(x,
   if (return_index) {
     return(accurate_match_result)
   } else{
-    x <- x[accurate_match_result$Index1, ]
-    y <- y[accurate_match_result$Index2, ]
+    x <- x[accurate_match_result$Index1,]
+    y <- y[accurate_match_result$Index2,]
     
     y@variable_info$variable_id <- x@variable_info$variable_id
     rownames(y@expression_data) <- x@variable_info$variable_id
@@ -133,8 +133,8 @@ rough_align <- function(peak.table,
   
   rm(list = c("data1", "data2"))
   
-  simple.batch1 <- simple.batch1[match.result[, 1], ]
-  simple.batch2 <- simple.batch2[match.result[, 2], ]
+  simple.batch1 <- simple.batch1[match.result[, 1],]
+  simple.batch2 <- simple.batch2[match.result[, 2],]
   
   rm("match.result")
   
@@ -156,7 +156,7 @@ rough_align <- function(peak.table,
 simply_data <- function(data,
                         combine.mz.tol = 5,
                         combine.rt.tol = 30) {
-  data <- data[order(data$mz), ]
+  data <- data[order(data$mz),]
   variable_id <- data$variable_id
   mz <- data$mz
   rt <- data$rt
@@ -193,7 +193,7 @@ simply_data <- function(data,
   
   remain.idx <- unique(unlist(remain.idx))
   
-  simple.data <- data[remain.idx, ]
+  simple.data <- data[remain.idx,]
   rm(list = c("data", "mz", "rt", "variable_id", "int"))
   return(simple.data)
 }
@@ -245,7 +245,7 @@ baMZplot <- function(simple.data) {
   return(mz.plot)
 }
 
-#' 
+#'
 #' #' @title baRTplot
 #' #' @description baRTplot
 #' #' @author Xiaotao Shen
@@ -264,7 +264,7 @@ baMZplot <- function(simple.data) {
 #'     ) +
 #'     ggplot2::theme(legend.title = ggplot2::element_text(size = 12)) +
 #'     ggplot2::theme(legend.text = ggplot2::element_text(size = 10))
-#'   
+#'
 #'   rt.error <- simple.data[[2]]$rt - simple.data[[1]]$rt
 #'   rt1 <- simple.data[[1]]$rt
 #'   temp.data <- data.frame(rt1, rt.error, stringsAsFactors = FALSE)
@@ -287,7 +287,7 @@ baMZplot <- function(simple.data) {
 #'       vjust = 2,
 #'       label = rt.error.sd
 #'     )
-#'   
+#'
 #'   return(rt.plot)
 #' }
 
@@ -298,7 +298,7 @@ baMZplot <- function(simple.data) {
 #' #' \email{shenxt1990@@outlook.com}
 #' #' @param simple.data simple.data
 #' #' @return result
-#' 
+#'
 #' baINTplot <- function(simple.data) {
 #'   my.theme <- ggplot2::theme_bw() +
 #'     ggplot2::theme(
@@ -311,7 +311,7 @@ baMZplot <- function(simple.data) {
 #'     ) +
 #'     ggplot2::theme(legend.title = ggplot2::element_text(size = 12)) +
 #'     ggplot2::theme(legend.text = ggplot2::element_text(size = 10))
-#'   
+#'
 #'   int1 <-
 #'     log(apply(simple.data[[1]][, -c(seq_len(3))], 1, function(x)
 #'       mean(x, na.rm = TRUE)) + 1, 10)
@@ -319,7 +319,7 @@ baMZplot <- function(simple.data) {
 #'     log(apply(simple.data[[2]][, -c(seq_len(3))], 1, function(x)
 #'       mean(x, na.rm = TRUE)) + 1, 10)
 #'   int.error <- int2 - int1
-#'   
+#'
 #'   int.error.sd <- sd(abs(int.error))
 #'   int.error.sd <-
 #'     paste("Log10int error standard:", round(int.error.sd, 2))
@@ -457,34 +457,34 @@ align_2batch <- function(batch1,
     temp.idx <- which(x == match.result1[, 1])
     if (length(temp.idx) == 1)
       return(temp.idx)
-    temp.result <- match.result1[temp.idx, ]
+    temp.result <- match.result1[temp.idx,]
     ##score
     temp.mz.error <- temp.result[, "mz.error"]
     temp.rt.error <- temp.result[, "rt.error"]
     temp.int.error <- temp.result[, "int.error"]
     temp.mz.score <- lapply(temp.mz.error, function(x) {
       matchScore(error = x, sd = mz.error.sd)
-    }) %>% 
+    }) %>%
       unlist()
     
     temp.rt.score <- lapply(temp.rt.error, function(x) {
       matchScore(error = x, sd = rt.error.sd)
-    }) %>% 
+    }) %>%
       unlist()
     
     temp.int.score <- lapply(temp.int.error, function(x) {
       matchScore(error = x, sd = int.error.sd)
-    }) %>% 
+    }) %>%
       unlist()
     
     temp.score <-
-      mz.weight * temp.mz.score + rt.weight * temp.rt.score + 
+      mz.weight * temp.mz.score + rt.weight * temp.rt.score +
       int.weight * temp.int.score
     return(temp.idx[which.max(temp.score)])
   }))
   
   
-  match.result1 <- match.result1[remain.idx, ]
+  match.result1 <- match.result1[remain.idx,]
   
   
   ##batch2 match batch1
@@ -502,34 +502,34 @@ align_2batch <- function(batch1,
     temp.idx <- which(x == match.result2[, 1])
     if (length(temp.idx) == 1)
       return(temp.idx)
-    temp.result <- match.result2[temp.idx, ]
+    temp.result <- match.result2[temp.idx,]
     ##score
     temp.mz.error <- temp.result[, "mz.error"]
     temp.rt.error <- temp.result[, "rt.error"]
     temp.int.error <- temp.result[, "int.error"]
     temp.mz.score <- lapply(temp.mz.error, function(x) {
       matchScore(error = x, sd = mz.error.sd)
-    }) %>% 
+    }) %>%
       unlist()
     
     temp.rt.score <- lapply(temp.rt.error, function(x) {
       matchScore(error = x, sd = rt.error.sd)
-    }) %>% 
+    }) %>%
       unlist()
     
     temp.int.score <- lapply(temp.int.error, function(x) {
       matchScore(error = x, sd = int.error.sd)
-    }) %>% 
+    }) %>%
       unlist()
     
     temp.score <-
-      mz.weight * temp.mz.score + rt.weight * temp.rt.score + 
+      mz.weight * temp.mz.score + rt.weight * temp.rt.score +
       int.weight * temp.int.score
     return(temp.idx[which.max(temp.score)])
   }))
   
   
-  match.result2 <- match.result2[remain.idx, ]
+  match.result2 <- match.result2[remain.idx,]
   
   name1 <- paste(match.result1[, 1], match.result1[, 2], sep = "_")
   name2 <- paste(match.result2[, 2], match.result2[, 1], sep = "_")
@@ -538,11 +538,13 @@ align_2batch <- function(batch1,
   
   temp.index <- which(name1 %in% intersect.name)
   
-  match.result <- match.result1[temp.index, ] %>%
+  match.result <- match.result1[temp.index,] %>%
     as.data.frame()
   
-  match.result$variable_id1 <- batch1$variable_id[match.result$Index1]
-  match.result$variable_id2 <- batch2$variable_id[match.result$Index2]
+  match.result$variable_id1 <-
+    batch1$variable_id[match.result$Index1]
+  match.result$variable_id2 <-
+    batch2$variable_id[match.result$Index2]
   
   match.result <-
     match.result %>%
@@ -567,8 +569,8 @@ align_2batch <- function(batch1,
   # new.name <- masstools::name_duplicated(new.name)
   #
   # return.data <- data.frame(new.name, new.mz, new.rt,
-  #                           batch1[, -c(seq_len(3))], 
-  #                           batch2[, -c(seq_len(3))], 
+  #                           batch1[, -c(seq_len(3))],
+  #                           batch2[, -c(seq_len(3))],
   #                           stringsAsFactors = FALSE)
   # rownames(return.data) <- new.name
   # rm(
@@ -606,7 +608,7 @@ matchScore <- function(error, sd) {
 #' #' \email{shenxt1990@@outlook.com}
 #' #' @param name name
 #' #' @return result
-#' 
+#'
 #' reName <- function(name) {
 #'   temp.name <- unique(name)
 #'   lapply(temp.name, function(x) {
@@ -699,12 +701,12 @@ matchScore <- function(error, sd) {
 #' @return result
 
 MRImatch <- function(data1,
-                    data2,
-                    mz.tol,
-                    #rt.tol is relative
-                    rt.tol = 30,
-                    rt.error.type = c("relative", "abs"),
-                    int.tol = 1) {
+                     data2,
+                     mz.tol,
+                     #rt.tol is relative
+                     rt.tol = 30,
+                     rt.error.type = c("relative", "abs"),
+                     int.tol = 1) {
   rt.error.type <- match.arg(rt.error.type)
   #
   if (nrow(data1) == 0 | nrow(data2) == 0) {
@@ -720,39 +722,41 @@ MRImatch <- function(data1,
   rt2 <- as.numeric(data2[, 2])
   int2 <- as.numeric(data2[, 3])
   
-  result <- pbapply::pblapply(info1, function(x) {
-    temp.mz1 <- x[[1]][[1]]
-    temp.rt1 <- x[[1]][[2]]
-    temp.int1 <- x[[1]][[3]]
-    mz.error <- abs(temp.mz1 - mz2) * 10 ^ 6 / temp.mz1
-    if (rt.error.type == "relative") {
-      rt.error <- abs(temp.rt1 - rt2) * 100 / temp.rt1
-    } else{
-      rt.error <- abs(temp.rt1 - rt2)
-    }
-    
-    int.error <- abs(temp.int1 - int2)
-    
-    j <-
-      which(mz.error <= mz.tol &
-              rt.error <= rt.tol & int.error <= int.tol)
-    if (length(j) == 0) {
-      matrix(NA, ncol = 10)
-    } else{
-      cbind(
-        j,
-        temp.mz1,
-        mz2[j],
-        mz.error[j],
-        temp.rt1,
-        rt2[j],
-        rt.error[j],
-        temp.int1,
-        int2[j],
-        int.error[j]
-      )
-    }
-  })
+  result <-
+    info1 %>%
+    purrr::map(function(x) {
+      temp.mz1 <- x[[1]][[1]]
+      temp.rt1 <- x[[1]][[2]]
+      temp.int1 <- x[[1]][[3]]
+      mz.error <- abs(temp.mz1 - mz2) * 10 ^ 6 / temp.mz1
+      if (rt.error.type == "relative") {
+        rt.error <- abs(temp.rt1 - rt2) * 100 / temp.rt1
+      } else{
+        rt.error <- abs(temp.rt1 - rt2)
+      }
+      
+      int.error <- abs(temp.int1 - int2)
+      
+      j <-
+        which(mz.error <= mz.tol &
+                rt.error <= rt.tol & int.error <= int.tol)
+      if (length(j) == 0) {
+        matrix(NA, ncol = 10)
+      } else{
+        cbind(
+          j,
+          temp.mz1,
+          mz2[j],
+          mz.error[j],
+          temp.rt1,
+          rt2[j],
+          rt.error[j],
+          temp.int1,
+          int2[j],
+          int.error[j]
+        )
+      }
+    })
   
   if (length(result) == 1) {
     result <- cbind(1, result[[1]])
@@ -767,7 +771,7 @@ MRImatch <- function(data1,
   
   result <-
     matrix(result[which(!apply(result, 1, function(x)
-      any(is.na(x)))), ], ncol = 11)
+      any(is.na(x)))),], ncol = 11)
   if (nrow(result) == 0)
     return(NULL)
   colnames(result) <-

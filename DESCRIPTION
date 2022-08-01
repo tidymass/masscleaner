@@ -1,7 +1,7 @@
 Package: masscleaner
 Type: Package
 Title: Data cleaning for LC-MS based metabolomics data
-Version: 1.0.1
+Version: 1.0.2
 Date: 2021-03-12
 Authors@R: c(person(given = "Xiaotao",
            family = "Shen",
@@ -19,7 +19,6 @@ Imports:
     BiocParallel,
     cli,
     crayon,
-    clisymbols,
     dplyr,
     ggplot2,
     graphics,
@@ -28,25 +27,14 @@ Imports:
     impute,
     missForest,
     magrittr,
-    pbapply,
-    plyr,
     purrr,
-    patchwork,
     e1071,
-    snow,
     methods,
     utils,
     stats,
-    readr,
-    readxl,
-    RColorBrewer,
-    plotly,
-    stringr,
     tibble,
-    tidyr,
     masstools,
     rstudioapi,
-    ggrepel,
     BiocGenerics,
     robust,
     massdataset

@@ -4,32 +4,19 @@
 #' \email{shenxt1990@@outlook.com}
 #' @importFrom crayon yellow red green bold bgRed
 #' @import ggplot2
-#' @importFrom pbapply pblapply pboptions
-#' @importFrom stringr str_split str_replace_all str_trim str_detect str_extract
 #' @importFrom dplyr filter select pull everything distinct one_of left_join mutate bind_cols arrange
 #' @importFrom tibble as_tibble enframe tibble rownames_to_column
-#' @importFrom clisymbols symbol
 #' @importFrom cli rule col_cyan tree
 #' @importFrom utils packageVersion object.size write.csv tail head
 #' @importFrom purrr map map2
-#' @importFrom plyr dlply .
-#' @importFrom RColorBrewer brewer.pal
-#' @importFrom readr read_csv cols
-#' @importFrom readxl read_excel
-#' @importFrom ggrepel geom_text_repel
 #' @importFrom masstools get_os
 #' @importFrom BiocParallel MulticoreParam SnowParam bplapply
 #' @importFrom e1071 svm
 #' @importFrom magrittr %>%
-#' @importFrom plotly ggplotly
 #' @importFrom BiocGenerics basename
 #' @importFrom impute impute.knn
 #' @importFrom missForest missForest
 #' @importFrom pcaMethods pca completeObs
-#' @importFrom patchwork plot_layout
-#' @import patchwork
-#' @import tidyr
-#' @import snow
 #' @importFrom robust covRob
 #' @importFrom stats coefficients lm loess median predict mad pchisq
 #' @importFrom stats rgamma rt sd cor p.adjust prcomp t.test wilcox.test

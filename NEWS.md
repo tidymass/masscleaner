@@ -59,3 +59,7 @@
 # Version 1.0.1 (20220728)
 --------------
 * Fix a bug for PQN normalization.
+
+# Version 1.0.1 (20220801)
+--------------
+* Fixed bugs.
