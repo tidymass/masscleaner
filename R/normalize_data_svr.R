@@ -109,6 +109,6 @@ normalize_data_svr <- function(subject_data,
   rownames(qc_data_nor) <- rownames(qc_data)
   rownames(subject_data_nor) <- rownames(qc_data)
   return_result <- list(qc_data_nor, subject_data_nor)
-  message(crayon::green("SVR normalization is done.\n"))
+  message(crayon::green("SVR normalization is done."))
   return(return_result)
 }

@@ -23,7 +23,7 @@ normalize_data_loess <-
            end = 1,
            step = 0.2,
            threads = 4) {
-    message(crayon::green("LOESS normalization...\n"))
+    message(crayon::green("LOESS normalization..."))
     
     temp.fun <-
       function(idx,
@@ -133,7 +133,7 @@ normalize_data_loess <-
     rownames(qc_data_nor) <- rownames(qc_data)
     rownames(subject_data_nor) <- rownames(qc_data)
     return_result <- list(qc_data_nor, subject_data_nor)
-    message(crayon::green("LOESS normalization is done.\n"))
+    message(crayon::green("LOESS normalization is done."))
     return(return_result)
   }
 

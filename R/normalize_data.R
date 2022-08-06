@@ -151,7 +151,7 @@ normalize_data <-
       
       data_nor <-
         purrr::map(unique(sample_info$batch), function(batch_idx) {
-          message(crayon::yellow("Batch", batch_idx, "...", "\n"))
+          message(crayon::yellow("Batch", batch_idx, "..."))
           subject_id <-
             sample_info %>%
             dplyr::filter(class == "Subject" &
@@ -230,7 +230,7 @@ normalize_data <-
       
       data_nor <-
         purrr::map(unique(sample_info$batch), function(batch_idx) {
-          message(crayon::yellow("Batch", batch_idx, "...", "\n"))
+          message(crayon::yellow("Batch", batch_idx, "..."))
           subject_id <-
             sample_info %>%
             dplyr::filter(class == "Subject" &

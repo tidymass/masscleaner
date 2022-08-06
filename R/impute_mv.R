@@ -141,7 +141,7 @@ impute_mv <-
     
     #### MV imputation
     expression_data <-
-      object@expression_data
+      massdataset::extract_expression_data(object)
     
     expression_data1 <-
       expression_data[, sample_id]
@@ -156,15 +156,18 @@ impute_mv <-
         rm(.Random.seed)
       }
       
-      expression_data1 <- impute::impute.knn(
-        as.matrix(expression_data1),
-        k = k,
-        rowmax = rowmax,
-        colmax = colmax,
-        maxp = maxp,
-        rng.seed = rng.seed
-      )
-      expression_data1 <- expression_data1$data
+      expression_data1 <-
+        impute::impute.knn(
+          data = as.matrix(expression_data1),
+          k = k,
+          rowmax = rowmax,
+          colmax = colmax,
+          maxp = maxp,
+          rng.seed = rng.seed
+        )
+      
+      expression_data1 <-
+        expression_data1$data
       expression_data[, sample_id] <-
         expression_data1
       object@expression_data <-

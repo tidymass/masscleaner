@@ -29,11 +29,11 @@
 #' @export
 
 masscleaner_logo <- function() {
-  message(crayon::green("Thank you for using masscleaner!\n"))
-  message(crayon::green("Version", masscleaner_version, "(", update_date, ')\n'))
-  message(crayon::green("Bug fixing\n"))
-  message(crayon::green("More information: google tidymass cleaner.\n"))
-  cat(crayon::green(
+  message("Thank you for using masscleaner!")
+  message("Version ", masscleaner_version, " (", update_date, ')')
+  message("Bug fixing")
+  message("More information: masscleaner.tidymass.org")
+  cat(
     c(
       "                           _____ _                            ",
       "                          / ____| |                           ",
@@ -43,9 +43,7 @@ masscleaner_logo <- function() {
       " |_| |_| |_|\\__,_|___/___/\\_____|_|\\___|\\__,_|_| |_|\\___|_|   ",
       "                                                              ",
       "                                                              "
-    )
-    
-  ), sep = "\n")
+    ), sep = "\n")
 }
 
 

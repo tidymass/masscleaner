@@ -43,7 +43,7 @@ align_batch <- function(x,
   massdataset::check_object_class(object = x, class = "mass_dataset")
   massdataset::check_object_class(object = y, class = "mass_dataset")
   
-  message("Rough aligning...\n")
+  message("Rough aligning...")
   
   rough_match_result <- rough_align(
     peak.table = list(
@@ -56,7 +56,7 @@ align_batch <- function(x,
     combine.rt.tol = combine.rt.tol
   )
   
-  message("Accurate aligning...\n")
+  message("Accurate aligning...")
   
   accurate_match_result <-
     accurate_align(
