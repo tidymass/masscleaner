@@ -31,7 +31,6 @@
 masscleaner_logo <- function() {
   message("Thank you for using masscleaner!")
   message("Version ", masscleaner_version, " (", update_date, ')')
-  message("Bug fixing")
   message("More information: masscleaner.tidymass.org")
   cat(
     c(
