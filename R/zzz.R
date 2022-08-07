@@ -10,7 +10,6 @@
   #   x <- masscleaner_conflicts()
   #   msg(masscleaner_conflict_message(x), startup = TRUE)
   # }
- 
   msg(paste0("Version ", masscleaner_version, " (", update_date, ')'))
    
 }
