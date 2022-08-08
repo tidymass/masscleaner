@@ -23,13 +23,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">masscleaner</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.8</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Help document
      
     <span class="caret"></span>
@@ -55,7 +55,7 @@
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     News
      
     <span class="caret"></span>
@@ -82,7 +82,7 @@
   </a>
 </li>
 <li>
-  <a href="https://twitter.com/JasperShen1990" class="external-link">
+  <a href="https://twitter.com/xiaotaoshen1990" class="external-link">
     <span class="fab fa-twitter fa-lg"></span>
      
   </a>
@@ -111,67 +111,98 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">impute_mv</span><span class="op">(</span>
-  <span class="va">object</span>,
-  <span class="va">sample_id</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"knn"</span>, <span class="st">"rf"</span>, <span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"zero"</span>, <span class="st">"minimum"</span>, <span class="st">"bpca"</span>, <span class="st">"svdImpute"</span>,
-    <span class="st">"ppca"</span><span class="op">)</span>,
-  k <span class="op">=</span> <span class="fl">10</span>,
-  rowmax <span class="op">=</span> <span class="fl">0.5</span>,
-  colmax <span class="op">=</span> <span class="fl">0.8</span>,
-  maxp <span class="op">=</span> <span class="fl">1500</span>,
-  rng.seed <span class="op">=</span> <span class="fl">362436069</span>,
-  maxiter <span class="op">=</span> <span class="fl">10</span>,
-  ntree <span class="op">=</span> <span class="fl">100</span>,
-  decreasing <span class="op">=</span> <span class="cn">FALSE</span>,
-  nPcs <span class="op">=</span> <span class="fl">2</span>,
-  maxSteps <span class="op">=</span> <span class="fl">100</span>,
-  threshold <span class="op">=</span> <span class="fl">1e-04</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">impute_mv</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  <span class="va">sample_id</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"knn"</span>, <span class="st">"rf"</span>, <span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"zero"</span>, <span class="st">"minimum"</span>, <span class="st">"bpca"</span>, <span class="st">"svdImpute"</span>,</span>
+<span>    <span class="st">"ppca"</span><span class="op">)</span>,</span>
+<span>  k <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  rowmax <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  colmax <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  maxp <span class="op">=</span> <span class="fl">1500</span>,</span>
+<span>  rng.seed <span class="op">=</span> <span class="fl">362436069</span>,</span>
+<span>  maxiter <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  ntree <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  decreasing <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  nPcs <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  maxSteps <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  threshold <span class="op">=</span> <span class="fl">1e-04</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>A mass_dataset object.</p></dd>
+
+
 <dt>sample_id</dt>
-<dd><p>which samples you want to impute missing value? 
+<dd><p>which samples you want to impute missing value?
 It is a index or character vector (sample_id)</p></dd>
+
+
 <dt>method</dt>
 <dd><p>Imputation method. It
 contains "knn", "rf" (missForest), "mean", "median", "zero", "minium",
 "bpca" (BPCA), "svd" (SVD) and "ppca" (PPCA). Default is "knn".
 The detial of
 this method can be find in detail and reference paperes.</p></dd>
+
+
 <dt>k</dt>
 <dd><p>See ?impute.knn</p></dd>
+
+
 <dt>rowmax</dt>
 <dd><p>See ?impute.knn</p></dd>
+
+
 <dt>colmax</dt>
 <dd><p>See ?impute.knn</p></dd>
+
+
 <dt>maxp</dt>
 <dd><p>See ?impute.knn</p></dd>
+
+
 <dt>rng.seed</dt>
 <dd><p>See ?impute.knn</p></dd>
+
+
 <dt>maxiter</dt>
 <dd><p>See ?missForest</p></dd>
+
+
 <dt>ntree</dt>
 <dd><p>See ?missForest</p></dd>
+
+
 <dt>decreasing</dt>
 <dd><p>See ?missForest</p></dd>
+
+
 <dt>nPcs</dt>
 <dd><p>See ?bpca</p></dd>
+
+
 <dt>maxSteps</dt>
 <dd><p>See ?bpca</p></dd>
+
+
 <dt>threshold</dt>
 <dd><p>See ?bpca</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Other arguments.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A new mass_dataset object.</p>
+    
+
+<p>A new mass_dataset object.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -181,19 +212,19 @@ this method can be find in detail and reference paperes.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymass/massdataset" class="external-link">massdataset</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"expression_data"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sample_info"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"variable_info"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">object</span> <span class="op">=</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/create_mass_dataset.html" class="external-link">create_mass_dataset</a></span><span class="op">(</span></span>
-<span class="r-in">    expression_data <span class="op">=</span> <span class="va">expression_data</span>,</span>
-<span class="r-in">    sample_info <span class="op">=</span> <span class="va">sample_info</span>,</span>
-<span class="r-in">    variable_info <span class="op">=</span> <span class="va">variable_info</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="va">object</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymass/massdataset" class="external-link">massdataset</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"expression_data"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sample_info"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"variable_info"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">object</span> <span class="op">=</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/create_mass_dataset.html" class="external-link">create_mass_dataset</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    expression_data <span class="op">=</span> <span class="va">expression_data</span>,</span></span>
+<span class="r-in"><span>    sample_info <span class="op">=</span> <span class="va">sample_info</span>,</span></span>
+<span class="r-in"><span>    variable_info <span class="op">=</span> <span class="va">variable_info</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">object</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">-------------------- </span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">massdataset version: 0.99.25 </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">massdataset version: 1.0.12 </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">-------------------- </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">1.expression_data:</span>[ 1000 x 8 data.frame]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">2.sample_info:</span>[ 8 x 4 data.frame]</span>
@@ -203,63 +234,64 @@ this method can be find in detail and reference paperes.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">6.ms2_data:</span>[ 0 variables x 0 MS2 spectra]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">-------------------- </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">Processing information (extract_process_info())</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">1 processings in total</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">create_mass_dataset ---------- </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Package         Function.used                Time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 massdataset create_mass_dataset() 2022-03-21 19:52:31</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/summary-mass_dataset.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 massdataset create_mass_dataset() 2022-08-07 20:07:30</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/summary-mass_dataset.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3829</span>
-<span class="r-in"><span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/summary-mass_dataset.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span>, by <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">massdataset</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/summary-mass_dataset.html" class="external-link">get_mv_number</a></span><span class="op">(</span><span class="va">object</span>, by <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Blank_3 Blank_4    QC_1    QC_2   PS4P1   PS4P2   PS4P3   PS4P4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     682     702     397     381     424     427     405     411 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">###remove variables who have mv in more than 20% QC samples</span></span>
-<span class="r-in"><span class="va">qc_id</span> <span class="op">=</span></span>
-<span class="r-in">  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">subject_id</span> <span class="op">=</span></span>
-<span class="r-in">  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"Subject"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">object</span> <span class="op">=</span></span>
-<span class="r-in">  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/add_new_column-mass_dataset.html" class="external-link">mutate_variable_na_freq</a></span><span class="op">(</span>according_to_samples <span class="op">=</span> <span class="va">qc_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/add_new_column-mass_dataset.html" class="external-link">mutate_variable_na_freq</a></span><span class="op">(</span>according_to_samples <span class="op">=</span> <span class="va">subject_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"variable_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">na_freq</span> <span class="op">&lt;</span> <span class="fl">0.2</span> <span class="op">&amp;</span> <span class="va">na_freq.1</span> <span class="op">&lt;</span> <span class="fl">0.5</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">###remove samples with MV &gt; 50% except Blank samples</span></span>
-<span class="r-in"><span class="va">object</span> <span class="op">=</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/filter-mass_dataset.html" class="external-link">filter_samples</a></span><span class="op">(</span></span>
-<span class="r-in">    object <span class="op">=</span> <span class="va">object</span>,</span>
-<span class="r-in">    flist <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">      <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0.5</span></span>
-<span class="r-in">    <span class="op">}</span>,</span>
-<span class="r-in">    apply_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">qc_id</span>, <span class="va">subject_id</span><span class="op">)</span>,</span>
-<span class="r-in">    prune <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">blank_id</span> <span class="op">=</span></span>
-<span class="r-in">  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"Blank"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">object1</span> <span class="op">=</span></span>
-<span class="r-in">  <span class="fu">impute_mv</span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span>,</span>
-<span class="r-in">            sample_id <span class="op">=</span> <span class="va">blank_id</span>,</span>
-<span class="r-in">            method <span class="op">=</span> <span class="st">"zero"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">object1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"expression_data"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"Blank"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/extract-mass_dataset.html" class="external-link">extract_expression_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">###remove variables who have mv in more than 20% QC samples</span></span></span>
+<span class="r-in"><span><span class="va">qc_id</span> <span class="op">=</span></span></span>
+<span class="r-in"><span>  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"QC"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">subject_id</span> <span class="op">=</span></span></span>
+<span class="r-in"><span>  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"Subject"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">object</span> <span class="op">=</span></span></span>
+<span class="r-in"><span>  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/add_new_column-mass_dataset.html" class="external-link">mutate_variable_na_freq</a></span><span class="op">(</span>according_to_samples <span class="op">=</span> <span class="va">qc_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/add_new_column-mass_dataset.html" class="external-link">mutate_variable_na_freq</a></span><span class="op">(</span>according_to_samples <span class="op">=</span> <span class="va">subject_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"variable_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">na_freq</span> <span class="op">&lt;</span> <span class="fl">0.2</span> <span class="op">&amp;</span> <span class="va">na_freq.1</span> <span class="op">&lt;</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">###remove samples with MV &gt; 50% except Blank samples</span></span></span>
+<span class="r-in"><span><span class="va">object</span> <span class="op">=</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/filter-mass_dataset.html" class="external-link">filter_samples</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    object <span class="op">=</span> <span class="va">object</span>,</span></span>
+<span class="r-in"><span>    flist <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0.5</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span>,</span></span>
+<span class="r-in"><span>    apply_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">qc_id</span>, <span class="va">subject_id</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    prune <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">blank_id</span> <span class="op">=</span></span></span>
+<span class="r-in"><span>  <span class="va">object</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"Blank"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">sample_id</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">object1</span> <span class="op">=</span></span></span>
+<span class="r-in"><span>  <span class="fu">impute_mv</span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span>,</span></span>
+<span class="r-in"><span>            sample_id <span class="op">=</span> <span class="va">blank_id</span>,</span></span>
+<span class="r-in"><span>            method <span class="op">=</span> <span class="st">"zero"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">object1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"expression_data"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"Blank"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/extract-mass_dataset.html" class="external-link">extract_expression_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               Blank_3 Blank_4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M136T55_2_POS       0       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M79T35_POS          0       0</span>
@@ -267,17 +299,17 @@ this method can be find in detail and reference paperes.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M349T47_POS         0       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M299T359_POS        0       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M344T471_POS        0       0</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">object2</span> <span class="op">=</span></span>
-<span class="r-in">  <span class="fu">impute_mv</span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span>,</span>
-<span class="r-in">            sample_id <span class="op">=</span> <span class="va">subject_id</span>,</span>
-<span class="r-in">            method <span class="op">=</span> <span class="st">"knn"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">object2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"Subject"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/extract-mass_dataset.html" class="external-link">extract_expression_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">object2</span> <span class="op">=</span></span></span>
+<span class="r-in"><span>  <span class="fu">impute_mv</span><span class="op">(</span>object <span class="op">=</span> <span class="va">object</span>,</span></span>
+<span class="r-in"><span>            sample_id <span class="op">=</span> <span class="va">subject_id</span>,</span></span>
+<span class="r-in"><span>            method <span class="op">=</span> <span class="st">"knn"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">object2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/activate_mass_dataset.html" class="external-link">activate_mass_dataset</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"sample_info"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">class</span> <span class="op">==</span> <span class="st">"Subject"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/massdataset/man/extract-mass_dataset.html" class="external-link">extract_expression_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   PS4P1     PS4P2     PS4P3     PS4P4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M136T55_2_POS 1494436.1 3496912.1 1959178.8 1005418.8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> M79T35_POS    2471336.1 3333582.7 2734243.8 3361452.3</span>

@@ -23,13 +23,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">masscleaner</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.8</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Help document
      
     <span class="caret"></span>
@@ -55,7 +55,7 @@
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     News
      
     <span class="caret"></span>
@@ -82,7 +82,7 @@
   </a>
 </li>
 <li>
-  <a href="https://twitter.com/JasperShen1990" class="external-link">
+  <a href="https://twitter.com/xiaotaoshen1990" class="external-link">
     <span class="fab fa-twitter fa-lg"></span>
      
   </a>
@@ -111,47 +111,68 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">normalize_data</span><span class="op">(</span>
-  <span class="va">object</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"svr"</span>, <span class="st">"total"</span>, <span class="st">"median"</span>, <span class="st">"mean"</span>, <span class="st">"pqn"</span>, <span class="st">"loess"</span><span class="op">)</span>,
-  keep_scale <span class="op">=</span> <span class="cn">TRUE</span>,
-  optimization <span class="op">=</span> <span class="cn">TRUE</span>,
-  pqn_reference <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"median"</span>, <span class="st">"mean"</span><span class="op">)</span>,
-  begin <span class="op">=</span> <span class="fl">0.5</span>,
-  end <span class="op">=</span> <span class="fl">1</span>,
-  step <span class="op">=</span> <span class="fl">0.2</span>,
-  multiple <span class="op">=</span> <span class="fl">1</span>,
-  threads <span class="op">=</span> <span class="fl">4</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">normalize_data</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"svr"</span>, <span class="st">"total"</span>, <span class="st">"median"</span>, <span class="st">"mean"</span>, <span class="st">"pqn"</span>, <span class="st">"loess"</span><span class="op">)</span>,</span>
+<span>  keep_scale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  optimization <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  pqn_reference <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"median"</span>, <span class="st">"mean"</span><span class="op">)</span>,</span>
+<span>  begin <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  end <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  step <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  multiple <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  threads <span class="op">=</span> <span class="fl">4</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>A mass_dataset object.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>Normalization method, mean, median, total svr or loess,
 default is svr. Please see the details.</p></dd>
+
+
 <dt>keep_scale</dt>
 <dd><p>Remain scale or not. Default is TRUE.</p></dd>
+
+
 <dt>optimization</dt>
 <dd><p>TRUE or not.</p></dd>
+
+
 <dt>pqn_reference</dt>
 <dd><p>for pqn method.</p></dd>
+
+
 <dt>begin</dt>
 <dd><p>0.5</p></dd>
+
+
 <dt>end</dt>
 <dd><p>1</p></dd>
+
+
 <dt>step</dt>
 <dd><p>0.2</p></dd>
+
+
 <dt>multiple</dt>
 <dd><p>multiple</p></dd>
+
+
 <dt>threads</dt>
 <dd><p>4</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A new mass_dataset object.</p>
+    
+
+<p>A new mass_dataset object.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -161,11 +182,11 @@ default is svr. Please see the details.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"object1"</span>, package <span class="op">=</span> <span class="st">"demodata"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">object1</span> <span class="op">=</span> <span class="fu"><a href="impute_mv.html">impute_mv</a></span><span class="op">(</span><span class="va">object1</span>, method <span class="op">=</span> <span class="st">"minimum"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">object_mean</span> <span class="op">=</span> <span class="fu">normalize_data</span><span class="op">(</span>object <span class="op">=</span> <span class="va">object1</span>, method <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"object1"</span>, package <span class="op">=</span> <span class="st">"demodata"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">object1</span> <span class="op">=</span> <span class="fu"><a href="impute_mv.html">impute_mv</a></span><span class="op">(</span><span class="va">object1</span>, method <span class="op">=</span> <span class="st">"minimum"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">object_mean</span> <span class="op">=</span> <span class="fu">normalize_data</span><span class="op">(</span>object <span class="op">=</span> <span class="va">object1</span>, method <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>

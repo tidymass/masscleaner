@@ -23,13 +23,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">masscleaner</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.8</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Help document
      
     <span class="caret"></span>
@@ -55,7 +55,7 @@
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     News
      
     <span class="caret"></span>
@@ -82,7 +82,7 @@
   </a>
 </li>
 <li>
-  <a href="https://twitter.com/JasperShen1990" class="external-link">
+  <a href="https://twitter.com/xiaotaoshen1990" class="external-link">
     <span class="fab fa-twitter fa-lg"></span>
      
   </a>
@@ -111,43 +111,62 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">align_2batch</span><span class="op">(</span>
-  <span class="va">batch1</span>,
-  <span class="va">batch2</span>,
-  <span class="va">mz.error.sd</span>,
-  <span class="va">rt.error.sd</span>,
-  <span class="va">int.error.sd</span>,
-  fold <span class="op">=</span> <span class="fl">4</span>,
-  mz.weight <span class="op">=</span> <span class="fl">0.4</span>,
-  rt.weight <span class="op">=</span> <span class="fl">0.4</span>,
-  int.weight <span class="op">=</span> <span class="fl">0.2</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">align_2batch</span><span class="op">(</span></span>
+<span>  <span class="va">batch1</span>,</span>
+<span>  <span class="va">batch2</span>,</span>
+<span>  <span class="va">mz.error.sd</span>,</span>
+<span>  <span class="va">rt.error.sd</span>,</span>
+<span>  <span class="va">int.error.sd</span>,</span>
+<span>  fold <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  mz.weight <span class="op">=</span> <span class="fl">0.4</span>,</span>
+<span>  rt.weight <span class="op">=</span> <span class="fl">0.4</span>,</span>
+<span>  int.weight <span class="op">=</span> <span class="fl">0.2</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>batch1</dt>
 <dd><p>batch1</p></dd>
+
+
 <dt>batch2</dt>
 <dd><p>batch2</p></dd>
+
+
 <dt>mz.error.sd</dt>
 <dd><p>mz.error.sd</p></dd>
+
+
 <dt>rt.error.sd</dt>
 <dd><p>rt.error.sd</p></dd>
+
+
 <dt>int.error.sd</dt>
 <dd><p>int.error.sd</p></dd>
+
+
 <dt>fold</dt>
 <dd><p>fold</p></dd>
+
+
 <dt>mz.weight</dt>
 <dd><p>mz.weight</p></dd>
+
+
 <dt>rt.weight</dt>
 <dd><p>rt.weight</p></dd>
+
+
 <dt>int.weight</dt>
 <dd><p>int.weight</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>result</p>
+    
+
+<p>result</p>
     </div>
     <div id="author">
     <h2>Author</h2>

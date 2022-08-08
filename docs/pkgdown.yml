@@ -1,5 +1,5 @@
-pandoc: 2.14.0.3
-pkgdown: 2.0.2
+pandoc: '2.18'
+pkgdown: 2.0.5
 pkgdown_sha: ~
 articles:
   align_batch: align_batch.html
@@ -10,7 +10,7 @@ articles:
   masscleaner_install: masscleaner_install.html
   missing_value_imputation: missing_value_imputation.html
   version_0_9_2: version_0_9_2.html
-last_built: 2022-03-22T02:52Z
+last_built: 2022-08-08T03:07Z
 urls:
   reference: https://tidymass.github.io/masscleaner/reference
   article: https://tidymass.github.io/masscleaner/articles
