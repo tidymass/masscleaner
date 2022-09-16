@@ -24,6 +24,7 @@ vignettes/*.png
 vignettes/*._cache
 vignettes/*._cache/
 vignettes/align_batch_cache
+vignettes/align_batch_cache/
 vignettes/*._html
 vignettes/peak_tables
 vignettes/peak_tables/
