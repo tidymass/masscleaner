@@ -23,6 +23,7 @@ vignettes/*.pdf
 vignettes/*.png
 vignettes/*._cache
 vignettes/*._cache/
+vignettes/align_batch_cache
 vignettes/*._html
 vignettes/peak_tables
 vignettes/peak_tables/
@@ -31,7 +32,6 @@ vignettes/figures/
 vignettes/sample_info
 vignettes/sample_info/
 vignettes/object_neg
-
 
 
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
