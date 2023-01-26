@@ -15,7 +15,7 @@
 #' @param threads 4
 #' @export
 #' @return A new mass_dataset object.
-#' @examples 
+#' @examples
 #'\dontrun{
 #' data("object1", package = "demodata")
 #' object1 = impute_mv(object1, method = "minimum")
@@ -47,7 +47,7 @@ normalize_data <-
     }
     
     expression_data <-
-      object@expression_data
+      as.data.frame(object@expression_data)
     
     if (sum(is.na(expression_data)) > 0) {
       stop("Please impute MV first.\n")
@@ -62,7 +62,8 @@ normalize_data <-
       new_expression_data <-
         normalize_data_total(x = expression_data, keep_scale = keep_scale)
       
-      object@expression_data <- new_expression_data
+      object@expression_data <- 
+        as.data.frame(new_expression_data)
       
       parameter <- new(
         Class = "tidymass_parameter",
@@ -77,7 +78,8 @@ normalize_data <-
     if (method == "mean") {
       new_expression_data <-
         normalize_data_mean(x = expression_data, keep_scale = keep_scale)
-      object@expression_data <- new_expression_data
+      object@expression_data <- 
+        as.data.frame(new_expression_data)
       
       parameter <- new(
         Class = "tidymass_parameter",
@@ -92,7 +94,8 @@ normalize_data <-
     if (method == "median") {
       new_expression_data <-
         normalize_data_median(x = expression_data, keep_scale = keep_scale)
-      object@expression_data <- new_expression_data
+      object@expression_data <- 
+        as.data.frame(new_expression_data)
       
       parameter <- new(
         Class = "tidymass_parameter",
@@ -119,7 +122,7 @@ normalize_data <-
           pgn_reference_sample = pgn_reference_sample
         )
       
-      object@expression_data <- new_expression_data
+      object@expression_data <- as.data.frame(new_expression_data)
       
       parameter <- new(
         Class = "tidymass_parameter",
@@ -145,7 +148,7 @@ normalize_data <-
     }
     
     if (method == "loess") {
-      if(!"Subject" %in% unique(sample_info$class)) {
+      if (!"Subject" %in% unique(sample_info$class)) {
         stop("No Subject in your sample_info column 'class'")
       }
       
@@ -167,7 +170,8 @@ normalize_data <-
           
           qc_idx <- match(qc_id, sample_info$sample_id)
           
-          subject_data <- expression_data[, subject_idx, drop = FALSE]
+          subject_data <-
+            expression_data[, subject_idx, drop = FALSE]
           qc_data <- expression_data[, qc_idx, drop = FALSE]
           
           subject_order <- sample_info$injection.order[subject_idx]
@@ -203,7 +207,8 @@ normalize_data <-
       new_expression_data[, colnames(data_nor)] <-
         data_nor
       
-      object@expression_data <- new_expression_data
+      object@expression_data <-
+        as.data.frame(new_expression_data)
       
       parameter <- new(
         Class = "tidymass_parameter",
@@ -223,8 +228,7 @@ normalize_data <-
     }
     
     if (method == "svr") {
-      
-      if(!"Subject" %in% unique(sample_info$class)) {
+      if (!"Subject" %in% unique(sample_info$class)) {
         stop("No Subject in your sample_info column 'class'")
       }
       
@@ -246,7 +250,8 @@ normalize_data <-
           
           qc_idx <- match(qc_id, sample_info$sample_id)
           
-          subject_data <- expression_data[, subject_idx, drop = FALSE]
+          subject_data <-
+            expression_data[, subject_idx, drop = FALSE]
           qc_data <- expression_data[, qc_idx, drop = FALSE]
           
           subject_order <- sample_info$injection.order[subject_idx]
@@ -274,12 +279,13 @@ normalize_data <-
         dplyr::bind_cols()
       
       new_expression_data <-
-        expression_data
+        as.data.frame(expression_data)
       
       new_expression_data[, colnames(data_nor)] <-
         data_nor
       
-      object@expression_data <- new_expression_data
+      object@expression_data <-
+        as.data.frame(new_expression_data)
       
       parameter <- new(
         Class = "tidymass_parameter",
@@ -302,7 +308,7 @@ normalize_data <-
       process_info$normalize_data <- parameter
     } else{
       process_info$normalize_data <- c(process_info$normalize_data,
-                                      parameter)
+                                       parameter)
     }
     
     object@process_info <- process_info
