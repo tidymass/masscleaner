@@ -13,7 +13,6 @@
 #' @importFrom BiocParallel MulticoreParam SnowParam bplapply
 #' @importFrom e1071 svm
 #' @importFrom magrittr %>%
-#' @importFrom BiocGenerics basename
 #' @importFrom impute impute.knn
 #' @importFrom missForest missForest
 #' @importFrom pcaMethods pca completeObs

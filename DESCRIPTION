@@ -1,8 +1,8 @@
 Package: masscleaner
 Type: Package
 Title: Data cleaning for LC-MS based metabolomics data
-Version: 1.0.7
-Date: 2023-01-25
+Version: 1.0.8
+Date: 2023-04-22
 Authors@R: c(person(given = "Xiaotao",
            family = "Shen",
            role = c("aut", "cre"),
@@ -35,7 +35,6 @@ Imports:
     tibble,
     masstools,
     rstudioapi,
-    BiocGenerics,
     robust,
     massdataset
 License: GPL-2 | file LICENSE
@@ -47,12 +46,13 @@ Suggests:
     rmarkdown,
     BiocStyle,
     RUnit,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    BiocGenerics
 VignetteBuilder: knitr
 Note:
 biocViews: Metabolomics, MassSpectrometry
 Encoding: UTF-8
 Remotes: 
-    gitlab::jaspershen/masstools,
-    gitlab::jaspershen/massdataset
+    gitlab::tidymass/masstools,
+    gitlab::tidymass/massdataset
 Config/testthat/edition: 3
