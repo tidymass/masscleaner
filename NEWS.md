@@ -83,3 +83,7 @@
 # Version 1.0.7 (20230125)
 --------------
 * Fixed bugs.
+
+# Version 1.0.9 (20230516)
+--------------
+* Fixed bug in integrate_data function.

@@ -69,7 +69,9 @@ integrate_data <-
       object@expression_data
     
     sample_info <-
-      object@sample_info
+      object@sample_info 
+    
+    sample_info$batch[is.na(sample_info$batch)] <- "NA"
     
     split_expression_data <-
       purrr::map(
@@ -151,7 +153,7 @@ integrate_data <-
       process_info$integrate_data <- parameter
     } else{
       process_info$integrate_data <- c(process_info$integrate_data,
-                                      parameter)
+                                       parameter)
     }
     
     object@process_info <- process_info
