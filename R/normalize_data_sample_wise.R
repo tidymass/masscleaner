@@ -34,7 +34,11 @@ normalize_data_median <- function(x, keep_scale = TRUE) {
   new_x <-
     x %>%
     apply(2, function(x) {
-      x / median(x)
+      median_x <- median(x)
+      if(median_x == 0){
+        median_x <- min(x[x != 0])
+      }
+      x / median_x
     }) %>%
     as.data.frame()
   

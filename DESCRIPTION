@@ -1,7 +1,7 @@
 Package: masscleaner
 Type: Package
 Title: Data cleaning for LC-MS based metabolomics data
-Version: 1.0.9
+Version: 1.0.10
 Date: 2023-05-16
 Authors@R: c(person(given = "Xiaotao",
            family = "Shen",
