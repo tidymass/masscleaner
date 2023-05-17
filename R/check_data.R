@@ -38,6 +38,11 @@ check_for_qc_normalization <-
     sample_info <-
       object@sample_info
     
+    ###remove blank samples
+    sample_info <-
+      sample_info %>% 
+      dplyr::filter(!is.na(injection.order))
+    
     purrr::map(
       unique(sample_info$batch),
       .f = function(batch_idx) {

@@ -62,7 +62,7 @@ normalize_data <-
       new_expression_data <-
         normalize_data_total(x = expression_data, keep_scale = keep_scale)
       
-      object@expression_data <- 
+      object@expression_data <-
         as.data.frame(new_expression_data)
       
       parameter <- new(
@@ -78,7 +78,7 @@ normalize_data <-
     if (method == "mean") {
       new_expression_data <-
         normalize_data_mean(x = expression_data, keep_scale = keep_scale)
-      object@expression_data <- 
+      object@expression_data <-
         as.data.frame(new_expression_data)
       
       parameter <- new(
@@ -94,7 +94,7 @@ normalize_data <-
     if (method == "median") {
       new_expression_data <-
         normalize_data_median(x = expression_data, keep_scale = keep_scale)
-      object@expression_data <- 
+      object@expression_data <-
         as.data.frame(new_expression_data)
       
       parameter <- new(
@@ -232,9 +232,24 @@ normalize_data <-
         stop("No Subject in your sample_info column 'class'")
       }
       
+      sample_info <-
+        sample_info %>%
+        dplyr::mutate(batch = as.character(batch))
+      
+      sample_info$batch[sample_info$class != "QC" &
+                          sample_info$class != "Subject"] <-
+        NA
+      
+      sample_info$batch[is.na(sample_info$batch)] <- "NA"
+      
       data_nor <-
         purrr::map(unique(sample_info$batch), function(batch_idx) {
           message(crayon::yellow("Batch", batch_idx, "..."))
+          if (batch_idx == "NA") {
+            new_data <-
+              expression_data[, sample_info$batch == batch_idx]
+            return(new_data)
+          }
           subject_id <-
             sample_info %>%
             dplyr::filter(class == "Subject" &

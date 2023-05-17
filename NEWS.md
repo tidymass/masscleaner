@@ -91,3 +91,7 @@
 # Version 1.0.10 (20230516)
 --------------
 * Fixed bug in normalize_data function.
+
+# Version 1.0.10 (20230517)
+--------------
+* Fixed bug in normalize_data function.
