@@ -30,9 +30,9 @@ check_for_qc_normalization <-
       object@sample_info$batch <- 1
     }
     
-    if (any(is.na(object@sample_info$batch))) {
-      return("error: NA is in batch from sample_info, please check.")
-    }
+    # if (any(is.na(object@sample_info$batch))) {
+    #   return("error: NA is in batch from sample_info, please check.")
+    # }
     
     ###check injection.order information
     sample_info <-
