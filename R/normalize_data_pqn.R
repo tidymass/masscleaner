@@ -47,7 +47,8 @@ normalize_data_pqn <-
           as.numeric(value / median(as.numeric(value / mx)))
         }
       ) %>%
-      dplyr::bind_cols()
+      dplyr::bind_cols() %>% 
+      as.data.frame()
     
     rownames(new_x) <- rownames(x)
     return(new_x)
